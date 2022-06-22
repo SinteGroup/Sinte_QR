@@ -53,7 +53,7 @@ public class SecondFragment extends Fragment {
 
                 Log.d("Click_OnItem: ", "Click: "+felm.get_felmeres_neve());
 
-                NavHostFragment.findNavController(SecondFragment.this).navigate(R.id.action_SecondFragment_to_QRFragment);
+               // NavHostFragment.findNavController(SecondFragment.this).navigate(R.id.action_SecondFragment_to_QRFragment);
             }
         });
 
