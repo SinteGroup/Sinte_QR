@@ -27,7 +27,8 @@ import hu.sintegroup.sinte_qr.databinding.FragmentSecondBinding;
 public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
-    private  List<felmeres> felmeres_lista;
+    private  ArrayList<felmeres> felmeres_lista;
+    public felmeres_listview_adapter felmeres_adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState
     ) {
@@ -40,13 +41,14 @@ public class SecondFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         felmeres_lista=new ArrayList<>() ;
-        felmeres_lista.add(new felmeres());
-        felmeres_lista.add(new felmeres());
-        felmeres_lista.add(new felmeres());
-        felmeres_lista.add(new felmeres());
+        felmeres elso=new felmeres();
+        elso.set_felmeres_neve("elso");
+        felmeres_lista.add(elso);
+        Log.d("Felmeres_max", String.valueOf(felmeres_lista.size()));
 
         ListView felmeres_listview=(ListView) view.findViewById(R.id.felmeres_lista_listview);
-        felmeres_listview_adapter felmeres_adapter=new felmeres_listview_adapter(this.getContext(), R.layout.felmeres_listview_item, felmeres_lista);
+        felmeres_adapter=new felmeres_listview_adapter(this.getContext(), R.layout.felmeres_listview_item);
+        felmeres_adapter.addAll(felmeres_lista);
         felmeres_listview.setAdapter(felmeres_adapter);
 
         Log.d("Adapter_elemszáma: ", String.valueOf(felmeres_adapter.getCount()));
