@@ -17,7 +17,7 @@
             android:textAlignment="center"
             android:textSize="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="@string/felmeres_listview_item_name"/>
 
     </LinearLayout>

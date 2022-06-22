@@ -22,7 +22,18 @@
         tools:layout="@layout/fragment_second">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_SecondFragment_to_QRFragment"
+            app:destination="@+id/QRFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/QRFragment"
+        android:name="hu.sintegroup.sinte_qr.SecondFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_q_r">
+
+        <!--<action
+            android:id="@+id/action_QRFragment_to_SecondFragment"
+            app:destination="@+id/SecondFragment" />-->
+    </fragment>
+
 </navigation>

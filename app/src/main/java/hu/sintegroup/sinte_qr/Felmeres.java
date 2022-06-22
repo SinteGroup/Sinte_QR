@@ -1,6 +1,6 @@
 package hu.sintegroup.sinte_qr;
 
-public class felmeres {
+public class Felmeres {
     private String felmeres_neve;
 
     public void set_felmeres_neve(String neve){
