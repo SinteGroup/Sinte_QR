@@ -18,7 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Felmérések:" />
+            android:textSize="31dp"
+            android:text="@string/SecondFragment_title" />
 
         <ListView
             android:id="@+id/felmeres_lista_listview"

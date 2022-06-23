@@ -21,9 +21,16 @@ public class SecondFragment extends Fragment {
     private FragmentSecondBinding binding;
     private  ArrayList<Felmeres> felmeres_lista;
     private felmeres_listview_adapter felmeres_adapter;
+    private String[] alapGepek;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState
     ) {
+        alapGepek=new String[]{
+                "Anyagmozgató gép","Tároló eszközök, tartályok","Feldolgozó gépek","Folyadékbedolgozó eszközök",
+                "Mérő eszközök", "Fluidszállítás eszközei", "Sűrítettlevegő ellátás", "Adagoló eszközök",
+                "Anyagtovábbítás eszközei"
+        };
+
         binding = FragmentSecondBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
@@ -34,9 +41,9 @@ public class SecondFragment extends Fragment {
 
         felmeres_lista=new ArrayList<>() ;
 
-        for(int i=0; i<=20; i++){       //Feltöltés elemekkel
+        for (String temp_gep: alapGepek) {
             Felmeres temp=new Felmeres();
-            temp.set_felmeres_neve("Item"+i);
+            temp.set_felmeres_neve(temp_gep);
             felmeres_lista.add(temp);
         }
 
@@ -52,8 +59,6 @@ public class SecondFragment extends Fragment {
                 Felmeres felm=(Felmeres) adapterView.getAdapter().getItem(position);
 
                 Log.d("Click_OnItem: ", "Click: "+felm.get_felmeres_neve());
-
-               // NavHostFragment.findNavController(SecondFragment.this).navigate(R.id.action_SecondFragment_to_QRFragment);
             }
         });
 

@@ -14,6 +14,12 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_QRGeneratorFragment"
+            app:destination="@+id/QRGeneratorFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_QRReaderFragment"
+            app:destination="@+id/QRReaderFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -21,19 +27,22 @@
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
-        <action
-            android:id="@+id/action_SecondFragment_to_QRFragment"
-            app:destination="@+id/QRFragment" />
+
     </fragment>
     <fragment
-        android:id="@+id/QRFragment"
-        android:name="hu.sintegroup.sinte_qr.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_q_r">
+        android:id="@+id/QRGeneratorFragment"
+        android:name="hu.sintegroup.sinte_qr.QRGenerateFragment"
+        android:label="@string/QRFragment_label"
+        tools:layout="@layout/fragment_q_r"/>
 
         <!--<action
             android:id="@+id/action_QRFragment_to_SecondFragment"
             app:destination="@+id/SecondFragment" />-->
-    </fragment>
+
+    <fragment
+        android:id="@+id/QRReaderFragment"
+        android:name="hu.sintegroup.sinte_qr.QRReadFragment"
+        android:label="@string/QRFragment_label"
+        tools:layout="@layout/fragment_q_r_read"/>
 
 </navigation>
