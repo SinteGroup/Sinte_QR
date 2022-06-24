@@ -20,12 +20,19 @@
         <action
             android:id="@+id/action_FirstFragment_to_QRReaderFragment"
             app:destination="@+id/QRReaderFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_QRDriveFragment"
+            app:destination="@+id/QRDriveFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
         android:name="hu.sintegroup.sinte_qr.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_QRGeneratorFragment"
+            app:destination="@+id/QRGeneratorFragment" />
 
 
     </fragment>
@@ -44,5 +51,11 @@
         android:name="hu.sintegroup.sinte_qr.QRReadFragment"
         android:label="@string/QRFragment_label"
         tools:layout="@layout/fragment_q_r_read"/>
+
+    <fragment
+        android:id="@+id/QRDriveFragment"
+        android:name="hu.sintegroup.sinte_qr.GoogleDriveFragment"
+        android:label="@string/QRFragment_label"
+        tools:layout="@layout/fragment_google_drive"/>
 
 </navigation>

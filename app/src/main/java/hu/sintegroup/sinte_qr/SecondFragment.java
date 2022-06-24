@@ -41,7 +41,7 @@ public class SecondFragment extends Fragment {
 
         felmeres_lista=new ArrayList<>() ;
 
-        for (String temp_gep: alapGepek) {
+        for (String temp_gep: alapGepek) {  //Kidolgozni, hogy hogy kell majd listát cserélni.
             Felmeres temp=new Felmeres();
             temp.set_felmeres_neve(temp_gep);
             felmeres_lista.add(temp);
@@ -57,7 +57,7 @@ public class SecondFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Felmeres felm=(Felmeres) adapterView.getAdapter().getItem(position);
-
+                NavHostFragment.findNavController(SecondFragment.this).navigate(R.id.action_SecondFragment_to_QRGeneratorFragment);
                 Log.d("Click_OnItem: ", "Click: "+felm.get_felmeres_neve());
             }
         });
