@@ -16,6 +16,9 @@
 
     <string name="Google_Drive_Button_text">Drivera</string>
 
+    <string name="Google_Firebase_Button_text">Firebase connect</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

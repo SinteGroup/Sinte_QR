@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -77,14 +79,6 @@ public class QRGenerateFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        ImageView img=(ImageView) view.findViewById(R.id.QRImage);
-        try {
-            imgBitmap=QRCreate("www.sinte.hu", 512,512);
-            img.setImageBitmap(imgBitmap);
-            //Log.d("Bitmap", bit.getColor(20,20).toString());
-        }catch (Exception f){
-            Log.d("Bitmap_hiba", f.getMessage());
-        }
 
         Button printerBut=(Button) view.findViewById(R.id.print_Button);
         printerBut.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +87,23 @@ public class QRGenerateFragment extends Fragment {
                 PrintHelper photoPrinter = new PrintHelper(getActivity());
                 photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
                 photoPrinter.printBitmap("QRCode_printing", imgBitmap);
+            }
+        });
+
+        ImageView img=(ImageView) view.findViewById(R.id.QRImage);
+        EditText qrText=(EditText) view.findViewById(R.id.qrCreateText);
+
+        Button qrCreate=(Button)view.findViewById(R.id.QRCreate_Button);
+        qrCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    imgBitmap=QRCreate(qrText.getText().toString(), 512,512);
+                    img.setImageBitmap(imgBitmap);
+                    //Log.d("Bitmap", bit.getColor(20,20).toString());
+                }catch (Exception f){
+                    Log.d("Bitmap_hiba", f.getMessage());
+                }
             }
         });
     }

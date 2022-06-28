@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class felmeres_listview_adapter extends ArrayAdapter<Felmeres> {
+public class felmeres_listview_adapter extends ArrayAdapter<Gepek> {
 
     private int resourceLayout;
     private Context mContext;
@@ -25,14 +25,13 @@ public class felmeres_listview_adapter extends ArrayAdapter<Felmeres> {
             vi=LayoutInflater.from(mContext);
             v=vi.inflate(resourceLayout, null);
         }
-
-        Felmeres f=getItem(position);
+        TextView neveText=(TextView) v.findViewById(R.id.felmeresListViewItemTextView);
+        /*Gepek f=getItem(position);
         if(f!=null){
-            TextView neveText=(TextView) v.findViewById(R.id.felmeresListViewItemTextView);
             if(neveText!=null){
                 neveText.setText(f.get_felmeres_neve());
             }
-        }
+        }*/
         return v;
     }
 }

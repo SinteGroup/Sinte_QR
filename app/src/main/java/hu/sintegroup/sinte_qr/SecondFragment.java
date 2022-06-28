@@ -19,7 +19,7 @@ import hu.sintegroup.sinte_qr.databinding.FragmentSecondBinding;
 public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
-    private  ArrayList<Felmeres> felmeres_lista;
+    private  ArrayList<Gepek> gepek_lista;
     private felmeres_listview_adapter felmeres_adapter;
     private String[] alapGepek;
     @Override
@@ -39,31 +39,31 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        felmeres_lista=new ArrayList<>() ;
+        gepek_lista =new ArrayList<>() ;
 
         for (String temp_gep: alapGepek) {  //Kidolgozni, hogy hogy kell majd listát cserélni.
-            Felmeres temp=new Felmeres();
-            temp.set_felmeres_neve(temp_gep);
-            felmeres_lista.add(temp);
+            Gepek temp=new Gepek();
+            //temp.set_felmeres_neve(temp_gep);
+            gepek_lista.add(temp);
         }
 
-        Log.d("Felmeres_max", String.valueOf(felmeres_lista.size()));
+        Log.d("Felmeres_max", String.valueOf(gepek_lista.size()));
 
         ListView felmeres_listview=(ListView) view.findViewById(R.id.felmeres_lista_listview);
         felmeres_adapter=new felmeres_listview_adapter(this.getContext(), R.layout.felmeres_listview_item);
-        felmeres_adapter.addAll(felmeres_lista);
+        felmeres_adapter.addAll(gepek_lista);
         felmeres_listview.setAdapter(felmeres_adapter);
         felmeres_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Felmeres felm=(Felmeres) adapterView.getAdapter().getItem(position);
+                Gepek felm=(Gepek) adapterView.getAdapter().getItem(position);
                 NavHostFragment.findNavController(SecondFragment.this).navigate(R.id.action_SecondFragment_to_QRGeneratorFragment);
-                Log.d("Click_OnItem: ", "Click: "+felm.get_felmeres_neve());
+                //Log.d("Click_OnItem: ", "Click: "+felm.get_felmeres_neve());
             }
         });
 
         Log.d("Adapter_elemszáma: ", String.valueOf(felmeres_adapter.getCount()));
-        Log.d("Adapter_lista:", String.valueOf(felmeres_lista.size()));
+        Log.d("Adapter_lista:", String.valueOf(gepek_lista.size()));
         Log.d("Adapter_context", String.valueOf(felmeres_adapter.getContext()));
     }
 

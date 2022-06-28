@@ -1,6 +1,7 @@
 package hu.sintegroup.sinte_qr;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,19 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_QRDriveFragment);
+            }
+        });
+
+        binding.QRFirebaseButton.setOnClickListener(new View.OnClickListener() {
+
+            int i=0;
+            public void onClick(View view) {
+                i++;
+                sinteQRFirebaseHelper testHelper=new sinteQRFirebaseHelper();
+                Log.d("Database", testHelper.adatbazis.toString());
+                Log.d("Database", testHelper.adatbázisReferencia.toString());
+                Log.d("Database", testHelper.adatbázisReferencia.getRoot().toString());
+                testHelper.setData("Datas"+i);
             }
         });
     }
