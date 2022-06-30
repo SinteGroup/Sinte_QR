@@ -147,6 +147,40 @@ public class Alkatreszek_adatai {
         private String Meretek;
         private String Eszrevetelek;
         private String Leiras;
+
+        public void setMegnevezes(String megnevezes) {
+            Megnevezes = megnevezes;
+        }
+
+        public void setEszrevetelek(String eszrevetelek) {
+            Eszrevetelek = eszrevetelek;
+        }
+
+        public void setLeiras(String leiras) {
+            Leiras = leiras;
+        }
+
+        public void setMeretek(String meretek) {
+            Meretek = meretek;
+        }
+
+        public String getEszrevetelek() {
+            return Eszrevetelek;
+        }
+
+        public String getMegnevezes() {
+            return Megnevezes;
+        }
+
+        public String getLeiras() {
+            return Leiras;
+        }
+
+        public String getMeretek() {
+            return Meretek;
+        }
     }
+
+
 
 }

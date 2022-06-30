@@ -68,7 +68,7 @@ public class FirstFragment extends Fragment {
                 Log.d("Database", testHelper.adatbazis.toString());
                 Log.d("Database", testHelper.adatbázisReferencia.toString());
                 Log.d("Database", testHelper.adatbázisReferencia.getRoot().toString());
-                testHelper.setData("Datas"+i);
+                testHelper.setDefaultData();
             }
         });
     }
