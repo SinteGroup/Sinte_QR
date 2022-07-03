@@ -18,6 +18,41 @@
 
     <string name="Google_Firebase_Button_text">Firebase connect</string>
 
+    <string name="Adatfelevetel_Button_text">Adatfelvétel</string>
+
+    <string name="Adatfelevetel_label">Adatfelvétel_Fragment</string>
+
+    <string name="Adatfelveteli_lap">Adatfelvételi lap</string>
+
+    <string name="Javitasok_lap">Javitasok lap</string>
+
+    <!--Adatfelvételi laphoz Stringek-->
+    <!--Adatfelvételi laphoz Stringek: Gépek-->
+    <string name="gepszama">Gép száma: </string>
+    <string name="gepNeve">Gép megnevezése: </string>
+    <string name="gepLeltariSzama">Leltári száma: </string>
+    <string name="gepElhelyezkedese">Elhelyezkedése: </string>
+    <string name="gepFajtaja">Fajtája</string>
+    <string name="gepMerete">Mérete: </string>
+    <string name="gepMunkavegzesJellege">Gép munkavégzés jellege: </string>
+    <string name="gepAlkatreszekAdatai">Alkatrészek adatai: </string>
+    <string name="gepMeghajtas">Meghajtas</string>
+    <string name="gepHevederMerete">Hevereder mérete: </string>
+    <string name="gepDobokMerete">Dobok mérete</string>
+    <!--Ide kell majd tengelyhossz és egyébb-->
+    <string name="gepOldalfutasErzekelo">Oldalfutás érzékelő: </string>
+    <string name="gepHomero">Hőmérő: </string>
+
+    <!--Adatfelvételi laphoz Stringek: Javitasok-->
+    <string name="gepJavitasok_Label">Javítások</string>
+    <string name="javitasokDatum">Dátum: </string>
+    <string name="javitasokMegnevezes">Megnevezés: </string>
+    <string name="javitasokNullaUzemora_szama">Nulla üzemóra száma: </string>
+    <string name="javitasokEszrevetel">Észrevétel: </string>
+
+    <!--Adatfelvételi laphoz Stringek: Egyedi alkatrészek-->
+    <string name="egyedi_alkatreszek_label">Egyedi alkatrészek</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

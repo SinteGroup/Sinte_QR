@@ -68,7 +68,25 @@ public class FirstFragment extends Fragment {
                 Log.d("Database", testHelper.adatbazis.toString());
                 Log.d("Database", testHelper.adatbázisReferencia.toString());
                 Log.d("Database", testHelper.adatbázisReferencia.getRoot().toString());
-                testHelper.setDefaultData();
+                try {
+                    testHelper.getData("");    //Adatbázis lekérdezés
+                }catch (Exception f){
+                    Log.e("Get_FirebaseeData_Error", f.getMessage());
+                }
+            }
+        });
+
+        binding.QRAdatfelvetelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_AdatfelvetelFragment);
+            }
+        });
+
+        binding.JavitasokraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_JavitasokFragment);
             }
         });
     }

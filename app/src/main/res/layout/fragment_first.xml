@@ -71,4 +71,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/QRReader_Button"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/QRAdatfelvetel_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="188dp"
+        android:text="@string/Adatfelevetel_Button_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/QRReader_Button"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/Javitasokra_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Javitasok_lap"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="518dp"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

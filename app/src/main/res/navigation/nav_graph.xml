@@ -23,6 +23,12 @@
         <action
             android:id="@+id/action_FirstFragment_to_QRDriveFragment"
             app:destination="@+id/QRDriveFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_AdatfelvetelFragment"
+            app:destination="@+id/AdatfelvetelFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_JavitasokFragment"
+            app:destination="@+id/JavitasokFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -57,5 +63,17 @@
         android:name="hu.sintegroup.sinte_qr.GoogleDriveFragment"
         android:label="@string/QRFragment_label"
         tools:layout="@layout/fragment_google_drive"/>
+
+    <fragment
+        android:id="@+id/AdatfelvetelFragment"
+        android:name="hu.sintegroup.sinte_qr.AdatfelvetelFragment"
+        android:label="@string/Adatfelevetel_label"
+        tools:layout="@layout/fragment_adatfelvetel"/>
+
+    <fragment
+        android:id="@+id/JavitasokFragment"
+        android:name="hu.sintegroup.sinte_qr.JavitasokFelvetelFragment"
+        android:label="@string/Adatfelevetel_label"
+        tools:layout="@layout/fragment_javitasok"/>
 
 </navigation>

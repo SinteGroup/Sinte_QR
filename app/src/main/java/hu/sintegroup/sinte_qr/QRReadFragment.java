@@ -1,16 +1,31 @@
 package hu.sintegroup.sinte_qr;
 
-import android.content.ActivityNotFoundException;
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.ChecksumException;
+import com.google.zxing.FormatException;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Reader;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +42,7 @@ public class QRReadFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private final int QRREADOK = 1;
 
     public QRReadFragment() {
         // Required empty public constructor
@@ -66,13 +82,37 @@ public class QRReadFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_q_r_read, container, false);
     }
 
+
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        final int REQUEST_IMAGE_CAPTURE=1;
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        } catch (ActivityNotFoundException e) {
-            // display error state to the user
+        Intent cmaIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cmaIntent, QRREADOK);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == QRREADOK && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            QRCodeReader reader=new QRCodeReader();
+            Log.d("Cam_", readQRImage(imageBitmap));
         }
+    }
+
+    public static String readQRImage(Bitmap bMap) {
+        String contents = "Üres";
+
+        int[] intArray = new int[bMap.getWidth()*bMap.getHeight()];
+        bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
+
+        LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(), bMap.getHeight(), intArray);
+        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+        Reader reader = new MultiFormatReader();// use this otherwise ChecksumException
+        try {
+            Result result = reader.decode(bitmap);
+            contents = result.getText();
+        } catch (NotFoundException e) { e.printStackTrace(); }
+        catch (ChecksumException e) { e.printStackTrace(); }
+        catch (FormatException e) { e.printStackTrace(); }
+        return contents;
     }
 }
