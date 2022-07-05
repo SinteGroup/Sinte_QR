@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -86,33 +88,37 @@ public class QRReadFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         Intent cmaIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cmaIntent, QRREADOK);
+        Log.d("Cam_intent: ", "intent elment");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
         if (requestCode == QRREADOK && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
+            Log.d("Cam_Bundle getExtras", extras.toString());
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            QRCodeReader reader=new QRCodeReader();
             Log.d("Cam_", readQRImage(imageBitmap));
+        }
+        }catch (Exception f){
+            Log.d("Cam_OnAct: ", f.getMessage());
+            Toast.makeText(getContext(), "Nem érvényes QR code. A kódot merőlegesen kell leolvasni és más nem lehet rajta.", Toast.LENGTH_SHORT).show();
         }
     }
 
     public static String readQRImage(Bitmap bMap) {
         String contents = "Üres";
-
         int[] intArray = new int[bMap.getWidth()*bMap.getHeight()];
         bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
-
         LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(), bMap.getHeight(), intArray);
         BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
-        Reader reader = new MultiFormatReader();// use this otherwise ChecksumException
+        Reader reader = new MultiFormatReader();// use this otherwise ChecksumExceptionú
+        Log.d("Cam_bitmap", bitmap.toString());
         try {
             Result result = reader.decode(bitmap);
             contents = result.getText();
-        } catch (NotFoundException e) { e.printStackTrace(); }
-        catch (ChecksumException e) { e.printStackTrace(); }
-        catch (FormatException e) { e.printStackTrace(); }
+        } catch (NotFoundException e) { Log.d("Cam_NotFound", e.getMessage()); }
+        catch (ChecksumException e) { Log.d("Cam_Checksum: ", e.getMessage()); }
+        catch (FormatException e) { Log.d("Cam_format: ", e.getMessage()); }
         return contents;
     }
 }
