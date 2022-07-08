@@ -100,8 +100,8 @@ public class QRReadFragment extends Fragment {
             Log.d("Cam_Bundle getExtras", extras.toString());
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             TextView tempData=(TextView)getView().findViewById(R.id.QRDataSnapshotView);
-            sinteQRFirebaseHelper readDatabase=new sinteQRFirebaseHelper();
-            tempData.setText(readDatabase.getData(readQRImage(imageBitmap)).getValue().toString());
+            /*sinteQRFirebaseHelper readDatabase=new sinteQRFirebaseHelper();
+            tempData.setText(readDatabase.getData(readQRImage(imageBitmap)).getValue().toString());*/
             Log.d("Cam_eredmeny", readQRImage(imageBitmap));
         }
         }catch (Exception f){
