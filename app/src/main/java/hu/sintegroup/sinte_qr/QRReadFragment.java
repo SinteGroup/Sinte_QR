@@ -1,6 +1,7 @@
 package hu.sintegroup.sinte_qr;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.TELECOM_SERVICE;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BinaryBitmap;
@@ -97,7 +99,10 @@ public class QRReadFragment extends Fragment {
             Bundle extras = data.getExtras();
             Log.d("Cam_Bundle getExtras", extras.toString());
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Log.d("Cam_", readQRImage(imageBitmap));
+            TextView tempData=(TextView)getView().findViewById(R.id.QRDataSnapshotView);
+            sinteQRFirebaseHelper readDatabase=new sinteQRFirebaseHelper();
+            tempData.setText(readDatabase.getData(readQRImage(imageBitmap)).getValue().toString());
+            Log.d("Cam_eredmeny", readQRImage(imageBitmap));
         }
         }catch (Exception f){
             Log.d("Cam_OnAct: ", f.getMessage());
