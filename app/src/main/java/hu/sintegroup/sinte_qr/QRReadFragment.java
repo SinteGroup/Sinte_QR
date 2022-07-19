@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
@@ -48,6 +49,8 @@ public class QRReadFragment extends Fragment {
     private String mParam2;
     private final int QRREADOK = 1;
 
+    private FirebaseApp app;
+
     public QRReadFragment() {
         // Required empty public constructor
     }
@@ -76,6 +79,7 @@ public class QRReadFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            this.app=FirebaseApp.initializeApp(getContext());
         }
     }
 
@@ -99,14 +103,13 @@ public class QRReadFragment extends Fragment {
             Bundle extras = data.getExtras();
             Log.d("Cam_Bundle getExtras", extras.toString());
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            TextView tempData=(TextView)getView().findViewById(R.id.QRDataSnapshotView);
-            /*sinteQRFirebaseHelper readDatabase=new sinteQRFirebaseHelper();
-            tempData.setText(readDatabase.getData(readQRImage(imageBitmap)).getValue().toString());*/
+            String readString=readQRImage(imageBitmap);
+
             Log.d("Cam_eredmeny", readQRImage(imageBitmap));
         }
         }catch (Exception f){
             Log.d("Cam_OnAct: ", f.getMessage());
-            Toast.makeText(getContext(), "Nem érvényes QR code. A kódot merőlegesen kell leolvasni és más nem lehet rajta.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Nem érvényes QR code. Vagy túl kicsi a képen a kód vagy életlen. Érintéssel tudsz fókuszt állítani", Toast.LENGTH_LONG).show();
         }
     }
 

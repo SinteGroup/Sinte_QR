@@ -14,17 +14,19 @@
 
     <string name="SecondFragment_title">Kategóriák: </string>
 
-    <string name="Google_Drive_Button_text">Drivera</string>
+    <string name="Google_Drive_Button_text">Dokumentumok megnyitása</string>
 
     <string name="Google_Firebase_Button_text">Firebase connect</string>
 
-    <string name="Adatfelevetel_Button_text">Adatfelvétel</string>
+    <string name="Adatfelevetel_Button_text">Adatfelvételi lap</string>
 
     <string name="Adatfelevetel_label">Adatfelvétel_Fragment</string>
 
     <string name="Adatfelveteli_lap">Adatfelvételi lap</string>
 
     <string name="Javitasok_lap">Javitasok lap</string>
+
+    <string name="QRReader">Kód beolvasása</string>
 
     <!--Adatfelvételi laphoz Stringek-->
     <!--Adatfelvételi laphoz Stringek: Gépek-->

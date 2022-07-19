@@ -5,10 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentFirstBinding;
 
@@ -30,7 +30,7 @@ public class FirstFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.progressbarMaxNext.setOnClickListener(new View.OnClickListener() {
+        /*binding.progressbarMaxNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this)
@@ -88,7 +88,16 @@ public class FirstFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_JavitasokFragment);
             }
-        });
+        });*/
+        TextView initText=(TextView)view.findViewById(R.id.initTextßview);
+        sinteQRFirebaseHelper initFirebase=new sinteQRFirebaseHelper();
+        try {
+            initFirebase.getData("Felmeresek");
+
+        } catch (Exception e) {
+            Log.d("initError", e.getMessage());
+        }
+
     }
 
     @Override

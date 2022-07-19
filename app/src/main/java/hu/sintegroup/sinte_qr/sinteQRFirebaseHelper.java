@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +24,9 @@ public class sinteQRFirebaseHelper {
     DatabaseReference adatbázisReferencia =null;
     Gepek alapBeallitasGepek;
     Gepek.Berendezesek alapBeallitasokBerendezesek;
+
+    HashMap adatok;
+
 
     public sinteQRFirebaseHelper(){
         if(adatbazis==null || adatbázisReferencia==null){
@@ -69,19 +73,16 @@ public class sinteQRFirebaseHelper {
         adatbázisReferencia.child("Alapbeállítások").setValue(alapBeallitasGepek);
         adatbázisReferencia.child("Alapbeállítások").child("Berendezesek: ").setValue(alapBeallitasokBerendezesek);
         adatbázisReferencia.child("Felmérés").setValue("");
-
-
     }
 
-    public DataSnapshot getData(String child) throws Exception{
+    public void getData(String child) throws Exception{
 
-        DataSnapshot returnSnapshot=null;
+        HashMap returnHash;
         adatbázisReferencia.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("Get_gepTipusok", String.valueOf(dataSnapshot.child("Alapbeállítások/gepTipusok").getValue().toString()));
-                Log.d("Get_gep_Munkavegzes", String.valueOf(dataSnapshot.child("Alapbeállítások/gep_Munkavegzes_jellege").getValue().toString()));
-
+               adatok=(HashMap) dataSnapshot.child(child).getValue();
+               Log.d("initInit", adatok.toString());
             }
 
             @Override
@@ -89,8 +90,5 @@ public class sinteQRFirebaseHelper {
 
             }
         });
-        return returnSnapshot;
-
     }
-
 }
