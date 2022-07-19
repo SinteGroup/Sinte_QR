@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -20,6 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
@@ -31,6 +35,8 @@ import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +56,8 @@ public class QRReadFragment extends Fragment {
     private final int QRREADOK = 1;
 
     private FirebaseApp app;
+
+    public static String firebasePath="";
 
     public QRReadFragment() {
         // Required empty public constructor
@@ -103,8 +111,31 @@ public class QRReadFragment extends Fragment {
             Bundle extras = data.getExtras();
             Log.d("Cam_Bundle getExtras", extras.toString());
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            String readString=readQRImage(imageBitmap);
+            sinteQRFirebaseHelper readerHelper=new sinteQRFirebaseHelper();
+            readerHelper.adatbázisReferencia.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    try {
+                        HashMap map = (HashMap) dataSnapshot.child("Felmeresek").getValue();
+                        String readString = readQRImage(imageBitmap);
+                        if (map.containsKey(readString)) {
+                            Log.d("readerError", "Van");
+                            NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRRead_Fragment_to_AdatfelvetelFragment);
+                        } else {
+                            Log.d("readerError", "Nincs: "+readString);
+                            readerHelper.adatbázisReferencia.child("Felmeresek/" + readString).setValue("");
+                            firebasePath="Felmeresek/" + readString;
+                        }
+                    }catch (Exception g){
+                        Log.d("ReadderOnDataChange", g.getMessage());
+                    }
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             Log.d("Cam_eredmeny", readQRImage(imageBitmap));
         }
         }catch (Exception f){
@@ -127,6 +158,9 @@ public class QRReadFragment extends Fragment {
         } catch (NotFoundException e) { Log.d("Cam_NotFound", e.getMessage()); }
         catch (ChecksumException e) { Log.d("Cam_Checksum: ", e.getMessage()); }
         catch (FormatException e) { Log.d("Cam_format: ", e.getMessage()); }
+        catch (Exception g){
+            Log.d("Cam_Error", g.getMessage());
+        }
         return contents;
     }
 }

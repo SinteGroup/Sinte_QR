@@ -10,7 +10,7 @@ public class Gepek {
 
     private ArrayList<String> GepTipusok;
     private ArrayList<String> Berendezesek;
-    private ArrayList<Integer> Merete;
+    private String Merete;
     private ArrayList<String> Gep_Munkavegzes_jellege;
     private ArrayList<Alkatreszek_adatai> AlkatreszekAdatai;
 
@@ -21,27 +21,27 @@ public class Gepek {
     private String Fajtaja;
 
     public void setAlkatreszekAdatai(ArrayList<Alkatreszek_adatai> alkatreszekAdatai) {
-        AlkatreszekAdatai = alkatreszekAdatai;
+        this.AlkatreszekAdatai = alkatreszekAdatai;
     }
 
     public void setBerendezesek(ArrayList<String> berendezesek) {
-        Berendezesek = berendezesek;
+        this.Berendezesek = berendezesek;
     }
 
     public void setElhelyezkedese(String elhelyezkedese) {
-        Elhelyezkedese = elhelyezkedese;
+        this.Elhelyezkedese = elhelyezkedese;
     }
 
     public void setFajtaja(String fajtaja) {
-        Fajtaja = fajtaja;
+        this.Fajtaja = fajtaja;
     }
 
     public void setGep_Munkavegzes_jellege(ArrayList<String> gep_Munkavegzes_jellege) {
-        Gep_Munkavegzes_jellege = gep_Munkavegzes_jellege;
+        this.Gep_Munkavegzes_jellege = gep_Munkavegzes_jellege;
     }
 
     public void setGepTipusok(ArrayList<String> gepTipusok) {
-        GepTipusok = gepTipusok;
+        this.GepTipusok = gepTipusok;
     }
 
     public void setID(String ID) {
@@ -52,12 +52,12 @@ public class Gepek {
         this.leltari_szama = leltari_szama;
     }
 
-    public void setMerete(ArrayList<Integer> merete) {
-        Merete = merete;
+    public void setMerete(String merete) {
+        this.Merete = merete;
     }
 
     public void setNeve(String neve) {
-        Neve = neve;
+        this.Neve = neve;
     }
 
     public String getElhelyezkedese() {
@@ -80,7 +80,7 @@ public class Gepek {
         return Neve;
     }
 
-    public ArrayList<Integer> getMerete() {
+    public String getMerete() {
         return Merete;
     }
 

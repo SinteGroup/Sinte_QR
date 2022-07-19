@@ -5,14 +5,40 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentFirstBinding;
 
 public class FirstFragment extends Fragment {
+
+    TextView firstText=null;
+    Spinner kodeSpin=null;
+    HashMap hh=null;
+    ArrayAdapter aa=null;
+    sinteQRFirebaseHelper helper=new sinteQRFirebaseHelper();
 
     private FragmentFirstBinding binding;
 
@@ -24,80 +50,57 @@ public class FirstFragment extends Fragment {
 
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        /*binding.progressbarMaxNext.setOnClickListener(new View.OnClickListener() {
+        firstText=(TextView) view.findViewById(R.id.initTextview);
+        kodeSpin=(Spinner) view.findViewById(R.id.codeSpinner);
+        kodeSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("SelectedItem", String.valueOf(hh.get(aa.getItem(i).toString())));
+                firstText.setText(String.valueOf(hh.get(aa.getItem(i).toString())));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
-
-        binding.QRGeneratorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_QRGeneratorFragment);
-            }
-        });
-
-        binding.QRReaderButton.setOnClickListener(new View.OnClickListener() {
+        try {
+            getData("Felmeresek");
+        }catch (Exception g) {
+            Log.d("getData", g.getMessage());
+        }
+        binding.newItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_QRReaderFragment);
             }
         });
+    }
 
-        binding.QRDriveButton.setOnClickListener(new View.OnClickListener() {
+    public void getData(String child){
+
+        helper.adatbázisReferencia.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_QRDriveFragment);
-            }
-        });
-
-        binding.QRFirebaseButton.setOnClickListener(new View.OnClickListener() {
-
-            int i=0;
-            public void onClick(View view) {
-                i++;
-                sinteQRFirebaseHelper testHelper=new sinteQRFirebaseHelper();
-                Log.d("Database", testHelper.adatbazis.toString());
-                Log.d("Database", testHelper.adatbázisReferencia.toString());
-                Log.d("Database", testHelper.adatbázisReferencia.getRoot().toString());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
-                    testHelper.getData("");    //Adatbázis lekérdezés
-                }catch (Exception f){
-                    Log.e("Get_FirebaseeData_Error", f.getMessage());
+                    hh= (HashMap) dataSnapshot.child(child).getValue();
+                    aa = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,hh.keySet().toArray());
+                    kodeSpin.setAdapter(aa);
+                    firstText.setText(hh.toString().replaceAll("\"", ""));
+                }catch (Exception h){
+                    Log.d("onDataChange", h.getMessage());
                 }
             }
-        });
 
-        binding.QRAdatfelvetelButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_AdatfelvetelFragment);
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
-
-        binding.JavitasokraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_JavitasokFragment);
-            }
-        });*/
-        TextView initText=(TextView)view.findViewById(R.id.initTextßview);
-        sinteQRFirebaseHelper initFirebase=new sinteQRFirebaseHelper();
-        try {
-            initFirebase.getData("Felmeresek");
-
-        } catch (Exception e) {
-            Log.d("initError", e.getMessage());
-        }
-
     }
 
     @Override
@@ -105,5 +108,4 @@ public class FirstFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }

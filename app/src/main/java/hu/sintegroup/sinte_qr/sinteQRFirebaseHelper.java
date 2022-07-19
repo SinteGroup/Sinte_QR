@@ -2,12 +2,10 @@ package hu.sintegroup.sinte_qr;
 
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,16 +15,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import io.opencensus.metrics.export.Summary;
-
 public class sinteQRFirebaseHelper {
     FirebaseDatabase adatbazis=null;
     DatabaseReference adatbázisReferencia =null;
     Gepek alapBeallitasGepek;
     Gepek.Berendezesek alapBeallitasokBerendezesek;
-
-    HashMap adatok;
-
 
     public sinteQRFirebaseHelper(){
         if(adatbazis==null || adatbázisReferencia==null){
@@ -73,22 +66,6 @@ public class sinteQRFirebaseHelper {
         adatbázisReferencia.child("Alapbeállítások").setValue(alapBeallitasGepek);
         adatbázisReferencia.child("Alapbeállítások").child("Berendezesek: ").setValue(alapBeallitasokBerendezesek);
         adatbázisReferencia.child("Felmérés").setValue("");
-    }
 
-    public void getData(String child) throws Exception{
-
-        HashMap returnHash;
-        adatbázisReferencia.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               adatok=(HashMap) dataSnapshot.child(child).getValue();
-               Log.d("initInit", adatok.toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 }

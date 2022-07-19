@@ -4,12 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#6A6A6A"
     tools:context=".FirstFragment">
-    <TextView
-        android:id="@+id/initTextßview"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    <!--<TableLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="QR kód olvasása"
+                android:id="@+id/newItemButton"/>
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/codeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/initTextview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="30dp" />
+        <!--<TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
@@ -63,4 +88,5 @@
             android:text="@string/Javitasok_lap"
             tools:ignore="MissingConstraints" />
 </TableLayout>-->
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

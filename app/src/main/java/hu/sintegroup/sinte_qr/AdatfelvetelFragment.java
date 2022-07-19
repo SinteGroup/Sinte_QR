@@ -5,9 +5,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import org.checkerframework.checker.units.qual.A;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,6 +69,34 @@ public class AdatfelvetelFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        Gepek ujGep=new Gepek();
 
+        EditText gep_szama=(EditText) view.findViewById(R.id.gepSzamaEditText);
+        ujGep.setID(gep_szama.getText().toString());
+
+        EditText gep_Neve=(EditText) view.findViewById(R.id.gepNeveEditText);
+        ujGep.setNeve(gep_Neve.getText().toString());
+
+        EditText leltari_szam=(EditText) view.findViewById(R.id.gepLeltariSzama);
+        ujGep.setLeltari_szama(leltari_szam.getText().toString());
+
+        EditText gep_fajtaja=(EditText) view.findViewById(R.id.gepFajtajaEditText);
+        ujGep.setFajtaja(gep_fajtaja.getText().toString());
+
+        EditText gep_merete=(EditText) view.findViewById(R.id.gepMereteEditText);
+        ujGep.setMerete(gep_merete.getText().toString());
+
+        EditText gepElhelyezkedese=(EditText) view.findViewById(R.id.geElhelyezkedeseEditText);
+        ujGep.setElhelyezkedese(gepElhelyezkedese.getText().toString());
+
+        Button saveButton=(Button) view.findViewById(R.id.gepAdataFelvetel_Save_Button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sinteQRFirebaseHelper helperReaer=new sinteQRFirebaseHelper();
+                helperReaer.adatbázisReferencia.child("Felmeresek/"+QRReadFragment.firebasePath).setValue(ujGep);
+                Log.e("Adatok", ujGep.getNeve());
+            }
+        });
     }
 }

@@ -24,9 +24,6 @@
             android:id="@+id/action_FirstFragment_to_QRDriveFragment"
             app:destination="@+id/QRDriveFragment" />
         <action
-            android:id="@+id/action_FirstFragment_to_AdatfelvetelFragment"
-            app:destination="@+id/AdatfelvetelFragment" />
-        <action
             android:id="@+id/action_FirstFragment_to_JavitasokFragment"
             app:destination="@+id/JavitasokFragment" />
     </fragment>
@@ -56,7 +53,11 @@
         android:id="@+id/QRReaderFragment"
         android:name="hu.sintegroup.sinte_qr.QRReadFragment"
         android:label="@string/QRFragment_label"
-        tools:layout="@layout/fragment_q_r_read"/>
+        tools:layout="@layout/fragment_q_r_read">
+        <action
+            android:id="@+id/action_QRRead_Fragment_to_AdatfelvetelFragment"
+            app:destination="@+id/AdatfelvetelFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/QRDriveFragment"
