@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1029420712572",
+    "firebase_url": "https://sinteqr-default-rtdb.firebaseio.com",
+    "project_id": "sinteqr",
+    "storage_bucket": "sinteqr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029420712572:android:c7995dccc619f4943afff9",
+        "android_client_info": {
+          "package_name": "hu.sintegroup.sinte_qr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029420712572-s0k5e8p35e15bqusemn5mrrg2g3p69es.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.sintegroup.sinte_qr",
+            "certificate_hash": "faff9a99b9c2fc7600b364076356f6319536d144"
+          }
+        },
+        {
+          "client_id": "1029420712572-otd8u67m5rkholjf6vm11lf7p90sapo2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpBNBHZvP8Y-o68jdu7_g8NbpH0zXeSuo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029420712572-otd8u67m5rkholjf6vm11lf7p90sapo2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
