@@ -21,7 +21,7 @@ public class Javitasok {
     }
 
     public void setNulla_uzemora_szam(String nulla_uzemora_szam) {
-        Nulla_uzemora_szam = nulla_uzemora_szam;
+        this.Nulla_uzemora_szam = nulla_uzemora_szam;
     }
 
     public void setEszrevetel(String eszrevetel) {
