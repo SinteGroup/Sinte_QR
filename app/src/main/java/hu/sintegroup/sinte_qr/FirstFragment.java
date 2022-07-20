@@ -21,14 +21,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Set;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentFirstBinding;
@@ -61,7 +64,15 @@ public class FirstFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("SelectedItem", String.valueOf(hh.get(aa.getItem(i).toString())));
-                firstText.setText(String.valueOf(hh.get(aa.getItem(i).toString())));
+                String adat=String.valueOf(hh.get(aa.getItem(i).toString())).replace("{" , "").replace("}", "").replace("=",": ");
+                String[] adatSorok=adat.split(",");
+                //firstText.setText(String.valueOf(hh.get(aa.getItem(i).toString())));
+                String kimenet="";
+                for (String temp:adatSorok){
+                    Log.d("adatSorok", temp);
+                    kimenet+=(temp+"\n");
+                }
+                firstText.setText(kimenet);
             }
 
             @Override
@@ -84,9 +95,9 @@ public class FirstFragment extends Fragment {
         binding.newManualItemAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(QRReadFragment.firebasePath!="" || QRReadFragment.firebasePath!=null){
+                if(QRReadFragment.firebasePath=="" || QRReadFragment.firebasePath==null){
                     Date datum=new Date();
-                    QRReadFragment.firebasePath="Kezimegadas_"+ datum.getTime();
+                    QRReadFragment.firebasePath="Felmeresek/Kezimegadas_"+ datum.getTime();
                 }
 
                 NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_AdatfelvetelFragment);
@@ -103,9 +114,6 @@ public class FirstFragment extends Fragment {
                     hh= (HashMap) dataSnapshot.child(child).getValue();
                     aa = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,hh.keySet().toArray());
                     kodeSpin.setAdapter(aa);
-                    ArrayList<String> elemek=new ArrayList<>();
-                    elemek.addAll(hh.values());
-                    firstText.setText(elemek.toString());
                 }catch (Exception h){
                     Log.d("onDataChange", h.getMessage());
                 }

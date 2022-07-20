@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -69,28 +70,17 @@ public class AdatfelvetelFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        EditText gep_szama=(EditText) view.findViewById(R.id.gepSzamaEditText);
-        EditText gep_Neve=(EditText) view.findViewById(R.id.gepNeveEditText);
-        EditText leltari_szam=(EditText) view.findViewById(R.id.gepLeltariSzama);
-        EditText gep_fajtaja=(EditText) view.findViewById(R.id.gepFajtajaEditText);
-        EditText gep_merete=(EditText) view.findViewById(R.id.gepMereteEditText);
-        EditText gepElhelyezkedese=(EditText) view.findViewById(R.id.geElhelyezkedeseEditText);
-
-
+        TextView adatFelv=(TextView)view.findViewById(R.id.adatFelveteliLap);
+        adatFelv.append(": "+QRReadFragment.firebasePath);
         Button saveButton=(Button) view.findViewById(R.id.gepAdataFelvetel_Save_Button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Gepek ujGep=new Gepek();
-                ujGep.setID("SajatId");
-                ujGep.setNeve(gep_Neve.getText().toString());
-                ujGep.setLeltari_szama(leltari_szam.getText().toString());
-                ujGep.setFajtaja(gep_fajtaja.getText().toString());
-                ujGep.setMerete(gep_merete.getText().toString());
-                ujGep.setElhelyezkedese(gepElhelyezkedese.getText().toString());
 
-                sinteQRFirebaseHelper helperReaer=new sinteQRFirebaseHelper();
-                helperReaer.adatbázisReferencia.child("Felmeresek/"+QRReadFragment.firebasePath).setValue(ujGep);
+
+                sinteQRFirebaseHelper helperReader=new sinteQRFirebaseHelper();
+                helperReader.adatbázisReferencia.child(QRReadFragment.firebasePath).setValue(ujGep);
             }
         });
     }

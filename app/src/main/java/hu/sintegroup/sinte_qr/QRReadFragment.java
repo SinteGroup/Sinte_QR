@@ -54,6 +54,7 @@ public class QRReadFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private final int QRREADOK = 1;
+    TextView QRREaderText;
 
     private FirebaseApp app;
 
@@ -103,6 +104,8 @@ public class QRReadFragment extends Fragment {
         Intent cmaIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cmaIntent, QRREADOK);
         Log.d("Cam_intent: ", "intent elment");
+
+        QRREaderText=(TextView) view.findViewById(R.id.QRDataSnapshotView);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -117,9 +120,14 @@ public class QRReadFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     try {
                         HashMap map = (HashMap) dataSnapshot.child("Felmeresek").getValue();
+                        Log.d("readerMap", map.values().toString());
                         String readString = readQRImage(imageBitmap);
                         if (map.containsKey(readString)) {
                             Log.d("readerError", "Van");
+                            firebasePath="Felmeresek/"+readString;
+
+                            QRREaderText.setText("fgsdgdfgdfg");
+
                             NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRRead_Fragment_to_AdatfelvetelFragment);
                         } else {
                             Log.d("readerError", "Nincs: "+readString);
@@ -128,6 +136,7 @@ public class QRReadFragment extends Fragment {
                         }
                     }catch (Exception g){
                         Log.d("ReadderOnDataChange", g.getMessage());
+                        Toast.makeText(getContext(), g.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
 
