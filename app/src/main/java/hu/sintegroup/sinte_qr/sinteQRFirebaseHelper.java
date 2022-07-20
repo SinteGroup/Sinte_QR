@@ -57,7 +57,7 @@ public class sinteQRFirebaseHelper {
             tempBerendezesek.add("Váltó");
             alapBeallitasokBerendezesek=new Gepek.Berendezesek();
             alapBeallitasokBerendezesek.setTipusai(tempBerendezesek);
-            setDefaultData();
+            //setDefaultData();
         }
     }
 
@@ -65,7 +65,6 @@ public class sinteQRFirebaseHelper {
 
         adatbázisReferencia.child("Alapbeállítások").setValue(alapBeallitasGepek);
         adatbázisReferencia.child("Alapbeállítások").child("Berendezesek: ").setValue(alapBeallitasokBerendezesek);
-        adatbázisReferencia.child("Felmérés").setValue("");
 
     }
 }

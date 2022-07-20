@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_JavitasokFragment"
             app:destination="@+id/JavitasokFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_AdatfelvetelFragment"
+            app:destination="@+id/AdatfelvetelFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"

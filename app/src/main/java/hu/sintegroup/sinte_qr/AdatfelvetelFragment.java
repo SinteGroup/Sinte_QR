@@ -69,33 +69,28 @@ public class AdatfelvetelFragment extends Fragment {
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        Gepek ujGep=new Gepek();
-
         EditText gep_szama=(EditText) view.findViewById(R.id.gepSzamaEditText);
-        ujGep.setID(gep_szama.getText().toString());
-
         EditText gep_Neve=(EditText) view.findViewById(R.id.gepNeveEditText);
-        ujGep.setNeve(gep_Neve.getText().toString());
-
         EditText leltari_szam=(EditText) view.findViewById(R.id.gepLeltariSzama);
-        ujGep.setLeltari_szama(leltari_szam.getText().toString());
-
         EditText gep_fajtaja=(EditText) view.findViewById(R.id.gepFajtajaEditText);
-        ujGep.setFajtaja(gep_fajtaja.getText().toString());
-
         EditText gep_merete=(EditText) view.findViewById(R.id.gepMereteEditText);
-        ujGep.setMerete(gep_merete.getText().toString());
-
         EditText gepElhelyezkedese=(EditText) view.findViewById(R.id.geElhelyezkedeseEditText);
-        ujGep.setElhelyezkedese(gepElhelyezkedese.getText().toString());
+
 
         Button saveButton=(Button) view.findViewById(R.id.gepAdataFelvetel_Save_Button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Gepek ujGep=new Gepek();
+                ujGep.setID("SajatId");
+                ujGep.setNeve(gep_Neve.getText().toString());
+                ujGep.setLeltari_szama(leltari_szam.getText().toString());
+                ujGep.setFajtaja(gep_fajtaja.getText().toString());
+                ujGep.setMerete(gep_merete.getText().toString());
+                ujGep.setElhelyezkedese(gepElhelyezkedese.getText().toString());
+
                 sinteQRFirebaseHelper helperReaer=new sinteQRFirebaseHelper();
                 helperReaer.adatbázisReferencia.child("Felmeresek/"+QRReadFragment.firebasePath).setValue(ujGep);
-                Log.e("Adatok", ujGep.getNeve());
             }
         });
     }

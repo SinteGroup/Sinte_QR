@@ -21,6 +21,11 @@
                 android:layout_height="wrap_content"
                 android:text="QR kód olvasása"
                 android:id="@+id/newItemButton"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kód megadás kézzel"
+                android:id="@+id/newManualItemAddButton"/>
         </LinearLayout>
 
         <Spinner

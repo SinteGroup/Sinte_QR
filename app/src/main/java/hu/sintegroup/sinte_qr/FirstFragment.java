@@ -27,6 +27,7 @@ import org.json.JSONStringer;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -79,6 +80,18 @@ public class FirstFragment extends Fragment {
                 NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_QRReaderFragment);
             }
         });
+
+        binding.newManualItemAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(QRReadFragment.firebasePath!="" || QRReadFragment.firebasePath!=null){
+                    Date datum=new Date();
+                    QRReadFragment.firebasePath="Kezimegadas_"+ datum.getTime();
+                }
+
+                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_AdatfelvetelFragment);
+            }
+        });
     }
 
     public void getData(String child){
@@ -90,7 +103,9 @@ public class FirstFragment extends Fragment {
                     hh= (HashMap) dataSnapshot.child(child).getValue();
                     aa = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,hh.keySet().toArray());
                     kodeSpin.setAdapter(aa);
-                    firstText.setText(hh.toString().replaceAll("\"", ""));
+                    ArrayList<String> elemek=new ArrayList<>();
+                    elemek.addAll(hh.values());
+                    firstText.setText(elemek.toString());
                 }catch (Exception h){
                     Log.d("onDataChange", h.getMessage());
                 }

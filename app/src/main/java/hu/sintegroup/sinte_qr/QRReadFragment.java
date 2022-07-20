@@ -123,8 +123,8 @@ public class QRReadFragment extends Fragment {
                             NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRRead_Fragment_to_AdatfelvetelFragment);
                         } else {
                             Log.d("readerError", "Nincs: "+readString);
-                            readerHelper.adatbázisReferencia.child("Felmeresek/" + readString).setValue("");
-                            firebasePath="Felmeresek/" + readString;
+                            firebasePath="Felmeresek/"+readString;
+                            readerHelper.adatbázisReferencia.getRoot().child(firebasePath).setValue(""); //Átnézni a pth-t
                         }
                     }catch (Exception g){
                         Log.d("ReadderOnDataChange", g.getMessage());
