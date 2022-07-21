@@ -136,7 +136,7 @@ public class QRReadFragment extends Fragment {
                         }
                     }catch (Exception g){
                         Log.d("ReadderOnDataChange", g.getMessage());
-                        Toast.makeText(getContext(), g.getMessage(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(), g.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
 
