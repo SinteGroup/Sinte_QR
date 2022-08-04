@@ -38,6 +38,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
+            android:text="QR kód száma:"/>
+
+        <EditText
+            android:id="@+id/gepQRSzama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
             android:text="Gép száma:"/>
 
         <EditText

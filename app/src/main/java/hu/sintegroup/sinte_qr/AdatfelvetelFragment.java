@@ -12,8 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import org.checkerframework.checker.units.qual.A;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,11 +102,16 @@ public class AdatfelvetelFragment extends Fragment {
         EditText gepOldalfutasErzekelo=(EditText)view.findViewById(R.id.gepOldalfutasErzekelo);
         EditText gepHomero=(EditText)view.findViewById(R.id.gepHomeroTipusa);
 
+        EditText gepKeziQRMegadas=(EditText) view.findViewById(R.id.gepQRSzama);
+        
+
         Button saveButton=(Button) view.findViewById(R.id.gepAdataFelvetel_Save_Button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Gepek ujGep=new Gepek();
+
+                ujGep.setGepQRSzama(gepKeziQRMegadas.getText().toString());
 
                 ujGep.setGepSzama(gepSzama.getText().toString());
                 ujGep.setGepNeve(gepNeve.getText().toString());
@@ -123,7 +135,14 @@ public class AdatfelvetelFragment extends Fragment {
                 ujGep.setGepHomero(gepHomero.getText().toString());
 
                 sinteQRFirebaseHelper helperReader=new sinteQRFirebaseHelper();
-                helperReader.adatbázisReferencia.child(QRReadFragment.firebasePath).setValue(ujGep);
+                Log.d("ujgep", ujGep.getGepQRSzama());
+                QRReadFragment.firebasePath="Felmeresek/"+ujGep.getGepQRSzama();
+                if(ujGep.getGepQRSzama().isEmpty()){
+                    Toast.makeText(getContext(), "Üres a QR kód mező", Toast.LENGTH_LONG).show();
+                }else {
+                    helperReader.adatbázisReferencia.child(QRReadFragment.firebasePath).setValue(ujGep);
+                }
+
             }
         });
     }

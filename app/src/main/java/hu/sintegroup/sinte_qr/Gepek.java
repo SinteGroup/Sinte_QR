@@ -31,6 +31,7 @@ public class Gepek {
     private String gepCsapagyForgaserzekelo;
     private String gepOldalfutasErzekelo;
     private String gepHomero;
+    private String gepQRSzama;
 
 
     public void setGepElhelyezkedese(String gepElhelyezkedese) {
@@ -115,6 +116,10 @@ public class Gepek {
 
     public void setGepVezetoGorgo(String gepVezetoGorgo) {
         this.gepVezetoGorgo = gepVezetoGorgo;
+    }
+
+    public void setGepQRSzama(String gepQRSzama) {
+        this.gepQRSzama = gepQRSzama;
     }
 
     //Getterek
@@ -202,5 +207,9 @@ public class Gepek {
 
     public String getGepOldalfutasErzekelo() {
         return gepOldalfutasErzekelo;
+    }
+
+    public String getGepQRSzama() {
+        return gepQRSzama;
     }
 }

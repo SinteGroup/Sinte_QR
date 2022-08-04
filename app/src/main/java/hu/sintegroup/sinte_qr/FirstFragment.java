@@ -95,10 +95,8 @@ public class FirstFragment extends Fragment {
         binding.newManualItemAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(QRReadFragment.firebasePath=="" || QRReadFragment.firebasePath==null){
                     Date datum=new Date();
                     QRReadFragment.firebasePath="Felmeresek/Kezimegadas_"+ datum.getTime();
-                }
 
                 NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_AdatfelvetelFragment);
             }
