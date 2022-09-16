@@ -289,11 +289,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:text="Hőmérő típusa"/>
+            android:text="Állapot leírás:"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/gepHomeroTipusa"/>
+            android:id="@+id/gepAllapotFelmeresiLeiras"/>
 
 
     </LinearLayout>

@@ -14,14 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-
-import org.checkerframework.checker.units.qual.A;
-
-import java.util.HashMap;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AdatfelvetelFragment#newInstance} factory method to
@@ -100,7 +92,7 @@ public class AdatfelvetelFragment extends Fragment {
         EditText gepCsapgyHazszam=(EditText)view.findViewById(R.id.gepCsapagyHazszam);
         EditText gepForgaserzekelo=(EditText)view.findViewById(R.id.gepForgaserzekelo);
         EditText gepOldalfutasErzekelo=(EditText)view.findViewById(R.id.gepOldalfutasErzekelo);
-        EditText gepHomero=(EditText)view.findViewById(R.id.gepHomeroTipusa);
+        EditText gepHomero=(EditText)view.findViewById(R.id.gepAllapotFelmeresiLeiras);
 
         EditText gepKeziQRMegadas=(EditText) view.findViewById(R.id.gepQRSzama);
         

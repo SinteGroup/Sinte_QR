@@ -2,7 +2,7 @@
     <string name="app_name">Sinte_QR</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
+    <string name="first_fragment_label">Listázó képernyő</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Új felvitele</string>
     <string name="previous">Previous</string>
@@ -20,7 +20,7 @@
 
     <string name="Adatfelevetel_Button_text">Adatfelvételi lap</string>
 
-    <string name="Adatfelevetel_label">Adatfelvétel_Fragment</string>
+    <string name="Adatfelevetel_label">Adatfelvételi lap</string>
 
     <string name="Adatfelveteli_lap">Adatfelvételi lap</string>
 
