@@ -30,7 +30,8 @@
         <Spinner
             android:id="@+id/codeSpinner"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="100dp"
+            android:textSize="25dp"
             tools:ignore="MissingConstraints" />
     <ScrollView
         android:layout_width="match_parent"
@@ -41,59 +42,6 @@
             android:layout_height="match_parent"
             android:textSize="30dp" />
     </ScrollView>
-        <!--<TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/Bejelentkezesi_progressbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <Button
-            android:id="@+id/progressbar_max_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/next"/
-        <Button
-            android:id="@+id/QRGenerator_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="QRgenerator"
-            tools:ignore="MissingConstraints" />
-        <Button
-            android:id="@+id/QRReader_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/QRReader"
-            tools:ignore="MissingConstraints" />
 
-        <Button
-            android:id="@+id/QRDrive_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Google_Drive_Button_text"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-            android:id="@+id/QRFirebase_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Google_Firebase_Button_text"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-            android:id="@+id/QRAdatfelvetel_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Adatfelevetel_Button_text"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-            android:id="@+id/Javitasokra_Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Javitasok_lap"
-            tools:ignore="MissingConstraints" />
-</TableLayout>-->
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

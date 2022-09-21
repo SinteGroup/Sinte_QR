@@ -80,6 +80,8 @@ public class FirstFragment extends Fragment {
 
             }
         });
+
+
         try {
             getData("Felmeresek");
         }catch (Exception g) {
@@ -110,7 +112,7 @@ public class FirstFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
                     hh= (HashMap) dataSnapshot.child(child).getValue();
-                    aa = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,hh.keySet().toArray());
+                    aa = new ArrayAdapter(getContext(),R.layout.qr_spinner_item,hh.keySet().toArray());
                     kodeSpin.setAdapter(aa);
                 }catch (Exception h){
                     Log.d("onDataChange", h.getMessage());
