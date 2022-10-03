@@ -1,29 +1,28 @@
 package hu.sintegroup.sinte_qr;
 
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.TELECOM_SERVICE;
-
-import android.content.Intent;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
@@ -34,9 +33,6 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.QRCodeReader;
-
-import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +54,7 @@ public class QRReadFragment extends Fragment {
 
     private FirebaseApp app;
 
-    public static String firebasePath="";
+    public static String firebasePath = "";
 
     public QRReadFragment() {
         // Required empty public constructor
@@ -88,7 +84,7 @@ public class QRReadFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            this.app=FirebaseApp.initializeApp(getContext());
+            this.app = FirebaseApp.initializeApp(getContext());
         }
     }
 
@@ -101,14 +97,61 @@ public class QRReadFragment extends Fragment {
 
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        Intent cmaIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cmaIntent, QRREADOK);
-        Log.d("Cam_intent: ", "intent elment");
+        /*Intent cmaIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //Régi camera kezelés, Camera2 devicere átírni.
+        startActivityForResult(cmaIntent, QRREADOK);*/
 
-        QRREaderText=(TextView) view.findViewById(R.id.QRDataSnapshotView);
+        myCameraStart(); //Preview létrehozása QRReadFragmentre
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    private void myCameraStart(){
+
+        CameraManager camMan = (CameraManager) getContext().getSystemService(Context.CAMERA_SERVICE);
+
+        try {
+            Log.d("CamMan", camMan.getCameraIdList()[1]);
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            camMan.openCamera(String.valueOf(1), cameraStatecallback, cameraStateBackgroundHandler);
+        } catch (CameraAccessException e) {
+            Log.d("CamManEx", e.getMessage());
+        }catch (Exception Ex){
+            Log.d("CamManExp", Ex.getMessage());
+        }
+
+        SurfaceTexture cameraTexture=(SurfaceTexture)getView().findViewById(R.id.QRREadSurface);
+    }
+
+    private CameraDevice.StateCallback cameraStatecallback =new CameraDevice.StateCallback(){
+
+        public void onOpened(@NonNull CameraDevice cameraDevice) {
+            Log.d("CamManOpen", "CamOpened");
+        }
+
+        public void onDisconnected(@NonNull CameraDevice cameraDevice) {
+            Log.d("CamManDisconnect", "CamDisconnct");
+        }
+
+        public void onError(@NonNull CameraDevice cameraDevice, int i) {
+            Log.d("CamError", "CamError");
+        }
+    };
+
+    private HandlerThread backgroundHandlerThread;
+    private Handler cameraStateBackgroundHandler;
+
+    private void startBackgroundThread(){
+        backgroundHandlerThread=new HandlerThread("CameraVideoThread");
+        backgroundHandlerThread.start();
+        cameraStateBackgroundHandler =new Handler(backgroundHandlerThread.getLooper());
+    }
+
+    private void stopBackgroundThread() throws InterruptedException {
+        backgroundHandlerThread.quitSafely();
+        backgroundHandlerThread.join();
+    }
+
+    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
         if (requestCode == QRREADOK && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
@@ -151,7 +194,8 @@ public class QRReadFragment extends Fragment {
             Log.d("Cam_OnAct: ", f.getMessage());
             Toast.makeText(getContext(), "Nem érvényes QR code. Vagy túl kicsi a képen a kód vagy életlen. Érintéssel tudsz fókuszt állítani", Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
+
 
     public static String readQRImage(Bitmap bMap) {
         String contents = "Üres";

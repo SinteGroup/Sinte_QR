@@ -5,13 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,18 +18,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.Set;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentFirstBinding;
 
@@ -40,8 +27,8 @@ public class FirstFragment extends Fragment {
 
     TextView firstText=null;
     Spinner kodeSpin=null;
-    HashMap hh=null;
-    ArrayAdapter aa=null;
+    HashMap datasnapshotHashMap =null;
+    ArrayAdapter spinnerArrayAdapter =null;
     sinteQRFirebaseHelper helper=new sinteQRFirebaseHelper();
 
     private FragmentFirstBinding binding;
@@ -63,8 +50,8 @@ public class FirstFragment extends Fragment {
         kodeSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("SelectedItem", String.valueOf(hh.get(aa.getItem(i).toString())));
-                String adat=String.valueOf(hh.get(aa.getItem(i).toString())).replace("{" , "").replace("}", "").replace("=",": ");
+                Log.d("SelectedItem", String.valueOf(datasnapshotHashMap.get(spinnerArrayAdapter.getItem(i).toString())));
+                String adat=String.valueOf(datasnapshotHashMap.get(spinnerArrayAdapter.getItem(i).toString())).replace("{" , "").replace("}", "").replace("=",": ");
                 String[] adatSorok=adat.split(",");
                 //firstText.setText(String.valueOf(hh.get(aa.getItem(i).toString())));
                 String kimenet="";
@@ -111,9 +98,9 @@ public class FirstFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
-                    hh= (HashMap) dataSnapshot.child(child).getValue();
-                    aa = new ArrayAdapter(getContext(),R.layout.qr_spinner_item,hh.keySet().toArray());
-                    kodeSpin.setAdapter(aa);
+                    datasnapshotHashMap = (HashMap) dataSnapshot.child(child).getValue();
+                    spinnerArrayAdapter = new ArrayAdapter(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, datasnapshotHashMap.keySet().toArray());
+                    kodeSpin.setAdapter(spinnerArrayAdapter);
                 }catch (Exception h){
                     Log.d("onDataChange", h.getMessage());
                 }
