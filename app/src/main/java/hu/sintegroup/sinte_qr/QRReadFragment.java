@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -100,56 +102,10 @@ public class QRReadFragment extends Fragment {
         /*Intent cmaIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //Régi camera kezelés, Camera2 devicere átírni.
         startActivityForResult(cmaIntent, QRREADOK);*/
 
-        myCameraStart(); //Preview létrehozása QRReadFragmentre
+        myCameraHelper myCameraHelper=new myCameraHelper(); //Kiszervezve a camera2, itt hívom meg
+        myCameraHelper.myCameraStart(getContext(), getView()); //Preview létrehozása QRReadFragmentre
     }
 
-    private void myCameraStart(){
-
-        CameraManager camMan = (CameraManager) getContext().getSystemService(Context.CAMERA_SERVICE);
-
-        try {
-            Log.d("CamMan", camMan.getCameraIdList()[1]);
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            camMan.openCamera(String.valueOf(1), cameraStatecallback, cameraStateBackgroundHandler);
-        } catch (CameraAccessException e) {
-            Log.d("CamManEx", e.getMessage());
-        }catch (Exception Ex){
-            Log.d("CamManExp", Ex.getMessage());
-        }
-
-        SurfaceTexture cameraTexture=(SurfaceTexture)getView().findViewById(R.id.QRREadSurface);
-    }
-
-    private CameraDevice.StateCallback cameraStatecallback =new CameraDevice.StateCallback(){
-
-        public void onOpened(@NonNull CameraDevice cameraDevice) {
-            Log.d("CamManOpen", "CamOpened");
-        }
-
-        public void onDisconnected(@NonNull CameraDevice cameraDevice) {
-            Log.d("CamManDisconnect", "CamDisconnct");
-        }
-
-        public void onError(@NonNull CameraDevice cameraDevice, int i) {
-            Log.d("CamError", "CamError");
-        }
-    };
-
-    private HandlerThread backgroundHandlerThread;
-    private Handler cameraStateBackgroundHandler;
-
-    private void startBackgroundThread(){
-        backgroundHandlerThread=new HandlerThread("CameraVideoThread");
-        backgroundHandlerThread.start();
-        cameraStateBackgroundHandler =new Handler(backgroundHandlerThread.getLooper());
-    }
-
-    private void stopBackgroundThread() throws InterruptedException {
-        backgroundHandlerThread.quitSafely();
-        backgroundHandlerThread.join();
-    }
 
     /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
