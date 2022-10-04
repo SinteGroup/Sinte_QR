@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraDevice;
@@ -18,6 +19,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -110,16 +112,20 @@ public class QRReadFragment extends Fragment {
         try {
             Log.d("CamMan", camMan.getCameraIdList()[1]);
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                return;
+                Log.d("CamManNot",String.valueOf(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)));
+                //return;
             }
-            camMan.openCamera(String.valueOf(1), cameraStatecallback, cameraStateBackgroundHandler);
+            camMan.openCamera(String.valueOf(1), cameraStatecallback, null);
+            Log.d("CamManOpen", "open");
         } catch (CameraAccessException e) {
             Log.d("CamManEx", e.getMessage());
         }catch (Exception Ex){
             Log.d("CamManExp", Ex.getMessage());
         }
 
-        SurfaceTexture cameraTexture=(SurfaceTexture)getView().findViewById(R.id.QRREadSurface);
+        SurfaceView cameraTexture=(SurfaceView) getView().findViewById(R.id.QRREadSurface);
+
+
     }
 
     private CameraDevice.StateCallback cameraStatecallback =new CameraDevice.StateCallback(){

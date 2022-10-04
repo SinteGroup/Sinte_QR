@@ -9,39 +9,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/qr_k_d_h_tt_r"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <Button
+                android:id="@+id/newItemButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="QR kód olvasása"
-                android:id="@+id/newItemButton"/>
+                android:text="QR kód olvasása" />
+
             <Button
+                android:id="@+id/newManualItemAddButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kód megadás kézzel"
-                android:id="@+id/newManualItemAddButton"/>
+                android:text="Kód megadás kézzel" />
         </LinearLayout>
 
         <Spinner
             android:id="@+id/codeSpinner"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:backgroundTint="#26FFFFFF"
             android:textSize="25dp"
             tools:ignore="MissingConstraints" />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/initTextview"
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="30dp" />
-    </ScrollView>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/initTextview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="30dp" />
+        </ScrollView>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

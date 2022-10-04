@@ -30,12 +30,15 @@ android {
         viewBinding true
     }
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
+        resources {
+            excludes += ['META-INF/DEPENDENCIES']
+        }
     }
+    lint {
+        baseline file('lint-baseline.xml')
+    }
+    namespace 'hu.sintegroup.sinte_qr'
 
-    lintOptions {
-        baseline file("lint-baseline.xml")
-    }
 }
 
 dependencies {
