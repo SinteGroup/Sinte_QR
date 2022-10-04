@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QRReadFragment">
+    tools:context=".QRReadFragment"
+    android:background="@drawable/qr_k_d_h_tt_r">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -13,6 +14,8 @@
 
     <SurfaceView
         android:id="@+id/QRREadSurface"
+        android:background="@drawable/qr_k_d_h_tt_r"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
 </FrameLayout>
