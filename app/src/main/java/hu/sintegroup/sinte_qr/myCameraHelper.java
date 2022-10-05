@@ -31,7 +31,8 @@ public class myCameraHelper {
         try {
             Log.d("CamMan", camMan.getCameraIdList()[1]);
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                return;
+                Log.d("CamManPerm", "vcvvcxvxcvxcxcvx");
+                //return;
             }
             camMan.openCamera(String.valueOf(1), cameraStatecallback, cameraStateBackgroundHandler);
         } catch (CameraAccessException e) {

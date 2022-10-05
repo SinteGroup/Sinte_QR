@@ -110,7 +110,9 @@ public class QRReadFragment extends Fragment {
         try {
             Log.d("CamMan", camMan.getCameraIdList()[1]);
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                return;
+
+
+                //return;
             }
             camMan.openCamera(String.valueOf(1), cameraStatecallback, cameraStateBackgroundHandler);
         } catch (CameraAccessException e) {
@@ -118,8 +120,6 @@ public class QRReadFragment extends Fragment {
         }catch (Exception Ex){
             Log.d("CamManExp", Ex.getMessage());
         }
-
-        SurfaceTexture cameraTexture=(SurfaceTexture)getView().findViewById(R.id.QRREadSurface);
     }
 
     private CameraDevice.StateCallback cameraStatecallback =new CameraDevice.StateCallback(){
