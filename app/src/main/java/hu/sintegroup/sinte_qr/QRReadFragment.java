@@ -1,5 +1,8 @@
 package hu.sintegroup.sinte_qr;
 
+import static android.hardware.camera2.CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE;
+import static android.hardware.camera2.CameraCharacteristics.STATISTICS_INFO_MAX_FACE_COUNT;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -108,15 +111,14 @@ public class QRReadFragment extends Fragment {
         CameraManager camMan = (CameraManager) getContext().getSystemService(Context.CAMERA_SERVICE);
 
         try {
-            Log.d("CamMan", camMan.getCameraIdList()[1]);
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 
-
+            if (ActivityCompat.checkSelfPermission(this.getContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 //return;
+                Log.d("CamM", "Nincs meg a camera és az engedélyezés");
             }
-            camMan.openCamera(String.valueOf(1), cameraStatecallback, cameraStateBackgroundHandler);
-        } catch (CameraAccessException e) {
-            Log.d("CamManEx", e.getMessage());
+            camMan.openCamera("3", cameraStatecallback, null);
+        /*} catch (CameraAccessException e) {
+            Log.d("CamManEx", e.getMessage());*/
         }catch (Exception Ex){
             Log.d("CamManExp", Ex.getMessage());
         }
