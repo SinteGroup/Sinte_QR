@@ -12,9 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <SurfaceView
+    <TextureView
         android:id="@+id/QRREadSurface"
-        android:background="@drawable/qr_k_d_h_tt_r"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -1,31 +1,44 @@
 package hu.sintegroup.sinte_qr;
 
+import static android.app.Activity.RESULT_OK;
 import static android.hardware.camera2.CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE;
 import static android.hardware.camera2.CameraCharacteristics.STATISTICS_INFO_MAX_FACE_COUNT;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
+import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
@@ -36,6 +49,10 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+
+import java.security.PublicKey;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +73,8 @@ public class QRReadFragment extends Fragment {
     TextView QRREaderText;
 
     private FirebaseApp app;
+
+    private TextureView cameraSurfaceView=null;
 
     public static String firebasePath = "";
 
@@ -100,9 +119,7 @@ public class QRReadFragment extends Fragment {
 
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        /*Intent cmaIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //Régi camera kezelés, Camera2 devicere átírni.
-        startActivityForResult(cmaIntent, QRREADOK);*/
-
+        cameraSurfaceView=(TextureView) view.findViewById(R.id.QRREadSurface);
         myCameraStart(); //Preview létrehozása QRReadFragmentre
     }
 
@@ -112,13 +129,13 @@ public class QRReadFragment extends Fragment {
 
         try {
 
-            if (ActivityCompat.checkSelfPermission(this.getContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 //return;
                 Log.d("CamM", "Nincs meg a camera és az engedélyezés");
             }
-            camMan.openCamera("3", cameraStatecallback, null);
-        /*} catch (CameraAccessException e) {
-            Log.d("CamManEx", e.getMessage());*/
+            camMan.openCamera("1", cameraStatecallback, cameraStateBackgroundHandler);
+        } catch (CameraAccessException e) {
+            Log.d("CamManEx", e.getMessage());
         }catch (Exception Ex){
             Log.d("CamManExp", Ex.getMessage());
         }
@@ -128,16 +145,62 @@ public class QRReadFragment extends Fragment {
 
         public void onOpened(@NonNull CameraDevice cameraDevice) {
             Log.d("CamManOpen", "CamOpened");
+
         }
 
         public void onDisconnected(@NonNull CameraDevice cameraDevice) {
-            Log.d("CamManDisconnect", "CamDisconnct");
+            Log.d("CamManDisconnect", "CamDisconnect");
         }
 
         public void onError(@NonNull CameraDevice cameraDevice, int i) {
             Log.d("CamError", "CamError");
         }
+
+        public void onConfigured(@NonNull CameraCaptureSession session) throws CameraAccessException {
+
+        }
     };
+
+    private void createCameraPreviewSession() {
+        try {
+            SurfaceTexture texture = cameraSurfaceView.getSurfaceTexture();
+            assert texture != null;
+            Surface surface = new Surface(texture);
+
+            mPreviewRequestBuilder = CameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            mPreviewRequestBuilder.addTarget(surface);
+            mCameraDevice.createCaptureSession(Arrays.asList(surface),
+                    new CameraCaptureSession.StateCallback() {
+
+                        @Override
+                        public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                            if (null == mCameraDevice) {
+                                return;
+                            }
+
+                            mCaptureSession = cameraCaptureSession;
+                            try {
+                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL\_AF\_MODE,
+                                        CaptureRequest.CONTROL\_AF\_MODE\_CONTINUOUS\_PICTURE);
+
+                                mPreviewRequest = mPreviewRequestBuilder.build();
+                                mCaptureSession.setRepeatingRequest(mPreviewRequest,
+                                        null, null);
+                            } catch (CameraAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onConfigureFailed(
+                                @NonNull CameraCaptureSession cameraCaptureSession) {
+                        }
+                    }, null
+            );
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
     private HandlerThread backgroundHandlerThread;
     private Handler cameraStateBackgroundHandler;
