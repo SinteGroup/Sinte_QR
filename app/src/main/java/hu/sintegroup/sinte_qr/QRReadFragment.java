@@ -1,44 +1,29 @@
 package hu.sintegroup.sinte_qr;
 
-import static android.app.Activity.RESULT_OK;
-import static android.hardware.camera2.CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE;
-import static android.hardware.camera2.CameraCharacteristics.STATISTICS_INFO_MAX_FACE_COUNT;
-
-import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Surface;
-import android.view.SurfaceView;
-import android.view.TextureView;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
@@ -50,9 +35,9 @@ import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
-import java.security.PublicKey;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.ArrayList;
+
+import hu.sintegroup.sinte_qr.databinding.FragmentQRReadBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,7 +59,8 @@ public class QRReadFragment extends Fragment {
 
     private FirebaseApp app;
 
-    private TextureView cameraSurfaceView=null;
+    private FragmentQRReadBinding binding;
+
 
     public static String firebasePath = "";
 
@@ -119,147 +105,83 @@ public class QRReadFragment extends Fragment {
 
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        cameraSurfaceView=(TextureView) view.findViewById(R.id.QRREadSurface);
-        myCameraStart(); //Preview létrehozása QRReadFragmentre
-    }
+        binding.QRREadSurface.getHolder().addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
 
-    private void myCameraStart(){
-
-        CameraManager camMan = (CameraManager) getContext().getSystemService(Context.CAMERA_SERVICE);
-
-        try {
-
-            if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                //return;
-                Log.d("CamM", "Nincs meg a camera és az engedélyezés");
             }
-            camMan.openCamera("1", cameraStatecallback, cameraStateBackgroundHandler);
-        } catch (CameraAccessException e) {
-            Log.d("CamManEx", e.getMessage());
-        }catch (Exception Ex){
-            Log.d("CamManExp", Ex.getMessage());
+
+            @Override
+            public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
+
+            }
+        });
+    }
+
+    public void onStart() {
+        super.onStart();
+        if(ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            Log.d("CamMPermissionExp", "Nincs camera2 engedély");
+            return;
+        }else {
+
         }
     }
 
-    private CameraDevice.StateCallback cameraStatecallback =new CameraDevice.StateCallback(){
+    private void startCameraPreview() throws CameraAccessException {
+        Handler cameraBackgroundHandler=new Handler();
 
-        public void onOpened(@NonNull CameraDevice cameraDevice) {
-            Log.d("CamManOpen", "CamOpened");
+        ArrayList<Integer> elerhetoCamerak=new ArrayList<>();
 
+        CameraManager camManager= (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        String[] camIdList=camManager.getCameraIdList();
+        for (String temp : camIdList){
+            CameraCharacteristics tempChar=camManager.getCameraCharacteristics(temp);
+            Integer tempCharDirection=tempChar.get(CameraCharacteristics.LENS_FACING);
+            if(tempCharDirection != null && tempCharDirection == CameraCharacteristics.LENS_FACING_BACK){
+                elerhetoCamerak.add(tempCharDirection);
+            }
         }
 
-        public void onDisconnected(@NonNull CameraDevice cameraDevice) {
-            Log.d("CamManDisconnect", "CamDisconnect");
-        }
+        CameraDevice.StateCallback camStateCallback=new CameraDevice.StateCallback() {
+            @Override
+            public void onOpened(@NonNull CameraDevice cameraDevice) {
+                CameraCaptureSession.StateCallback captureSession= new CameraCaptureSession.StateCallback() {
 
-        public void onError(@NonNull CameraDevice cameraDevice, int i) {
-            Log.d("CamError", "CamError");
-        }
-
-        public void onConfigured(@NonNull CameraCaptureSession session) throws CameraAccessException {
-
-        }
-    };
-
-    private void createCameraPreviewSession() {
-        try {
-            SurfaceTexture texture = cameraSurfaceView.getSurfaceTexture();
-            assert texture != null;
-            Surface surface = new Surface(texture);
-
-            mPreviewRequestBuilder = CameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            mPreviewRequestBuilder.addTarget(surface);
-            mCameraDevice.createCaptureSession(Arrays.asList(surface),
-                    new CameraCaptureSession.StateCallback() {
-
-                        @Override
-                        public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                            if (null == mCameraDevice) {
-                                return;
-                            }
-
-                            mCaptureSession = cameraCaptureSession;
-                            try {
-                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL\_AF\_MODE,
-                                        CaptureRequest.CONTROL\_AF\_MODE\_CONTINUOUS\_PICTURE);
-
-                                mPreviewRequest = mPreviewRequestBuilder.build();
-                                mCaptureSession.setRepeatingRequest(mPreviewRequest,
-                                        null, null);
-                            } catch (CameraAccessException e) {
-                                e.printStackTrace();
-                            }
+                    public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                        try {
+                            CaptureRequest.Builder builder=cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+                            builder.addTarget(binding.QRREadSurface.getHolder().getSurface());
+                            
+                        } catch (CameraAccessException e) {
+                            Log.d("CamMExp", e.getMessage());
                         }
-
-                        @Override
-                        public void onConfigureFailed(
-                                @NonNull CameraCaptureSession cameraCaptureSession) {
-                        }
-                    }, null
-            );
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private HandlerThread backgroundHandlerThread;
-    private Handler cameraStateBackgroundHandler;
-
-    private void startBackgroundThread(){
-        backgroundHandlerThread=new HandlerThread("CameraVideoThread");
-        backgroundHandlerThread.start();
-        cameraStateBackgroundHandler =new Handler(backgroundHandlerThread.getLooper());
-    }
-
-    private void stopBackgroundThread() throws InterruptedException {
-        backgroundHandlerThread.quitSafely();
-        backgroundHandlerThread.join();
-    }
-
-    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        try {
-        if (requestCode == QRREADOK && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Log.d("Cam_Bundle getExtras", extras.toString());
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            sinteQRFirebaseHelper readerHelper=new sinteQRFirebaseHelper();
-            readerHelper.adatbázisReferencia.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    try {
-                        HashMap map = (HashMap) dataSnapshot.child("Felmeresek").getValue();
-                        Log.d("readerMap", map.values().toString());
-                        String readString = readQRImage(imageBitmap);
-                        if (map.containsKey(readString)) {
-                            Log.d("readerError", "Van");
-                            firebasePath="Felmeresek/"+readString;
-
-                            QRREaderText.setText("fgsdgdfgdfg");
-
-                            NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRRead_Fragment_to_AdatfelvetelFragment);
-                        } else {
-                            Log.d("readerError", "Nincs: "+readString);
-                            firebasePath="Felmeresek/"+readString;
-                            readerHelper.adatbázisReferencia.getRoot().child(firebasePath).setValue(""); //Átnézni a pth-t
-                        }
-                    }catch (Exception g){
-                        Log.d("ReadderOnDataChange", g.getMessage());
-                        //Toast.makeText(getContext(), g.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
-            Log.d("Cam_eredmeny", readQRImage(imageBitmap));
-        }
-        }catch (Exception f){
-            Log.d("Cam_OnAct: ", f.getMessage());
-            Toast.makeText(getContext(), "Nem érvényes QR code. Vagy túl kicsi a képen a kód vagy életlen. Érintéssel tudsz fókuszt állítani", Toast.LENGTH_LONG).show();
-        }
-    }*/
+                    public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
+
+                    }
+                };
+            }
+
+            @Override
+            public void onDisconnected(@NonNull CameraDevice cameraDevice) {
+
+            }
+
+            @Override
+            public void onError(@NonNull CameraDevice cameraDevice, int i) {
+
+            }
+        };
+
+    }
 
 
     public static String readQRImage(Bitmap bMap) {

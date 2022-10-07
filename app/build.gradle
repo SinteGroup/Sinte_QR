@@ -39,6 +39,10 @@ android {
     }
     namespace 'hu.sintegroup.sinte_qr'
 
+    dataBinding {
+        enabled = true
+    }
+
 }
 
 dependencies {
