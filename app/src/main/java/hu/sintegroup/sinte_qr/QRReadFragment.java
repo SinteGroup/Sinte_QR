@@ -1,5 +1,6 @@
 package hu.sintegroup.sinte_qr;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,21 +10,23 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.google.firebase.FirebaseApp;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
@@ -36,14 +39,12 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Executor;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentQRReadBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link QRReadFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class QRReadFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -55,12 +56,10 @@ public class QRReadFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private final int QRREADOK = 1;
-    TextView QRREaderText;
 
-    private FirebaseApp app;
+    private static int CameraId=1;
 
-    private FragmentQRReadBinding binding;
-
+    FragmentQRReadBinding binding;
 
     public static String firebasePath = "";
 
@@ -68,15 +67,6 @@ public class QRReadFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment QRReadFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static QRReadFragment newInstance(String param1, String param2) {
         QRReadFragment fragment = new QRReadFragment();
         Bundle args = new Bundle();
@@ -92,19 +82,19 @@ public class QRReadFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            this.app = FirebaseApp.initializeApp(getContext());
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_q_r_read, container, false);
     }
 
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_q_r_read);
+
         binding.QRREadSurface.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
@@ -125,61 +115,101 @@ public class QRReadFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
-        if(ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             Log.d("CamMPermissionExp", "Nincs camera2 engedély");
             return;
-        }else {
-
+        } else {
+            try {
+                startCameraPreview();
+            } catch (CameraAccessException e) {
+                Log.d("CamMAc", e.getMessage());
+            }
         }
     }
 
     private void startCameraPreview() throws CameraAccessException {
-        Handler cameraBackgroundHandler=new Handler();
+        Handler cameraBackgroundHandler = new Handler();
 
-        ArrayList<Integer> elerhetoCamerak=new ArrayList<>();
+        ArrayList<Integer> elerhetoCamerak = new ArrayList<>();
 
-        CameraManager camManager= (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-        String[] camIdList=camManager.getCameraIdList();
-        for (String temp : camIdList){
-            CameraCharacteristics tempChar=camManager.getCameraCharacteristics(temp);
-            Integer tempCharDirection=tempChar.get(CameraCharacteristics.LENS_FACING);
-            if(tempCharDirection != null && tempCharDirection == CameraCharacteristics.LENS_FACING_BACK){
+        CameraManager camManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
+        String[] camIdList = camManager.getCameraIdList();
+        for (String temp : camIdList) {
+            CameraCharacteristics tempChar = camManager.getCameraCharacteristics(temp);
+            Integer tempCharDirection = tempChar.get(CameraCharacteristics.LENS_FACING);
+            if (tempCharDirection != null && tempCharDirection == CameraCharacteristics.LENS_FACING_BACK) {
                 elerhetoCamerak.add(tempCharDirection);
             }
         }
 
-        CameraDevice.StateCallback camStateCallback=new CameraDevice.StateCallback() {
+
+
+        CameraDevice.StateCallback camStateCallback = new CameraDevice.StateCallback() {
             @Override
             public void onOpened(@NonNull CameraDevice cameraDevice) {
-                CameraCaptureSession.StateCallback captureSession= new CameraCaptureSession.StateCallback() {
 
+                BarcodeDetector barcodeDetektor= new BarcodeDetector.Builder(getContext()).build();
+
+
+
+                CameraCaptureSession.StateCallback captureSession = new CameraCaptureSession.StateCallback() {
                     public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
                         try {
-                            CaptureRequest.Builder builder=cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+                            CaptureRequest.Builder builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
                             builder.addTarget(binding.QRREadSurface.getHolder().getSurface());
-                            
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                cameraCaptureSession.setSingleRepeatingRequest(builder.build(), new Executor() {
+                                    @Override
+                                    public void execute(Runnable runnable) {
+                                        Log.d("CamMExecutor", "Exikjútor exikjútol");
+                                    }
+                                }, new CameraCaptureSession.CaptureCallback() {
+                                    @Override
+                                    public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
+                                        Log.d("CamMonCaptureStarted", "Start capture");
+                                        super.onCaptureStarted(session, request, timestamp, frameNumber);
+                                    }
+                                });
+                            }
+
                         } catch (CameraAccessException e) {
                             Log.d("CamMExp", e.getMessage());
                         }
-                    }
 
+                    }
 
                     public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
 
+                        Log.d("CamMConfFail", "onConfigureFailed");
+
                     }
                 };
+
+                try {
+                    cameraDevice.createCaptureSession(Arrays.asList(binding.QRREadSurface.getHolder().getSurface()), captureSession, cameraBackgroundHandler);
+                } catch (CameraAccessException e) {
+                    Log.d("CamAcEx", e.getMessage());
+                }
+
             }
 
             @Override
             public void onDisconnected(@NonNull CameraDevice cameraDevice) {
-
+                Log.d("CamMDisConEx", "Camera discinnected");
             }
 
             @Override
             public void onError(@NonNull CameraDevice cameraDevice, int i) {
-
+                Log.d("CamMErConEx", "Camera Error");
             }
         };
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("CamManExp", "Nincs kamera engedély");
+            return;
+        }
+        camManager.openCamera("0", camStateCallback, cameraBackgroundHandler);
 
     }
 
