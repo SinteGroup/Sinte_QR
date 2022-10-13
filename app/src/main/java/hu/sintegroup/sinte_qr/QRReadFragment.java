@@ -4,18 +4,22 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
+import android.media.Image;
+import android.media.ImageReader;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +30,10 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.common.primitives.Bytes;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.FormatException;
@@ -38,9 +45,10 @@ import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 import java.util.concurrent.Executor;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentQRReadBinding;
@@ -55,11 +63,10 @@ public class QRReadFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private final int QRREADOK = 1;
 
-    private static int CameraId=1;
 
     FragmentQRReadBinding binding;
+    ImageReader QR_image_read;
 
     public static String firebasePath = "";
 
@@ -121,8 +128,8 @@ public class QRReadFragment extends Fragment {
         } else {
             try {
                 startCameraPreview();
-            } catch (CameraAccessException e) {
-                Log.d("CamMAc", e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -145,37 +152,65 @@ public class QRReadFragment extends Fragment {
 
 
         CameraDevice.StateCallback camStateCallback = new CameraDevice.StateCallback() {
-            @Override
-            public void onOpened(@NonNull CameraDevice cameraDevice) {
 
-                BarcodeDetector barcodeDetektor= new BarcodeDetector.Builder(getContext()).build();
+                public void onOpened (@NonNull CameraDevice cameraDevice){
 
+                BarcodeDetector barcodeDetektor = new BarcodeDetector.Builder(getContext()).setBarcodeFormats(Barcode.QR_CODE).build();
 
+                if (!barcodeDetektor.isOperational()) {
+                    Log.d("CamMBarcode", "Barcode mukodik");
+                }
+
+                    QR_image_read = ImageReader.newInstance(binding.QRREadSurface.getWidth(), binding.QRREadSurface.getHeight(), ImageFormat.JPEG, 1);
+
+                    QR_image_read.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+                        @Override
+                        public void onImageAvailable(ImageReader imageReader) {
+                            Image qrImage = imageReader.acquireNextImage();
+
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                ByteBuffer buffer = Arrays.stream(qrImage.getPlanes()).findFirst().get().getBuffer();
+                                byte[] bytes = new byte[buffer.remaining()];
+                                buffer.get(bytes);
+
+                                Log.d("CamMBuffer", String.valueOf(buffer.capacity()));
+                                Log.d("CamMBytes", String.valueOf(bytes.length));
+
+                                Bitmap qrBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
+                                Frame qrBuilder = new Frame.Builder().setBitmap(qrBitmap).build();
+                                SparseArray<Barcode> barcodeEResults = barcodeDetektor.detect(qrBuilder);
+                                Log.d("CamMBarcodeban", "Barcodeban");
+
+                                if (barcodeEResults.size() > 0) {
+                                    Log.d("CamMBarcodeTMeret", String.valueOf(barcodeEResults.size()));
+                                    Log.d("CamMBarcodeTartalom", String.valueOf(barcodeEResults.get(1)));
+                                }
+
+                                qrImage.close();
+
+                            }
+                        }
+                    }, cameraBackgroundHandler);
 
                 CameraCaptureSession.StateCallback captureSession = new CameraCaptureSession.StateCallback() {
                     public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+
+                        CaptureRequest.Builder builder = null;
                         try {
-                            CaptureRequest.Builder builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-                            builder.addTarget(binding.QRREadSurface.getHolder().getSurface());
+                            builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+                        } catch (CameraAccessException e) {
+                            e.printStackTrace();
+                        }
+                        builder.addTarget(binding.QRREadSurface.getHolder().getSurface());
+                        builder.addTarget(QR_image_read.getSurface());
 
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                cameraCaptureSession.setSingleRepeatingRequest(builder.build(), new Executor() {
-                                    @Override
-                                    public void execute(Runnable runnable) {
-                                        Log.d("CamMExecutor", "Exikjútor exikjútol");
-                                    }
-                                }, new CameraCaptureSession.CaptureCallback() {
-                                    @Override
-                                    public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
-                                        Log.d("CamMonCaptureStarted", "Start capture");
-                                        super.onCaptureStarted(session, request, timestamp, frameNumber);
-                                    }
-                                });
+                                try {
+                                    cameraCaptureSession.setRepeatingRequest(builder.build(), null, null);
+                                } catch (CameraAccessException e) {
+                                    Log.d("CamM", e.getMessage());
+                                }
                             }
-
-                        } catch (CameraAccessException e) {
-                            Log.d("CamMExp", e.getMessage());
-                        }
 
                     }
 
@@ -187,20 +222,20 @@ public class QRReadFragment extends Fragment {
                 };
 
                 try {
-                    cameraDevice.createCaptureSession(Arrays.asList(binding.QRREadSurface.getHolder().getSurface()), captureSession, cameraBackgroundHandler);
+                    cameraDevice.createCaptureSession(Arrays.asList(binding.QRREadSurface.getHolder().getSurface(), QR_image_read.getSurface()), captureSession, cameraBackgroundHandler);
                 } catch (CameraAccessException e) {
                     Log.d("CamAcEx", e.getMessage());
                 }
 
             }
 
-            @Override
-            public void onDisconnected(@NonNull CameraDevice cameraDevice) {
+                @Override
+                public void onDisconnected (@NonNull CameraDevice cameraDevice){
                 Log.d("CamMDisConEx", "Camera discinnected");
             }
 
-            @Override
-            public void onError(@NonNull CameraDevice cameraDevice, int i) {
+                @Override
+                public void onError (@NonNull CameraDevice cameraDevice,int i){
                 Log.d("CamMErConEx", "Camera Error");
             }
         };
@@ -211,26 +246,5 @@ public class QRReadFragment extends Fragment {
         }
         camManager.openCamera("0", camStateCallback, cameraBackgroundHandler);
 
-    }
-
-
-    public static String readQRImage(Bitmap bMap) {
-        String contents = "Üres";
-        int[] intArray = new int[bMap.getWidth()*bMap.getHeight()];
-        bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
-        LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(), bMap.getHeight(), intArray);
-        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-        Reader reader = new MultiFormatReader();// use this otherwise ChecksumExceptionú
-        Log.d("Cam_bitmap", bitmap.toString());
-        try {
-            Result result = reader.decode(bitmap);
-            contents = result.getText();
-        } catch (NotFoundException e) { Log.d("Cam_NotFound", e.getMessage()); }
-        catch (ChecksumException e) { Log.d("Cam_Checksum: ", e.getMessage()); }
-        catch (FormatException e) { Log.d("Cam_format: ", e.getMessage()); }
-        catch (Exception g){
-            Log.d("Cam_Error", g.getMessage());
-        }
-        return contents;
     }
 }
