@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -45,6 +46,7 @@ import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,15 +62,13 @@ public class QRReadFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-
     FragmentQRReadBinding binding;
     ImageReader QR_image_read;
 
     public static String firebasePath = "";
+
+    private CameraDevice camera=null;
+    CameraCaptureSession.StateCallback sessionCallBack=null;
 
     public QRReadFragment() {
         // Required empty public constructor
@@ -76,20 +76,12 @@ public class QRReadFragment extends Fragment {
 
     public static QRReadFragment newInstance(String param1, String param2) {
         QRReadFragment fragment = new QRReadFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -109,8 +101,8 @@ public class QRReadFragment extends Fragment {
             }
 
             @Override
-            public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
+            public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int format, int width, int height) {
+                startCameraPreview(width, height);
             }
 
             @Override
@@ -122,129 +114,79 @@ public class QRReadFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
-        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        /*if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             Log.d("CamMPermissionExp", "Nincs camera2 engedély");
             return;
         } else {
-            try {
-                startCameraPreview();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+            //startCameraPreview();
+        }*/
     }
 
-    private void startCameraPreview() throws CameraAccessException {
-        Handler cameraBackgroundHandler = new Handler();
+    private void startCameraPreview(int width, int height) {
+        try {
+            Handler cameraBackgroundHandler = new Handler();
+            CameraManager cameraManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
 
-        ArrayList<Integer> elerhetoCamerak = new ArrayList<>();
+            CameraDevice.StateCallback cameraCallback = new CameraDevice.StateCallback() {
+                @Override
+                public void onOpened(@NonNull CameraDevice cameraDevice) {
+                    //A barcodeScenner dob hibát fordításkor
+                    BarcodeDetector barcodeDetect=new BarcodeDetector.Builder().setBarcodeFormats(Barcode.QR_CODE).build();
 
-        CameraManager camManager = (CameraManager) getActivity().getSystemService(Context.CAMERA_SERVICE);
-        String[] camIdList = camManager.getCameraIdList();
-        for (String temp : camIdList) {
-            CameraCharacteristics tempChar = camManager.getCameraCharacteristics(temp);
-            Integer tempCharDirection = tempChar.get(CameraCharacteristics.LENS_FACING);
-            if (tempCharDirection != null && tempCharDirection == CameraCharacteristics.LENS_FACING_BACK) {
-                elerhetoCamerak.add(tempCharDirection);
-            }
-        }
+                    if(!barcodeDetect.isOperational()){
+                        Log.d("Barcode", "Byrcode mukodik");
+                    }
+
+                    ImageReader imageReader=ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
 
 
-
-        CameraDevice.StateCallback camStateCallback = new CameraDevice.StateCallback() {
-
-                public void onOpened (@NonNull CameraDevice cameraDevice){
-
-                BarcodeDetector barcodeDetektor = new BarcodeDetector.Builder(getContext()).setBarcodeFormats(Barcode.QR_CODE).build();
-
-                if (!barcodeDetektor.isOperational()) {
-                    Log.d("CamMBarcode", "Barcode mukodik");
-                }
-
-                    QR_image_read = ImageReader.newInstance(binding.QRREadSurface.getWidth(), binding.QRREadSurface.getHeight(), ImageFormat.JPEG, 1);
-
-                    QR_image_read.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+                    sessionCallBack = new CameraCaptureSession.StateCallback() {
                         @Override
-                        public void onImageAvailable(ImageReader imageReader) {
-                            Image qrImage = imageReader.acquireNextImage();
-
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                ByteBuffer buffer = Arrays.stream(qrImage.getPlanes()).findFirst().get().getBuffer();
-                                byte[] bytes = new byte[buffer.remaining()];
-                                buffer.get(bytes);
-
-                                Log.d("CamMBuffer", String.valueOf(buffer.capacity()));
-                                Log.d("CamMBytes", String.valueOf(bytes.length));
-
-                                Bitmap qrBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, null);
-                                Frame qrBuilder = new Frame.Builder().setBitmap(qrBitmap).build();
-                                SparseArray<Barcode> barcodeEResults = barcodeDetektor.detect(qrBuilder);
-                                Log.d("CamMBarcodeban", "Barcodeban");
-
-                                if (barcodeEResults.size() > 0) {
-                                    Log.d("CamMBarcodeTMeret", String.valueOf(barcodeEResults.size()));
-                                    Log.d("CamMBarcodeTartalom", String.valueOf(barcodeEResults.get(1)));
-                                }
-
-                                qrImage.close();
-
+                        public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                            try {
+                                CaptureRequest.Builder builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+                                builder.addTarget(binding.QRREadSurface.getHolder().getSurface());
+                                cameraCaptureSession.setRepeatingRequest(builder.build(), null, null);
+                            } catch (CameraAccessException e) {
+                                Log.d("CaptureSession", e.getMessage());
                             }
                         }
-                    }, cameraBackgroundHandler);
 
-                CameraCaptureSession.StateCallback captureSession = new CameraCaptureSession.StateCallback() {
-                    public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
+                        @Override
+                        public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
 
-                        CaptureRequest.Builder builder = null;
-                        try {
-                            builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-                        } catch (CameraAccessException e) {
-                            e.printStackTrace();
                         }
-                        builder.addTarget(binding.QRREadSurface.getHolder().getSurface());
-                        builder.addTarget(QR_image_read.getSurface());
-
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                try {
-                                    cameraCaptureSession.setRepeatingRequest(builder.build(), null, null);
-                                } catch (CameraAccessException e) {
-                                    Log.d("CamM", e.getMessage());
-                                }
-                            }
-
+                    };
+                    try {
+                        cameraDevice.createCaptureSession(Arrays.asList(binding.QRREadSurface.getHolder().getSurface()), sessionCallBack, cameraBackgroundHandler);
+                    } catch (CameraAccessException e) {
+                        Log.d("CapTureSessionEx", e.getMessage());
                     }
-
-                    public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-
-                        Log.d("CamMConfFail", "onConfigureFailed");
-
-                    }
-                };
-
-                try {
-                    cameraDevice.createCaptureSession(Arrays.asList(binding.QRREadSurface.getHolder().getSurface(), QR_image_read.getSurface()), captureSession, cameraBackgroundHandler);
-                } catch (CameraAccessException e) {
-                    Log.d("CamAcEx", e.getMessage());
                 }
 
-            }
+                @Override
+                public void onClosed(@NonNull CameraDevice cameraDevice) {
+                    Log.d("CamMonClosed", "Camre closed");
+                }
 
                 @Override
-                public void onDisconnected (@NonNull CameraDevice cameraDevice){
-                Log.d("CamMDisConEx", "Camera discinnected");
-            }
+                public void onDisconnected(@NonNull CameraDevice cameraDevice) {
+                    Log.d("CamMonDiconnected", "Camera is disconnected");
+                }
 
                 @Override
-                public void onError (@NonNull CameraDevice cameraDevice,int i){
-                Log.d("CamMErConEx", "Camera Error");
-            }
-        };
+                public void onError(@NonNull CameraDevice cameraDevice, int i) {
+                    Log.d("CamMonError", "Send camera eror message");
+                }
+            };
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("CamManExp", "Nincs kamera engedély");
-            return;
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            cameraManager.openCamera("0", cameraCallback, cameraBackgroundHandler);
+
+        }catch (CameraAccessException camEx){
+            Log.d("CamMex", camEx.getMessage());
         }
-        camManager.openCamera("0", camStateCallback, cameraBackgroundHandler);
-
     }
 }
