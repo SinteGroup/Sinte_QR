@@ -77,7 +77,7 @@ public class FirstFragment extends Fragment {
         binding.newItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_QRReaderFragment);
+                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_QRReadFragment);
             }
         });
 

@@ -1,7 +1,9 @@
 package hu.sintegroup.sinte_qr;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,12 +24,18 @@ import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -35,24 +43,25 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.TooManyListenersException;
 import java.util.concurrent.Executor;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentQRReadBinding;
 
 public class QRReadFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     FragmentQRReadBinding binding;
     ImageReader QR_image_read;
+
+    private String meresSzama;
+    private String gyartmany_azonosito;
 
     public static String firebasePath = "";
 
     private CameraDevice camera=null;
     CameraCaptureSession.StateCallback sessionCallBack=null;
+
+    private NavController navController=null;
 
     public QRReadFragment() {
         // Required empty public constructor
@@ -119,6 +128,7 @@ public class QRReadFragment extends Fragment {
                     QR_image_read=ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
 
                     QR_image_read.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+                        @SuppressLint("ResourceType")
                         @Override
                         public void onImageAvailable(ImageReader imageReader) {
                             Image qrImage=imageReader.acquireNextImage();
@@ -137,11 +147,25 @@ public class QRReadFragment extends Fragment {
                                 Log.d("BarcodeMegy", String.valueOf(barcodeResult.size()));
 
                                 if(barcodeResult.size() > 0){
-                                    Log.d("BarcodeResult", String.valueOf(barcodeResult.get(1)));
+                                    try {
+                                        for (int i = 0; i < barcodeResult.size(); i++) {
+                                            Barcode barcodeTemp = barcodeResult.valueAt(i);
+                                            String Value = barcodeTemp.displayValue;
+                                            Log.d("BarcodeGet", Value);
+                                            String[] tempValues = Value.split("n=");
+                                            String[] tempValues_t = tempValues[1].split("&t=");
+                                            meresSzama = tempValues_t[0];
+                                            gyartmany_azonosito = tempValues_t[1];
+                                            Toast.makeText(getContext(), "Olvasás kész! Mérés száma: " + meresSzama, Toast.LENGTH_LONG).show();
+                                            //return;
+                                            //Log.d("BarcodeValues", meresSzama+" "+gyartmany_azonosito);
+                                        }
+                                    }catch (Exception f){
+                                        Log.d("Barcode_Err", f.getMessage());
+                                    }
                                 }
                             }
-                                qrImage.close();
-
+                            qrImage.close();
                         }
 
                     }, cameraBackgroundHandler);
