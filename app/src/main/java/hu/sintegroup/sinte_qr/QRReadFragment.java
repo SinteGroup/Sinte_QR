@@ -3,6 +3,7 @@ package hu.sintegroup.sinte_qr;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,18 +28,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.ActivityNavigator;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
-import androidx.navigation.NavDirections;
-import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -46,13 +43,14 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.TooManyListenersException;
 import java.util.concurrent.Executor;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentQRReadBinding;
 
 public class QRReadFragment extends Fragment {
 
-    private FragmentQRReadBinding binding;
+    FragmentQRReadBinding binding;
     ImageReader QR_image_read;
 
     private String meresSzama;
@@ -62,6 +60,8 @@ public class QRReadFragment extends Fragment {
 
     private CameraDevice camera=null;
     CameraCaptureSession.StateCallback sessionCallBack=null;
+
+    private NavController navController=null;
 
     public QRReadFragment() {
         // Required empty public constructor
@@ -85,7 +85,6 @@ public class QRReadFragment extends Fragment {
 
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-
         binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_q_r_read);
 
         binding.QRREadSurface.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -102,20 +101,6 @@ public class QRReadFragment extends Fragment {
             @Override
             public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
 
-            }
-        });
-
-
-
-        binding.sajatQrTeszt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "Click", Toast.LENGTH_LONG).show();
-                try {
-                    NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_DocMakeFragment2);
-                }catch (Exception g){
-                    Log.d("findNavController", g.getMessage());
-                }
             }
         });
     }
@@ -171,6 +156,9 @@ public class QRReadFragment extends Fragment {
                                             String[] tempValues_t = tempValues[1].split("&t=");
                                             meresSzama = tempValues_t[0];
                                             gyartmany_azonosito = tempValues_t[1];
+                                            Toast.makeText(getContext(), "Olvasás kész! Mérés száma: " + meresSzama, Toast.LENGTH_LONG).show();
+                                            //return;
+                                            //Log.d("BarcodeValues", meresSzama+" "+gyartmany_azonosito);
                                         }
                                     }catch (Exception f){
                                         Log.d("Barcode_Err", f.getMessage());
