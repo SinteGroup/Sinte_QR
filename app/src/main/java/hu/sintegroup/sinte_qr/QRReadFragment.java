@@ -34,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -50,8 +51,8 @@ import hu.sintegroup.sinte_qr.databinding.FragmentQRReadBinding;
 
 public class QRReadFragment extends Fragment {
 
-    FragmentQRReadBinding binding;
-    ImageReader QR_image_read;
+    private FragmentQRReadBinding binding;
+    private ImageReader QR_image_read;
 
     private String meresSzama;
     private String gyartmany_azonosito;
@@ -59,9 +60,10 @@ public class QRReadFragment extends Fragment {
     public static String firebasePath = "";
 
     private CameraDevice camera=null;
-    CameraCaptureSession.StateCallback sessionCallBack=null;
+    private CameraCaptureSession.StateCallback sessionCallBack=null;
 
     private NavController navController=null;
+    private NavHostFragment navHostFragment=null;
 
     public QRReadFragment() {
         // Required empty public constructor
@@ -155,13 +157,11 @@ public class QRReadFragment extends Fragment {
                                             String[] tempValues = Value.split("n=");
                                             String[] tempValues_t = tempValues[1].split("&t=");
                                             meresSzama = tempValues_t[0];
-                                            gyartmany_azonosito = tempValues_t[1];
-                                            Toast.makeText(getContext(), "Olvasás kész! Mérés száma: " + meresSzama, Toast.LENGTH_LONG).show();
-                                            //return;
-                                            //Log.d("BarcodeValues", meresSzama+" "+gyartmany_azonosito);
+                                            gyartmany_azonosito = tempValues_t[1]; //Navigáció detektálás
                                         }
                                     }catch (Exception f){
                                         Log.d("Barcode_Err", f.getMessage());
+                                        Toast.makeText(getContext(), f.getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             }
