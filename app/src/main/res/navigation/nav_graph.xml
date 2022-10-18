@@ -31,7 +31,7 @@
             app:destination="@+id/AdatfelvetelFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_DocMakeFragment"
-            app:destination="@+id/DocMakeFragment"/>
+            app:destination="@+id/DocMakeFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -48,9 +48,9 @@
         android:id="@+id/QRGeneratorFragment"
         android:name="hu.sintegroup.sinte_qr.QRGenerateFragment"
         android:label="@string/QRFragment_label"
-        tools:layout="@layout/fragment_q_r"/>
+        tools:layout="@layout/fragment_q_r" />
 
-        <!--<action
+    <!--<action
             android:id="@+id/action_QRFragment_to_SecondFragment"
             app:destination="@+id/SecondFragment" />-->
 
@@ -59,30 +59,36 @@
         android:name="hu.sintegroup.sinte_qr.QRReadFragment"
         android:label="@string/QRFragment_label"
         tools:layout="@layout/fragment_q_r_read">
+        <action
+            android:id="@+id/action_QRReadFragment_to_DocMakeFragment2"
+            app:destination="@id/DocMakeFragment" />
+        <action
+            android:id="@+id/action_QRReadFragment_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/QRDriveFragment"
         android:name="hu.sintegroup.sinte_qr.GoogleDriveFragment"
         android:label="@string/QRFragment_label"
-        tools:layout="@layout/fragment_google_drive"/>
+        tools:layout="@layout/fragment_google_drive" />
 
     <fragment
         android:id="@+id/AdatfelvetelFragment"
         android:name="hu.sintegroup.sinte_qr.AdatfelvetelFragment"
         android:label="@string/Adatfelevetel_label"
-        tools:layout="@layout/fragment_adatfelvetel"/>
+        tools:layout="@layout/fragment_adatfelvetel" />
 
     <fragment
         android:id="@+id/JavitasokFragment"
         android:name="hu.sintegroup.sinte_qr.JavitasokFelvetelFragment"
         android:label="@string/Adatfelevetel_label"
-        tools:layout="@layout/fragment_javitasok"/>
+        tools:layout="@layout/fragment_javitasok" />
 
     <fragment
         android:id="@+id/DocMakeFragment"
         android:name="hu.sintegroup.sinte_qr.DocMakeFragment"
         android:label="@string/Adatfelveteli_lap"
-        tools:layout="@layout/fragment_doc_make"/>
+        tools:layout="@layout/fragment_doc_make" />
 
 </navigation>
