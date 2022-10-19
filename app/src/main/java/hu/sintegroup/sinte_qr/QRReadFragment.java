@@ -32,10 +32,12 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -43,25 +45,26 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.TooManyListenersException;
 import java.util.concurrent.Executor;
 
+import hu.sintegroup.sinte_qr.databinding.FragmentFirstBinding;
 import hu.sintegroup.sinte_qr.databinding.FragmentQRReadBinding;
 
 public class QRReadFragment extends Fragment {
 
-    FragmentQRReadBinding binding;
-    ImageReader QR_image_read;
+    private FragmentQRReadBinding bindingNavigation;
+
+    private ImageReader QR_image_read;
 
     private String meresSzama;
     private String gyartmany_azonosito;
 
     public static String firebasePath = "";
 
-    private CameraDevice camera=null;
     CameraCaptureSession.StateCallback sessionCallBack=null;
-
-    private NavController navController=null;
 
     public QRReadFragment() {
         // Required empty public constructor
@@ -73,21 +76,17 @@ public class QRReadFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_q_r_read, container, false);
+        bindingNavigation = DataBindingUtil.inflate(inflater, R.layout.fragment_q_r_read, container, false);
+        return bindingNavigation.getRoot();
     }
 
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_q_r_read);
+        super.onViewCreated(view, savedInstanceState);
 
-        binding.QRREadSurface.getHolder().addCallback(new SurfaceHolder.Callback() {
+        SurfaceHolder.Callback surfaceCallback=new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder surfaceHolder) {
 
@@ -102,7 +101,8 @@ public class QRReadFragment extends Fragment {
             public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
 
             }
-        });
+        };
+        bindingNavigation.QRREadSurface.getHolder().addCallback(surfaceCallback);
     }
 
     public void onStart() {
@@ -152,13 +152,25 @@ public class QRReadFragment extends Fragment {
                                             Barcode barcodeTemp = barcodeResult.valueAt(i);
                                             String Value = barcodeTemp.displayValue;
                                             Log.d("BarcodeGet", Value);
-                                            String[] tempValues = Value.split("n=");
-                                            String[] tempValues_t = tempValues[1].split("&t=");
-                                            meresSzama = tempValues_t[0];
-                                            gyartmany_azonosito = tempValues_t[1];
-                                            Toast.makeText(getContext(), "Olvasás kész! Mérés száma: " + meresSzama, Toast.LENGTH_LONG).show();
-                                            //return;
-                                            //Log.d("BarcodeValues", meresSzama+" "+gyartmany_azonosito);
+                                            if(!Value.contains("n=")){
+                                                meresSzama=Value;
+                                            }else {
+
+                                                String[] tempValues = Value.split("n=");
+
+                                                if (tempValues[1].contains("&t=")) {
+                                                    String[] tempValues_t = tempValues[1].split("&t="); //Ha van gyártmányazonosító, akkor azt is leválaszja, egyébként csak felmérés számot ad át.
+                                                    meresSzama = tempValues_t[0];
+                                                    gyartmany_azonosito = tempValues_t[1];
+                                                } else {
+                                                    meresSzama = tempValues[1];
+                                                }
+                                            }
+
+                                            Bundle qrAdatok = new Bundle();
+                                            qrAdatok.putString("QrMeresszama", meresSzama);
+                                            NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_DocMakeFragment2, qrAdatok);
+
                                         }
                                     }catch (Exception f){
                                         Log.d("Barcode_Err", f.getMessage());
@@ -176,7 +188,7 @@ public class QRReadFragment extends Fragment {
                         public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
                             try {
                                 CaptureRequest.Builder Builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-                                Builder.addTarget(binding.QRREadSurface.getHolder().getSurface());
+                                Builder.addTarget(bindingNavigation.QRREadSurface.getHolder().getSurface());
                                 Builder.addTarget(QR_image_read.getSurface());
                                 CaptureRequest request=Builder.build();
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -207,7 +219,7 @@ public class QRReadFragment extends Fragment {
                         }
                     };
                     try {
-                        cameraDevice.createCaptureSession(Arrays.asList(binding.QRREadSurface.getHolder().getSurface(), QR_image_read.getSurface()), sessionCallBack, cameraBackgroundHandler);
+                        cameraDevice.createCaptureSession(Arrays.asList(bindingNavigation.QRREadSurface.getHolder().getSurface(), QR_image_read.getSurface()), sessionCallBack, cameraBackgroundHandler);
                     } catch (CameraAccessException e) {
                         Log.d("CapTureSessionEx", e.getMessage());
                     }

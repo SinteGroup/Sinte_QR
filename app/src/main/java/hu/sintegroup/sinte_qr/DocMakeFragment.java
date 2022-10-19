@@ -1,12 +1,22 @@
 package hu.sintegroup.sinte_qr;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import hu.sintegroup.sinte_qr.databinding.FragmentDocMakeBinding;
+import hu.sintegroup.sinte_qr.databinding.FragmentFirstBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +34,7 @@ public class DocMakeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private FragmentDocMakeBinding binding;
     public DocMakeFragment() {
         // Required empty public constructor
     }
@@ -49,16 +60,32 @@ public class DocMakeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_doc_make, container, false);
+        binding = FragmentDocMakeBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        String QrMeresszama=getArguments().getString("QrMeresszama");
+        Log.d("QrAdatok", QrMeresszama);
+        TextView meresNeve=(TextView) view.findViewById(R.id.adatlista);
+        meresNeve.setText(QrMeresszama);
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+// Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+          Log.d("ConfChanges", "Landscape");
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Log.d("ConfChanges", "Portrait");
+        }
     }
 }

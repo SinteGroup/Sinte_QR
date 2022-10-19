@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".DocMakeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/AdatListaLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@drawable/adatlap_h_tt_r">
+        <TextView
+            android:id="@+id/adatlista"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 
 </FrameLayout>
