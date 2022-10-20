@@ -12,7 +12,7 @@
 
     <string name="SecondFragment_title">Kategóriák: </string>
 
-    <string name="Google_Drive_Button_text">Dokumentumok megnyitása</string>
+    <string name="Checklist_label">Ellenörzőlista</string>
 
     <string name="Google_Firebase_Button_text">Firebase connect</string>
 

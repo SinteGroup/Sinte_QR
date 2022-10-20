@@ -4,11 +4,13 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +87,8 @@ public class DocMakeFragment extends Fragment {
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
           Log.d("ConfChanges", "Landscape");
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Log.d("ConfChanges", "Portrait");
+          Log.d("ConfChanges", "Portrait");
         }
+
     }
 }

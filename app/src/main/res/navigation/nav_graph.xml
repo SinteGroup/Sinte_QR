@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_DocMakeFragment"
             app:destination="@+id/DocMakeFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_CheckListFragment"
+            app:destination="@+id/CheckListFragment"/>
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -68,22 +71,16 @@
     </fragment>
 
     <fragment
-        android:id="@+id/QRDriveFragment"
-        android:name="hu.sintegroup.sinte_qr.GoogleDriveFragment"
-        android:label="@string/QRFragment_label"
-        tools:layout="@layout/fragment_google_drive" />
+        android:id="@+id/CheckListFragment"
+        android:name="hu.sintegroup.sinte_qr.CheckListFragment"
+        android:label="@string/Checklist_label"
+        tools:layout="@layout/fragment_check_list" />
 
     <fragment
         android:id="@+id/AdatfelvetelFragment"
         android:name="hu.sintegroup.sinte_qr.AdatfelvetelFragment"
         android:label="@string/Adatfelevetel_label"
         tools:layout="@layout/fragment_adatfelvetel" />
-
-    <fragment
-        android:id="@+id/JavitasokFragment"
-        android:name="hu.sintegroup.sinte_qr.JavitasokFelvetelFragment"
-        android:label="@string/Adatfelevetel_label"
-        tools:layout="@layout/fragment_javitasok" />
 
     <fragment
         android:id="@+id/DocMakeFragment"
@@ -93,14 +90,9 @@
         <action
             android:id="@+id/action_DocMakeFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_DocMakeFragment_to_CheckListFragment"
+            app:destination="@id/CheckListFragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/nav_host_fragment_container"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
 
 </navigation>
