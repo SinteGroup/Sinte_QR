@@ -43,4 +43,14 @@ public class Javitasok {
     public String getNulla_uzemora_szam() {
         return Nulla_uzemora_szam;
     }
+
+    public static class Check{
+
+        protected String checkName;
+
+        public Check(String name){
+            this.checkName=name;
+        }
+    }
 }
+

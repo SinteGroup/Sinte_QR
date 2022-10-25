@@ -7,7 +7,7 @@
     tools:context=".CheckListFragment">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <TextView
@@ -18,20 +18,25 @@
         android:textColor="@color/black"
         android:text="Ellenörzőlista" />
         <Button
+            android:id="@+id/addCheckItemButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30dp"
             android:layout_gravity="fill_vertical"
             android:text="+"/>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+            <ListView
+                android:id="@+id/checkLista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </ListView>
+        </LinearLayout>
 
     </LinearLayout>
 
