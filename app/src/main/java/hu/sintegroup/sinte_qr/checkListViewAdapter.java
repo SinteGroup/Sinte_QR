@@ -24,7 +24,6 @@ public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
             Javitasok.Check tempCheck=adatok.get(position);
-            Log.d("OkButton", "convertViewNull"+" "+position);
             LayoutInflater inflater=LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.checklistitem, parent, false);
 
