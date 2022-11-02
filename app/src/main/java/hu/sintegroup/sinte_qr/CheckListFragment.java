@@ -1,5 +1,6 @@
 package hu.sintegroup.sinte_qr;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,10 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class CheckListFragment extends Fragment {
 
@@ -60,5 +67,34 @@ public class CheckListFragment extends Fragment {
             }
         });
         checkListView.setAdapter(checkListViewAdapter);
+    }
+
+    private String getData(String szures){
+        final String[] responseString = {""};
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url = "https://www.weblapp.hu/Proba.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Volley", "Response is: " + response.contains(szures));
+                        String[] tempString=response.split("_end_");
+                        for (String temp : tempString){
+                            if(temp.contains(szures)){
+                                Log.d("URLVolley", temp);    //:: kulcs és értéket elválasztó szeparátor
+                                responseString[0] =temp;            // <> kulcs-érték párokat elválasztó szeparátor
+                                                                //Iderakni az összes módosítót :(
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Volley", "That didn't work!"+" "+error.networkResponse);
+            }
+        });
+        queue.add(stringRequest);
+        return responseString[0];
     }
 }
