@@ -26,6 +26,8 @@ import java.util.ArrayList;
 
 public class CheckListFragment extends Fragment {
 
+    private String filterTag="2022-000-131";
+
     public CheckListFragment() {
         // Required empty public constructor
     }
@@ -49,27 +51,6 @@ public class CheckListFragment extends Fragment {
         ListView checkListView=(ListView) view.findViewById(R.id.checkLista);
         ArrayList<Javitasok.Check> checkLista=new ArrayList<>();
 
-        checkLista.add(new Javitasok.Check("Mukodik"));
-        checkLista.add(new Javitasok.Check("Mukodik"));
-        checkLista.add(new Javitasok.Check("Mukodik"));
-
-        ArrayAdapter<Javitasok.Check> checkListViewAdapter=new checkListViewAdapter(checkLista, getContext());
-
-        final Integer[] i = {0};
-        Button checkAddItemButton=(Button)view.findViewById(R.id.addCheckItemButton);
-        checkAddItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                i[0] +=1;
-                Javitasok.Check tempCheck=new Javitasok.Check("Elem "+i[0]);
-                checkLista.add(tempCheck);
-                checkListViewAdapter.notifyDataSetChanged();
-            }
-        });
-        checkListView.setAdapter(checkListViewAdapter);
-    }
-
-    private String getData(String szures){
         final String[] responseString = {""};
         RequestQueue queue = Volley.newRequestQueue(getContext());
         String url = "https://www.weblapp.hu/Proba.php";
@@ -78,13 +59,32 @@ public class CheckListFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("Volley", "Response is: " + response.contains(szures));
+                        Log.d("Volley", "Response is: " + response.contains(filterTag));
                         String[] tempString=response.split("_end_");
                         for (String temp : tempString){
-                            if(temp.contains(szures)){
+                            if(temp.contains(filterTag)){
                                 Log.d("URLVolley", temp);    //:: kulcs és értéket elválasztó szeparátor
                                 responseString[0] =temp;            // <> kulcs-érték párokat elválasztó szeparátor
-                                                                //Iderakni az összes módosítót :(
+                                                                    //Iderakni az összes módosítót :(
+
+                                checkLista.add(new Javitasok.Check("Mukodik"));
+                                checkLista.add(new Javitasok.Check("Mukodik"));
+                                checkLista.add(new Javitasok.Check("Mukodik"));
+
+                                ArrayAdapter<Javitasok.Check> checkListViewAdapter=new checkListViewAdapter(checkLista, getContext());
+                                final Integer[] i = {0};
+                                Button checkAddItemButton=(Button)view.findViewById(R.id.addCheckItemButton);
+                                checkAddItemButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        i[0] +=1;
+                                        Javitasok.Check tempCheck=new Javitasok.Check("Elem "+i[0]);
+                                        checkLista.add(tempCheck);
+                                        checkListViewAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                                checkListView.setAdapter(checkListViewAdapter);
+
                             }
                         }
                     }
@@ -95,6 +95,5 @@ public class CheckListFragment extends Fragment {
             }
         });
         queue.add(stringRequest);
-        return responseString[0];
     }
 }
