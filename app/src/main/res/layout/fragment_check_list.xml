@@ -17,12 +17,18 @@
         android:textSize="20dp"
         android:textColor="@color/black"
         android:text="Ellenörzőlista" />
+
+        <EditText
+            android:id="@+id/addColumnEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <Button
             android:id="@+id/addCheckItemButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30dp"
-            android:layout_gravity="fill_vertical"
+            android:layout_gravity="center_horizontal"
             android:text="+"/>
 
         <LinearLayout

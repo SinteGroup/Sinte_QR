@@ -32,6 +32,12 @@
             android:layout_margin="10dp"
             android:id="@+id/checkRepairButton"/>
         </LinearLayout>
+        <TextView
+            android:id="@+id/ItemDataText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20dp"
+            android:gravity="center_horizontal"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
