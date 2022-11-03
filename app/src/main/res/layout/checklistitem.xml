@@ -31,6 +31,13 @@
             android:text="Javítandó"
             android:layout_margin="10dp"
             android:id="@+id/checkRepairButton"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X"
+                android:textColor="@color/red"
+                android:layout_margin="10dp"
+                android:id="@+id/checkitemDelete"/>
         </LinearLayout>
         <TextView
             android:id="@+id/ItemDataText"

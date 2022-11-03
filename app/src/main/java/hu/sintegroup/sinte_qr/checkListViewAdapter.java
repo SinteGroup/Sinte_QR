@@ -105,6 +105,30 @@ public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
                     });
                 }
             });
+
+            Button itemDeleteButton=(Button) convertView.findViewById(R.id.checkitemDelete);
+            itemDeleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String deleteMySQLColumnUrl="https://www.weblapp.hu/Proba.php?method=deleteitem&column="+elemCime.getText();
+                    Log.d("deleteUrl", deleteMySQLColumnUrl);
+                    RequestQueue deleteQueue=Volley.newRequestQueue(getContext());
+                    StringRequest deleteRequest=new StringRequest(Request.Method.GET, deleteMySQLColumnUrl, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            adatok.remove(tempCheck);
+                            notifyDataSetChanged();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                    deleteQueue.add(deleteRequest);
+                }
+            });
+
         return convertView;
     }
 
