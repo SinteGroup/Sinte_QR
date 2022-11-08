@@ -4,21 +4,27 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentDocMakeBinding;
-import hu.sintegroup.sinte_qr.databinding.FragmentFirstBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,8 +82,37 @@ public class DocMakeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         String QrMeresszama=getArguments().getString("QrMeresszama");
         Log.d("QrAdatok", QrMeresszama);
-        TextView meresNeve=(TextView) view.findViewById(R.id.adatlista);
+        TextView meresNeve=(TextView) view.findViewById(R.id.meresNeve);
         meresNeve.setText(QrMeresszama);
+
+        ListView QrSqlAdatokListView=(ListView) view.findViewById(R.id.QrSQLadatokListView);
+        ArrayList<String> adatok=new ArrayList<>();
+        ArrayAdapter QRListViewAdapter=new docmakeLsitviewAdapter(adatok, getContext());
+
+        String QRReadUrl="https://www.weblapp.hu/Proba.php?method=felmeres&QrSzama="+QrMeresszama;
+        RequestQueue listazo_queqe= Volley.newRequestQueue(getContext());
+        StringRequest QrReadRequesst=new StringRequest(Request.Method.GET, QRReadUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("QrReadRequesst", "Minden OK");
+                String[] responseTemp=response.split("<>");
+                for (String temp: responseTemp) {
+                    if(temp.split(": ").length > 1) {
+                        adatok.add(temp);
+                        Log.d("QrReadRequesst", temp);
+                    }
+                }
+
+                QrSqlAdatokListView.setAdapter(QRListViewAdapter);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("QrReadRequesst", "Minden szar: "+error.getMessage());
+            }
+        });
+        listazo_queqe.add(QrReadRequesst);
     }
 
     public void onConfigurationChanged(Configuration newConfig) {

@@ -90,12 +90,12 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        binding.checkListButton.setOnClickListener(new View.OnClickListener() {
+        /*binding.checkListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_CheckListFragment);
             }
-        });
+        });*/
     }
 
     public void getData(String child){

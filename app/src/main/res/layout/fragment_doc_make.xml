@@ -9,7 +9,9 @@
         android:id="@+id/AdatListaLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/adatlap_h_tt_r">
+        android:background="@drawable/adatlap_h_tt_r"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
         <LinearLayout
             android:id="@+id/topMenuContainer"
             android:layout_width="match_parent"
@@ -20,16 +22,19 @@
             tools:ignore="UselessParent">
 
             <TextView
-                android:id="@+id/adatlista"
+                android:id="@+id/meresNeve"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="2022-000-000"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
-            
 
         </LinearLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:id="@+id/QrSQLadatokListView"/>
     </LinearLayout>
 
 </FrameLayout>

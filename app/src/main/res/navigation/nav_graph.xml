@@ -32,9 +32,6 @@
         <action
             android:id="@+id/action_FirstFragment_to_DocMakeFragment"
             app:destination="@+id/DocMakeFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_CheckListFragment"
-            app:destination="@+id/CheckListFragment"/>
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
