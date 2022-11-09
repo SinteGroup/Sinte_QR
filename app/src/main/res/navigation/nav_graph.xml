@@ -12,26 +12,8 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_QRGeneratorFragment"
-            app:destination="@+id/QRGeneratorFragment" />
-        <action
             android:id="@+id/action_FirstFragment_to_QRReadFragment"
             app:destination="@+id/QRReadFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_QRDriveFragment"
-            app:destination="@+id/QRDriveFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_JavitasokFragment"
-            app:destination="@+id/JavitasokFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_AdatfelvetelFragment"
-            app:destination="@+id/AdatfelvetelFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_DocMakeFragment"
-            app:destination="@+id/DocMakeFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -63,8 +45,8 @@
             android:id="@+id/action_QRReadFragment_to_DocMakeFragment2"
             app:destination="@id/DocMakeFragment" />
         <action
-            android:id="@+id/action_QRReadFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_QRReadFragment_to_AdatfelvetelFragment"
+            app:destination="@id/AdatfelvetelFragment" />
     </fragment>
 
     <fragment

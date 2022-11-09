@@ -80,7 +80,7 @@ public class FirstFragment extends Fragment {
             }
         });
 
-        binding.newManualItemAddButton.setOnClickListener(new View.OnClickListener() {
+        /*binding.newManualItemAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                     Date datum=new Date();
@@ -88,7 +88,7 @@ public class FirstFragment extends Fragment {
 
                 NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_AdatfelvetelFragment);
             }
-        });
+        });*/
 
         /*binding.checkListButton.setOnClickListener(new View.OnClickListener() {
             @Override

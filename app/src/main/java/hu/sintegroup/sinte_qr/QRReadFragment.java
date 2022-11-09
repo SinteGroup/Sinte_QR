@@ -2,6 +2,7 @@ package hu.sintegroup.sinte_qr;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,10 +40,17 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
@@ -59,6 +67,7 @@ public class QRReadFragment extends Fragment {
 
     private ImageReader QR_image_read;
 
+    private Bundle qrAdatok;
     private String meresSzama;
     private String gyartmany_azonosito;
 
@@ -166,15 +175,37 @@ public class QRReadFragment extends Fragment {
                                                     meresSzama = tempValues[1];
                                                 }
                                             }
-
-                                            Bundle qrAdatok = new Bundle();
+                                            qrAdatok = new Bundle();
                                             qrAdatok.putString("QrMeresszama", meresSzama);
                                             NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_DocMakeFragment2, qrAdatok);
 
+                                            String vaneIlyenQrUrl="https://www.weblapp.hu/Proba.php?method=checkValidQR&QrErteke="+meresSzama;
+                                            RequestQueue vaneIlyenQrQueue= Volley.newRequestQueue(getContext());
+                                            StringRequest vaneIlyenQrRequest=new StringRequest(Request.Method.GET, vaneIlyenQrUrl, new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Log.d("vaneIlyenQrQueue", String.valueOf(response.contains(meresSzama)));
+                                                    Log.d("vaneIlyenQrResponse", response);
+
+                                                    if(response.contains("VanilyenVazze")) {
+
+                                                    }else{
+                                                        NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_AdatfelvetelFragment, qrAdatok);
+                                                    }
+                                                }
+                                            }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Log.d("vaneIlyenQrQueue", error.getMessage());
+                                                }
+                                            });
+                                            vaneIlyenQrQueue.add(vaneIlyenQrRequest);
                                         }
+
                                     }catch (Exception f){
                                         Log.d("Barcode_Err", f.getMessage());
                                     }
+
                                 }
                             }
                             qrImage.close();
