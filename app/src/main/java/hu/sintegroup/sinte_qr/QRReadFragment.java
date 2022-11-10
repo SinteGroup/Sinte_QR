@@ -175,32 +175,27 @@ public class QRReadFragment extends Fragment {
                                                     meresSzama = tempValues[1];
                                                 }
                                             }
-                                            qrAdatok = new Bundle();
-                                            qrAdatok.putString("QrMeresszama", meresSzama);
-                                            NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_DocMakeFragment2, qrAdatok);
-
-                                            String vaneIlyenQrUrl="https://www.weblapp.hu/Proba.php?method=checkValidQR&QrErteke="+meresSzama;
-                                            RequestQueue vaneIlyenQrQueue= Volley.newRequestQueue(getContext());
-                                            StringRequest vaneIlyenQrRequest=new StringRequest(Request.Method.GET, vaneIlyenQrUrl, new Response.Listener<String>() {
-                                                @Override
-                                                public void onResponse(String response) {
-                                                    Log.d("vaneIlyenQrQueue", String.valueOf(response.contains(meresSzama)));
-                                                    Log.d("vaneIlyenQrResponse", response);
-
-                                                    if(response.contains("VanilyenVazze")) {
-
-                                                    }else{
-                                                        NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_AdatfelvetelFragment, qrAdatok);
-                                                    }
-                                                }
-                                            }, new Response.ErrorListener() {
-                                                @Override
-                                                public void onErrorResponse(VolleyError error) {
-                                                    Log.d("vaneIlyenQrQueue", error.getMessage());
-                                                }
-                                            });
-                                            vaneIlyenQrQueue.add(vaneIlyenQrRequest);
                                         }
+
+                                        qrAdatok = new Bundle();
+                                        qrAdatok.putString("QrMeresszama", meresSzama);
+                                        NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_DocMakeFragment2, qrAdatok);
+
+                                        String vaneIlyenQrUrl="https://www.weblapp.hu/Proba.php?method=checkValidQR&QrErteke="+meresSzama;
+                                        RequestQueue vaneIlyenQrQueue= Volley.newRequestQueue(getContext());
+                                        StringRequest vaneIlyenQrRequest=new StringRequest(Request.Method.GET, vaneIlyenQrUrl, new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                Log.d("vaneIlyenQrQueue", String.valueOf(response.contains(meresSzama)));
+                                                Log.d("vaneIlyenQrResponse", response);
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Log.d("vaneIlyenQrQueue", error.getMessage());
+                                            }
+                                        });
+                                        vaneIlyenQrQueue.add(vaneIlyenQrRequest);
 
                                     }catch (Exception f){
                                         Log.d("Barcode_Err", f.getMessage());

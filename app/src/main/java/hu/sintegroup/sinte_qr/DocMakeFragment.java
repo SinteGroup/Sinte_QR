@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -113,6 +114,14 @@ public class DocMakeFragment extends Fragment {
             }
         });
         listazo_queqe.add(QrReadRequesst);
+
+        Button javitasokraButton=(Button) view.findViewById(R.id.JavításButton);
+        javitasokraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
     }
 
     public void onConfigurationChanged(Configuration newConfig) {

@@ -20,7 +20,18 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="10dp"
             tools:ignore="UselessParent">
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Javítások"
+                android:layout_margin="10dp"
+                android:id="@+id/JavításButton"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Adatfelvétel"
+                android:layout_margin="10dp"
+                android:id="@+id/AdatfelvetelButton"/>
             <TextView
                 android:id="@+id/meresNeve"
                 android:layout_width="wrap_content"
