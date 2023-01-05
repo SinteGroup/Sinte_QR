@@ -28,24 +28,25 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater=LayoutInflater.from(getContext());
         convertView = inflater.inflate(R.layout.qr_lista_listview_item, parent, false);
 
-        EditText qrListTempText=(EditText) convertView.findViewById(R.id.qr_lista_data);
+        EditText qrListTempEdittextText=(EditText) convertView.findViewById(R.id.qr_lista_data);
         TextView qrListCategoryTempText=(TextView)convertView.findViewById(R.id.qr_lista_category_name_textview);
 
         try {
             String[] tempAdatok = adatok.get(position).split(": ");
             qrListCategoryTempText.setText(tempAdatok[0]);
-            qrListTempText.setText(tempAdatok[1]);
+            qrListTempEdittextText.setText(tempAdatok[1]);
         }catch (Exception f){
             Log.d("Err", f.getMessage());
         }
 
-        /*Button editItemButton=(Button) convertView.findViewById(R.id.qr_edit_button);
+        Button editItemButton=(Button) convertView.findViewById(R.id.qr_edit_button);
         editItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                qrListTempText.setEnabled(true);
+                //qrListTempEdittextText.setEnabled(true);
+                Log.d("ItemClickQrItem", "Item száma: "+qrListCategoryTempText.getText()+"; Item tartalom:"+qrListTempEdittextText.getText());
             }
-        });*/
+        });
 
         return convertView;
     }

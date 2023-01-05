@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import hu.sintegroup.sinte_qr.MainActivity;
 import hu.sintegroup.sinte_qr.databinding.FragmentLoginBinding;
 
 import hu.sintegroup.sinte_qr.R;
@@ -128,7 +129,8 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                String LoginUrl="https://www.weblapp.hu/Proba.php?method=login&felhasznalonev="+usernameEditText.getText().toString()+"&jelszo="+ passwordEditText.getText().toString();
+                String LoginUrl=MainActivity.baseDomain+MainActivity.executePhp+"?method=login&felhasznalonev="+usernameEditText.getText().toString()+"&jelszo="+ passwordEditText.getText().toString();
+                Log.d("Parameterek", usernameEditText.getText().toString()+" "+passwordEditText.getText().toString());
                 RequestQueue listazo_queqe= Volley.newRequestQueue(getContext());
                 StringRequest QrReadRequesst=new StringRequest(Request.Method.GET, LoginUrl, new Response.Listener<String>() {
                     @Override

@@ -90,7 +90,7 @@ public class DocMakeFragment extends Fragment {
         ArrayList<String> adatok=new ArrayList<>();
         ArrayAdapter QRListViewAdapter=new docmakeLsitviewAdapter(adatok, getContext());
 
-        String QRReadUrl="https://www.weblapp.hu/Proba.php?method=felmeres&QrSzama="+QrMeresszama;
+        String QRReadUrl=MainActivity.baseDomain+MainActivity.executePhp+"?method=felmeres&QrSzama="+QrMeresszama;
         RequestQueue listazo_queqe= Volley.newRequestQueue(getContext());
         StringRequest QrReadRequesst=new StringRequest(Request.Method.GET, QRReadUrl, new Response.Listener<String>() {
             @Override
