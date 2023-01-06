@@ -12,6 +12,8 @@
 
     <string name="LoginQRFragment">Login</string>
 
+    <string name="JavitasokFragment">Javítások listája</string>
+
     <string name="SecondFragment_title">Kategóriák: </string>
 
     <string name="Checklist_label">Ellenörzőlista</string>
