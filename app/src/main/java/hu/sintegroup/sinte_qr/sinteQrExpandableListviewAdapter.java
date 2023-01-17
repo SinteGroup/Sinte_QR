@@ -1,18 +1,34 @@
 package hu.sintegroup.sinte_qr;
 
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class sinteQrExpandableListviewAdapter extends BaseExpandableListAdapter {
+
+    Context context=null;
+    HashMap<String, List<String>> items;
+
+    sinteQrExpandableListviewAdapter(Context context, HashMap<String, List<String>> items){
+        this.context=context;
+        this.items=items;
+    }
     @Override
     public int getGroupCount() {
-        return 0;
+        return this.items.size();
     }
 
     @Override
     public int getChildrenCount(int i) {
-        return 0;
+        return this.items.size();
     }
 
     @Override
@@ -41,13 +57,26 @@ public class sinteQrExpandableListviewAdapter extends BaseExpandableListAdapter 
     }
 
     @Override
-    public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-        return null;
+    public View getGroupView(int position, boolean b, View convertview, ViewGroup viewGroup) {
+
+        if(convertview==null){
+            LayoutInflater inflate=(LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertview=inflate.inflate(R.layout.javitasoklistviewitem, null);
+        }
+        TextView itemTextView=(TextView) convertview.findViewById(R.id.itemTitleTextview);
+        itemTextView.setText("Item: "+position+" "+items);
+        return convertview;
     }
 
     @Override
-    public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-        return null;
+    public View getChildView(int position, int i1, boolean b, View convertview, ViewGroup viewGroup) {
+        if(convertview==null){
+            LayoutInflater inflate=(LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertview=inflate.inflate(R.layout.javitasoklistviewchilditem, null);
+        }
+        TextView itemTextView=(TextView) convertview.findViewById(R.id.listviewItemChildTextView);
+        itemTextView.setText("Item: "+position+" "+items);
+        return convertview;
     }
 
     @Override
