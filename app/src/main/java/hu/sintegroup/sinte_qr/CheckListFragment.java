@@ -57,7 +57,7 @@ public class CheckListFragment extends Fragment {
 
         final String[] responseString = {""};
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "https://www.weblapp.hu/Proba.php?method=check";
+        String url = "http://www.weblapp.hu/Proba.php?method=check";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -85,7 +85,7 @@ public class CheckListFragment extends Fragment {
                                             Javitasok.Check tempCheck = new Javitasok.Check(String.valueOf(tempEditText.getText()));
                                             checkLista.add(tempCheck);
 
-                                            String customColumnUrl="https://www.weblapp.hu/Proba.php?method=insertcheckcolumn&column_name="+String.valueOf(tempEditText.getText());
+                                            String customColumnUrl="http://www.weblapp.hu/Proba.php?method=insertcheckcolumn&column_name="+String.valueOf(tempEditText.getText());
                                             Log.d("customColumnUrl", customColumnUrl);
                                             StringRequest customColumnStringRequest=new StringRequest(Request.Method.GET, customColumnUrl, new Response.Listener<String>() {
                                                 @Override

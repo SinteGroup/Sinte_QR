@@ -44,7 +44,9 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View view) {
                 //qrListTempEdittextText.setEnabled(true);
-                Log.d("ItemClickQrItem", "Item száma: "+qrListCategoryTempText.getText()+"; Item tartalom:"+qrListTempEdittextText.getText());
+                Log.d("ItemClickQrItem", "Item megnevezés: "+qrListCategoryTempText.getText()+"; Item tartalom:"+qrListTempEdittextText.getText());
+
+
             }
         });
 

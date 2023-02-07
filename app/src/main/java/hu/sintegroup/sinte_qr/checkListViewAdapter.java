@@ -49,7 +49,7 @@ public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
                 @Override
                 public void onClick(View view) {
                     Log.d("OkButton", "OK: "+position);
-                    String CheckOkButtonUrl="https://www.weblapp.hu/Proba.php?method=insert&column="+String.valueOf(elemCime.getText())+"&values=Ok";
+                    String CheckOkButtonUrl="http://www.weblapp.hu/Proba.php?method=insert&column="+String.valueOf(elemCime.getText())+"&values=Ok";
                     StringRequest CheckOkButtonRequest=new StringRequest(Request.Method.GET, CheckOkButtonUrl, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -87,7 +87,7 @@ public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
                     repairSendMessageButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            String CheckRepairButtonUrl="https://www.weblapp.hu/Proba.php?method=insert&column="+elemCime.getText()+"&values="+repairMessage.getText();
+                            String CheckRepairButtonUrl="http://www.weblapp.hu/Proba.php?method=insert&column="+elemCime.getText()+"&values="+repairMessage.getText();
                             Log.d("CheckRepairButtonUrl", CheckRepairButtonUrl);
                             StringRequest repairMessageRequest=new StringRequest(Request.Method.GET, CheckRepairButtonUrl, new Response.Listener<String>() {
                                 @Override
@@ -110,7 +110,7 @@ public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
             itemDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String deleteMySQLColumnUrl="https://www.weblapp.hu/Proba.php?method=deleteitem&column="+elemCime.getText();
+                    String deleteMySQLColumnUrl="http://www.weblapp.hu/Proba.php?method=deleteitem&column="+elemCime.getText();
                     Log.d("deleteUrl", deleteMySQLColumnUrl);
                     RequestQueue deleteQueue=Volley.newRequestQueue(getContext());
                     StringRequest deleteRequest=new StringRequest(Request.Method.GET, deleteMySQLColumnUrl, new Response.Listener<String>() {

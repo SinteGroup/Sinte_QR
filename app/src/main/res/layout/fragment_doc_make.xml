@@ -32,6 +32,12 @@
                 android:text="Adatfelvétel"
                 android:layout_margin="10dp"
                 android:id="@+id/AdatfelvetelButton"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Checklista"
+                android:layout_margin="10dp"
+                android:id="@+id/EllenorzoListaButton"/>
             <TextView
                 android:id="@+id/meresNeve"
                 android:layout_width="wrap_content"

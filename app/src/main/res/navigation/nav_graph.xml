@@ -44,9 +44,6 @@
         <action
             android:id="@+id/action_QRReadFragment_to_DocMakeFragment2"
             app:destination="@id/DocMakeFragment" />
-        <action
-            android:id="@+id/action_QRReadFragment_to_AdatfelvetelFragment"
-            app:destination="@id/AdatfelvetelFragment" />
     </fragment>
 
     <fragment
@@ -75,6 +72,9 @@
         <action
             android:id="@+id/action_DocMakeFragment_to_JavitasokFragment"
             app:destination="@id/JavitasokFragment" />
+        <action
+            android:id="@+id/action_DocMakeFragment_to_AdatfelvetelFragment"
+            app:destination="@id/AdatfelvetelFragment" />
     </fragment>
 
     <fragment

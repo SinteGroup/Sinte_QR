@@ -125,6 +125,22 @@ public class DocMakeFragment extends Fragment {
                 NavHostFragment.findNavController(DocMakeFragment.this).navigate(R.id.action_DocMakeFragment_to_JavitasokFragment, qrjvadatok);
             }
         });
+
+        Button adatfelvetelButton=(Button) view.findViewById(R.id.AdatfelvetelButton);
+        adatfelvetelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(DocMakeFragment.this).navigate(R.id.action_DocMakeFragment_to_AdatfelvetelFragment);
+            }
+        });
+
+        Button ellenorzoListaButton=(Button) view.findViewById(R.id.EllenorzoListaButton);
+        ellenorzoListaButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(DocMakeFragment.this).navigate(R.id.action_DocMakeFragment_to_CheckListFragment);
+            }
+        });
     }
 
     public void onConfigurationChanged(Configuration newConfig) {
