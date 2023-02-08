@@ -5,28 +5,19 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/listViewContainer">
+    <LinearLayout
+        android:id="@+id/listviewItemContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="clip_horizontal|center_horizontal"
+        android:orientation="horizontal"
         tools:ignore="MissingConstraints">
-        <TextView
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:layout_gravity="center_vertical"
-            android:text="Kategória"
-            android:id="@+id/qr_lista_category_name_textview"/>
-        <EditText
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/qr_lista_data"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/qr_edit_button"
-            android:text="Szerkesztés"/>
+    </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

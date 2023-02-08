@@ -2,13 +2,18 @@ package hu.sintegroup.sinte_qr;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -28,28 +33,64 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater=LayoutInflater.from(getContext());
         convertView = inflater.inflate(R.layout.qr_lista_listview_item, parent, false);
 
-        EditText qrListTempEdittextText=(EditText) convertView.findViewById(R.id.qr_lista_data);
-        TextView qrListCategoryTempText=(TextView)convertView.findViewById(R.id.qr_lista_category_name_textview);
+        String[] itemString=adatok.get(position).split(":");
 
-        try {
-            String[] tempAdatok = adatok.get(position).split(": ");
-            qrListCategoryTempText.setText(tempAdatok[0]);
-            qrListTempEdittextText.setText(tempAdatok[1]);
-        }catch (Exception f){
-            Log.d("Err", f.getMessage());
+        LinearLayout slinContainer=(LinearLayout)convertView.findViewById(R.id.listViewContainer);
+        slinContainer.setHorizontalGravity(LinearLayout.HORIZONTAL);
+        slinContainer.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout lin=(LinearLayout) convertView.findViewById(R.id.listviewItemContainer);
+
+        TextView idTextView=new TextView(this.getContext());
+        idTextView.setText(itemString[0]);
+        idTextView.setTextSize(20);
+        idTextView.setMaxWidth(500);
+        lin.addView(idTextView);
+
+        if(!(itemString[0].equals("Csapágy száma"))) {
+
+            EditText itemEditText = new EditText(this.getContext());
+            itemEditText.setText(itemString[1]);
+            itemEditText.setTextSize(20);
+            itemEditText.setMaxWidth(400);
+            lin.addView(itemEditText);
+
+        }else {
+            generalas(slinContainer, itemString[1]);
         }
+        return convertView;
+    }
 
-        Button editItemButton=(Button) convertView.findViewById(R.id.qr_edit_button);
-        editItemButton.setOnClickListener(new View.OnClickListener() {
+    public void generalas(LinearLayout linSuperContainer, String itemString){
+
+        LinearLayout linTempLocal=new LinearLayout(getContext());
+        linTempLocal.setOrientation(LinearLayout.HORIZONTAL);
+
+        EditText itemEditText = new EditText(getContext());
+        itemEditText.setText(itemString);
+        itemEditText.setTextSize(20);
+        itemEditText.setMaxWidth(400);
+        linTempLocal.addView(itemEditText);
+
+        String[] spinnerItems={"fdssfs", "fdsfdssfs", "gfdsgfdgfdgfd"};
+        Spinner itemSpinner=new Spinner(getContext());
+        itemSpinner.setMinimumHeight(150);
+        ArrayAdapter spinnerItemsArrayadapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerItems);
+        itemSpinner.setAdapter(spinnerItemsArrayadapter);
+        linTempLocal.addView(itemSpinner);
+
+        Log.d("ClickBelül", "Click");
+
+        Button spinneritemButton=new Button(this.getContext());
+        spinneritemButton.setText("Bővebben");
+        spinneritemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //qrListTempEdittextText.setEnabled(true);
-                Log.d("ItemClickQrItem", "Item megnevezés: "+qrListCategoryTempText.getText()+"; Item tartalom:"+qrListTempEdittextText.getText());
 
-
+                generalas(linSuperContainer, itemString);
             }
         });
-
-        return convertView;
+        linTempLocal.addView(spinneritemButton);
+        linSuperContainer.addView(linTempLocal);
     }
 }
