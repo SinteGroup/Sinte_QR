@@ -36,8 +36,7 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         String[] itemString=adatok.get(position).split(":");
 
         LinearLayout slinContainer=(LinearLayout)convertView.findViewById(R.id.listViewContainer);
-        slinContainer.setHorizontalGravity(LinearLayout.HORIZONTAL);
-        slinContainer.setOrientation(LinearLayout.VERTICAL);
+        slinContainer.setHorizontalGravity(Gravity.CENTER);
 
         LinearLayout lin=(LinearLayout) convertView.findViewById(R.id.listviewItemContainer);
 
@@ -56,18 +55,19 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
             lin.addView(itemEditText);
 
         }else {
-            generalas(slinContainer, itemString[1]);
+            generalas(slinContainer, adatok, position);
         }
         return convertView;
     }
 
-    public void generalas(LinearLayout linSuperContainer, String itemString){
+    public void generalas(LinearLayout linSuperContainer, ArrayList<String> adatok, int position){
 
         LinearLayout linTempLocal=new LinearLayout(getContext());
         linTempLocal.setOrientation(LinearLayout.HORIZONTAL);
+        linTempLocal.setHorizontalGravity(Gravity.CENTER);
 
         EditText itemEditText = new EditText(getContext());
-        itemEditText.setText(itemString);
+        itemEditText.setText(adatok.get(position).split(":")[0]);
         itemEditText.setTextSize(20);
         itemEditText.setMaxWidth(400);
         linTempLocal.addView(itemEditText);
@@ -87,7 +87,9 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View view) {
 
-                generalas(linSuperContainer, itemString);
+                generalas(linSuperContainer, adatok, position);
+                Log.d("ItemId", adatok.get(position).split(":")[0]);
+                Log.d("ItemContent", adatok.get(position).split(":")[1]);
             }
         });
         linTempLocal.addView(spinneritemButton);
