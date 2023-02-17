@@ -7,6 +7,7 @@
     <string name="next">Új felvitele</string>
     <string name="previous">Previous</string>
     <string name="felmeres_listview_item_name">Felmérés neve</string>
+    <string name="kopoalkatreszek_Adatai_name">Kopóalkatrészek adatai</string>
 
     <string name="QRFragment_label">QRFragment</string>
 

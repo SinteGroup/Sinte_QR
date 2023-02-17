@@ -13,7 +13,7 @@
         android:id="@+id/listviewItemContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="clip_horizontal|center_horizontal"
+        android:gravity="fill"
         android:orientation="horizontal"
         tools:ignore="MissingConstraints">
     </LinearLayout>

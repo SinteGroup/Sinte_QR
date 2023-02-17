@@ -89,7 +89,7 @@ public class DocMakeFragment extends Fragment {
 
         ListView QrSqlAdatokListView=(ListView) view.findViewById(R.id.QrSQLadatokListView);
         ArrayList<String> adatok=new ArrayList<>();
-        ArrayAdapter QRListViewAdapter=new docmakeLsitviewAdapter(adatok, getContext());
+        ArrayAdapter QRListViewAdapter=new docmakeLsitviewAdapter(adatok, getContext(), DocMakeFragment.this);
 
         String QRReadUrl=MainActivity.baseDomain+MainActivity.executePhp+"?method=felmeres&QrSzama="+QrMeresszama;
         RequestQueue listazo_queqe= Volley.newRequestQueue(getContext());

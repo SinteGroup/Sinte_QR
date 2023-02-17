@@ -1,6 +1,7 @@
 package hu.sintegroup.sinte_qr;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,16 +17,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import java.util.ArrayList;
 
 public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
 
     private ArrayList<String> adatok=new ArrayList<>();
+    private Context context;
+    private Fragment fragment;
 
-    public docmakeLsitviewAdapter(ArrayList<String> adatok, Context context) {
+    public docmakeLsitviewAdapter(ArrayList<String> adatok, Context context, Fragment fragment) {
         super(context, R.layout.qr_lista_listview_item, adatok);
         this.adatok=adatok;
+        this.context=context;
+        this.fragment=fragment;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -36,22 +43,21 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         String[] itemString=adatok.get(position).split(":");
 
         LinearLayout slinContainer=(LinearLayout)convertView.findViewById(R.id.listViewContainer);
-        slinContainer.setHorizontalGravity(Gravity.CENTER);
 
         LinearLayout lin=(LinearLayout) convertView.findViewById(R.id.listviewItemContainer);
 
         TextView idTextView=new TextView(this.getContext());
         idTextView.setText(itemString[0]);
         idTextView.setTextSize(20);
-        idTextView.setMaxWidth(500);
+        idTextView.setMinWidth(500);
         lin.addView(idTextView);
 
-        if(!(itemString[0].equals("Csapágy száma"))) {
+        if(!(itemString[0].equals("Kopóalkatrész"))) {
 
             EditText itemEditText = new EditText(this.getContext());
             itemEditText.setText(itemString[1]);
             itemEditText.setTextSize(20);
-            itemEditText.setMaxWidth(400);
+            itemEditText.setMinWidth(400);
             lin.addView(itemEditText);
 
         }else {
@@ -64,7 +70,6 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
 
         LinearLayout linTempLocal=new LinearLayout(getContext());
         linTempLocal.setOrientation(LinearLayout.HORIZONTAL);
-        linTempLocal.setHorizontalGravity(Gravity.CENTER);
 
         EditText itemEditText = new EditText(getContext());
         itemEditText.setText(adatok.get(position).split(":")[0]);
@@ -72,9 +77,9 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         itemEditText.setMaxWidth(400);
         linTempLocal.addView(itemEditText);
 
-        String[] spinnerItems={"fdssfs", "fdsfdssfs", "gfdsgfdgfdgfd"};
+        String[] spinnerItems={"Csapágyak","Csapágyházak","Simmeringek","Meghajtólánc","Szállítólánc","Villanymotor","Hajtómű","Serlegkanál","Heveder","Szenzorok","Egyéb"};
         Spinner itemSpinner=new Spinner(getContext());
-        itemSpinner.setMinimumHeight(150);
+        itemSpinner.setMinimumHeight(250);
         ArrayAdapter spinnerItemsArrayadapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerItems);
         itemSpinner.setAdapter(spinnerItemsArrayadapter);
         linTempLocal.addView(itemSpinner);
@@ -83,13 +88,17 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
 
         Button spinneritemButton=new Button(this.getContext());
         spinneritemButton.setText("Bővebben");
+        spinneritemButton.setMinWidth(250);
+        spinneritemButton.setMinimumHeight(150);
         spinneritemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 generalas(linSuperContainer, adatok, position);
-                Log.d("ItemId", adatok.get(position).split(":")[0]);
-                Log.d("ItemContent", adatok.get(position).split(":")[1]);
+                Bundle kopoalkatreszKategoria=new Bundle();
+                kopoalkatreszKategoria.putString("alkatreszkategioria", itemSpinner.getSelectedItem().toString());
+                NavHostFragment.findNavController(fragment).navigate(R.id.action_DocMakeFragment_to_KopoalkatreszekFragment, kopoalkatreszKategoria);
+                Log.d("ItemId", itemSpinner.getSelectedItem().toString());
             }
         });
         linTempLocal.addView(spinneritemButton);

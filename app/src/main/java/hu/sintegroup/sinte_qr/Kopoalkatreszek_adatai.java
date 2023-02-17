@@ -1,6 +1,5 @@
 package hu.sintegroup.sinte_qr;
 
-import android.app.DownloadManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,11 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,10 +24,10 @@ import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AdatfelvetelFragment#newInstance} factory method to
+ * Use the {@link Kopoalkatreszek_adatai#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AdatfelvetelFragment extends Fragment {
+public class Kopoalkatreszek_adatai extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,7 +38,7 @@ public class AdatfelvetelFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AdatfelvetelFragment() {
+    public Kopoalkatreszek_adatai() {
         // Required empty public constructor
     }
 
@@ -52,11 +48,11 @@ public class AdatfelvetelFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AdatfelvetelFragment.
+     * @return A new instance of fragment Kopoalkatreszek_adatai.
      */
     // TODO: Rename and change types and number of parameters
-    public static AdatfelvetelFragment newInstance(String param1, String param2) {
-        AdatfelvetelFragment fragment = new AdatfelvetelFragment();
+    public static Kopoalkatreszek_adatai newInstance(String param1, String param2) {
+        Kopoalkatreszek_adatai fragment = new Kopoalkatreszek_adatai();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -77,32 +73,34 @@ public class AdatfelvetelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_adatfelvetel, container, false);
+        return inflater.inflate(R.layout.fragment_kopoalkatreszek_adatai, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        String kopoalkatreszKategoria=getArguments().getString("alkatreszkategioria");
+        TextView alkatreszNeveTextView=(TextView) view.findViewById(R.id.kopoalkatreszNeveTextView);
+        alkatreszNeveTextView.setText(kopoalkatreszKategoria);
 
-        ListView adatfelveteli_listView=(ListView) view.findViewById(R.id.adatfelvetelilap_Listview);
-        ArrayList<String> adatfelveteli_mezok=new ArrayList<>();
-        adatfelveteli_lap_listview_adapter adatfelveteliAdapter=new adatfelveteli_lap_listview_adapter(getContext(), adatfelveteli_mezok);
+        ListView kopoalkatreszLista=(ListView) view.findViewById(R.id.kopoalkatreszKategoriaListView);
+        ArrayList<String> kopoalkatreszItems=new ArrayList<>();
+        Kopoalkastreszek_adatai_ListViewAdapter kopoAdapter=new Kopoalkastreszek_adatai_ListViewAdapter(this.getContext(), kopoalkatreszItems);
 
-        RequestQueue adatfelveteli_listazo_queqe= Volley.newRequestQueue(getContext());
-        String adatfelveteli_lap_URL="http://www.weblapp.hu/Proba.php?method=adatfelveteli_lap";
+        RequestQueue kopoalkatresz_listazo_queqe= Volley.newRequestQueue(getContext());
+        String kopoalkatreszKategoriaURL="http://www.weblapp.hu/Proba.php?method=kopoalkatreszek&alkatresz="+kopoalkatreszKategoria;
 
-        StringRequest adatfelveteli_lap_req=new StringRequest(Request.Method.GET, adatfelveteli_lap_URL, new Response.Listener<String>() {
+        StringRequest kopoalkatreszRequest=new StringRequest(Request.Method.GET, kopoalkatreszKategoriaURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                adatfelveteli_mezok.addAll(Arrays.asList(response.split("<>")));
-                adatfelveteli_listView.setAdapter(adatfelveteliAdapter);
+                Log.d("kopoResponse", response);
+                kopoalkatreszItems.addAll(Arrays.asList(response.split("<>")));
+                kopoalkatreszLista.setAdapter(kopoAdapter);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("kopoResponseErr", error.getMessage());
             }
         });
-
-        adatfelveteli_listazo_queqe.add(adatfelveteli_lap_req);
-
+        kopoalkatresz_listazo_queqe.add(kopoalkatreszRequest);
     }
 }

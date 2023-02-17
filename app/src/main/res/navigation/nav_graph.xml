@@ -75,6 +75,9 @@
         <action
             android:id="@+id/action_DocMakeFragment_to_AdatfelvetelFragment"
             app:destination="@id/AdatfelvetelFragment" />
+        <action
+            android:id="@+id/action_DocMakeFragment_to_KopoalkatreszekFragment"
+            app:destination="@id/KopoalkatreszekFragment" />
     </fragment>
 
     <fragment
@@ -92,6 +95,13 @@
         android:name="hu.sintegroup.sinte_qr.JavitasokFragment"
         android:label="@string/JavitasokFragment"
         tools:layout="@layout/fragment_javitasok" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/KopoalkatreszekFragment"
+        android:name="hu.sintegroup.sinte_qr.Kopoalkatreszek_adatai"
+        android:label="@string/kopoalkatreszek_Adatai_name"
+        tools:layout="@layout/fragment_kopoalkatreszek_adatai">
     </fragment>
 
 </navigation>
