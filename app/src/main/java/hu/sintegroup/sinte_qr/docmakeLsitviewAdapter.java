@@ -15,11 +15,14 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import org.apache.commons.net.ftp.*;
+
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
@@ -63,6 +66,25 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         }else {
             generalas(slinContainer, adatok, position);
         }
+
+        Button dokFeltöltésButton=new Button(this.getContext());
+        dokFeltöltésButton.setText("Feltöltés");
+        dokFeltöltésButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    FTPClient doksiUploadClient=new FTPClient();
+                    doksiUploadClient.connect(InetAddress.getByName("ftp.weblapp.hu"), 21);
+                    doksiUploadClient.login("qr_ftp@weblapp.hu", "Ez66karakter");
+                    doksiUploadClient.enterLocalPassiveMode();
+                    doksiUploadClient.setFileType(FTP.BINARY_FILE_TYPE);
+                    Log.d("FTPClient", doksiUploadClient.getStatus());
+                }catch (Exception f){
+                    Log.d("FTPClient", f.getMessage());
+                }
+            }
+        });
+        lin.addView(dokFeltöltésButton);
         return convertView;
     }
 

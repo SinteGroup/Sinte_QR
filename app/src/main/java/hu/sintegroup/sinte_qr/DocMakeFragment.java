@@ -23,8 +23,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.apache.commons.net.ftp.*;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentDocMakeBinding;
 
@@ -82,6 +88,7 @@ public class DocMakeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         String QrMeresszama=getArguments().getString("QrMeresszama");
         Log.d("QrAdatok", QrMeresszama);
         TextView meresNeve=(TextView) view.findViewById(R.id.meresNeve);
