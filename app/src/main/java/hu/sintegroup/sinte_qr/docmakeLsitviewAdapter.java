@@ -3,7 +3,6 @@ package hu.sintegroup.sinte_qr;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import org.apache.commons.net.ftp.*;
-
-import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 
 public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
@@ -72,16 +65,8 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         dokFeltöltésButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try{
-                    FTPClient doksiUploadClient=new FTPClient();
-                    doksiUploadClient.connect(InetAddress.getByName("ftp.weblapp.hu"), 21);
-                    doksiUploadClient.login("qr_ftp@weblapp.hu", "Ez66karakter");
-                    doksiUploadClient.enterLocalPassiveMode();
-                    doksiUploadClient.setFileType(FTP.BINARY_FILE_TYPE);
-                    Log.d("FTPClient", doksiUploadClient.getStatus());
-                }catch (Exception f){
-                    Log.d("FTPClient", f.getMessage());
-                }
+                SinteQRFTPModel hel=new SinteQRFTPModel();
+                hel.connect("ftp.weblapp.hu", "qr_ftp@weblapp.hu", "Ez66karakter", 21);
             }
         });
         lin.addView(dokFeltöltésButton);
