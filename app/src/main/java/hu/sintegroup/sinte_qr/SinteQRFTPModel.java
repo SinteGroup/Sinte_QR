@@ -1,22 +1,39 @@
 package hu.sintegroup.sinte_qr;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.PrimitiveIterator;
 
 public class SinteQRFTPModel {
     public FTPClient SinteQrFTPClient = null;
+    private Context context;
+    private ListView ListV;
 
-    public boolean connect(String host, String username, String password, int port) {
+    public Boolean connect(String host, String username, String password, int port) {
         try {
             return new SinteQR_FTP_Helper(host, username, password, port).execute().get();
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public ArrayList<String> createSinteFTPFileList(Context context){
+
+        this.context=context;
+        try {
+            return new SinteQR_FTP_FileList().execute().get();
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -36,31 +53,45 @@ public class SinteQRFTPModel {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            boolean retBool = false;
+            boolean status=false;
             try {
 
                 SinteQrFTPClient = new FTPClient();
                 SinteQrFTPClient.connect(host, port);
-                boolean status = SinteQrFTPClient.login(username, password);
+                status=SinteQrFTPClient.login(username, password);
                 SinteQrFTPClient.setFileType(FTP.BINARY_FILE_TYPE);
                 SinteQrFTPClient.enterLocalPassiveMode();
                 Log.d("FTPOk", String.valueOf(status));
 
-                String[] fileList= SinteQrFTPClient.listNames();
+            } catch (Exception e) {
+                Log.d("FTPErr", e.getMessage());
+            }
+            return status;
+        }
+    }
+
+    public class SinteQR_FTP_FileList extends AsyncTask<Void, Void, ArrayList<String>> {
+
+        public SinteQR_FTP_FileList() {
+
+        }
+
+        @Override
+        protected  ArrayList<String> doInBackground(Void... voids) {
+
+            ArrayList<String> fileList=new ArrayList<>();
+            try {
+                connect("ftp.weblapp.hu", "qr_ftp@weblapp.hu", "Ez66karakter", 21);
+
+                fileList.addAll(Arrays.asList(SinteQrFTPClient.listNames()));
                 for (String temp:fileList) {
                     Log.d("FTPfileList", temp);
                 }
 
-                File fff=new File("sajat.txt");
-                fff.createNewFile();
-                /*FileInputStream inp=new FileInputStream(fff);
-                SinteQrFTPClient.storeFile("ottani.txt", inp);*/
-
-                SinteQrFTPClient.disconnect();
             } catch (Exception e) {
-                Log.d("FTPErr", e.getMessage());
+                Log.d("FTPErrFileList", e.getMessage());
             }
-            return retBool;
+            return fileList;
         }
     }
 }
