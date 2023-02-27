@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +12,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
 
-    private ArrayList<String> adatok=new ArrayList<>();
+    private ArrayList<String> adatok;
     private Context context;
     private Fragment fragment;
-    private SinteQRFTPModel SinteQRFtpCliens;
-    private ListView popUpFTPListView;
+    private int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private Boolean focusable=true;
+    private View popUpView;
 
     public docmakeLsitviewAdapter(ArrayList<String> adatok, Context context, Fragment fragment) {
         super(context, R.layout.qr_lista_listview_item, adatok);
@@ -47,10 +52,6 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         LinearLayout slinContainer=(LinearLayout)convertView.findViewById(R.id.listViewContainer);
 
         LinearLayout lin=(LinearLayout) convertView.findViewById(R.id.listviewItemContainer);
-
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        Boolean focusable=true;
 
         TextView idTextView=new TextView(this.getContext());
         idTextView.setText(itemString[0]);
@@ -75,42 +76,14 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         dokFeltöltésButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popUpFTPListView=(ListView)view.findViewById(R.id.FtpFileList);
-
-                SinteAsync as=new SinteAsync();
-                as.execute();
-                View popUpView=inflater.inflate(R.layout.ftp_upload_popup_window, parent, false);
-                PopupWindow repairMessagePopUp=new PopupWindow(popUpView, width, height, focusable);
-                repairMessagePopUp.showAtLocation(view, Gravity.CENTER, 0, 0);
-                /**/
+                NavHostFragment.findNavController(fragment).navigate(R.id.action_DocMakeFragment_to_FTP_file_browser);
             }
         });
         lin.addView(dokFeltöltésButton);
         return convertView;
     }
 
-    private class SinteAsync extends AsyncTask<Void, String, Boolean> {
 
-        protected Boolean doInBackground(Void... voids) {
-            Log.d("FTPFut", "Fut");
-            /*SinteQRFtpCliens=new SinteQRFTPModel();
-            FtpPopupListViewAdapter adapter=new FtpPopupListViewAdapter(getContext(), R.layout.ftp_upload_popup_window_listview_item,SinteQRFtpCliens.createSinteFTPFileList(getContext()));
-            popUpFTPListView.setAdapter(adapter);*/
-
-            return true;
-        }
-
-        protected void onProgressUpdate(String... values){
-            super.onProgressUpdate();
-            Log.d("FTPUpdate", values[0]);
-        }
-
-        protected void onPostExecute(Boolean result) {
-            // execution of result of Long time consuming operation
-            super.onPostExecute(result);
-            Log.d("FTPMost", "Most"+" "+result);
-        }
-    }
 
     public void generalas(LinearLayout linSuperContainer, ArrayList<String> adatok, int position){
 

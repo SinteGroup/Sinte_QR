@@ -78,6 +78,9 @@
         <action
             android:id="@+id/action_DocMakeFragment_to_KopoalkatreszekFragment"
             app:destination="@id/KopoalkatreszekFragment" />
+        <action
+            android:id="@+id/action_DocMakeFragment_to_FTP_file_browser"
+            app:destination="@id/FTP_file_browser" />
     </fragment>
 
     <fragment
@@ -102,6 +105,13 @@
         android:name="hu.sintegroup.sinte_qr.Kopoalkatreszek_adatai"
         android:label="@string/kopoalkatreszek_Adatai_name"
         tools:layout="@layout/fragment_kopoalkatreszek_adatai">
+    </fragment>
+
+    <fragment
+        android:id="@+id/FTP_file_browser"
+        android:name="hu.sintegroup.sinte_qr.ftp_upload_popup_fragment"
+        android:label="FTP file browser"
+        tools:layout="@layout/fragment_ftp_upload_popup_fragment">
     </fragment>
 
 </navigation>
