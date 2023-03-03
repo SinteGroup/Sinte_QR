@@ -16,6 +16,7 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,13 +45,26 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.api.client.testing.http.apache.MockHttpClient;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +72,7 @@ import java.util.Locale;
 import java.util.TooManyListenersException;
 import java.util.concurrent.Executor;
 
+import hu.sintegroup.sinte_qr.data.Result;
 import hu.sintegroup.sinte_qr.databinding.FragmentFirstBinding;
 import hu.sintegroup.sinte_qr.databinding.FragmentQRReadBinding;
 
@@ -180,16 +195,19 @@ public class QRReadFragment extends Fragment {
                                         qrAdatok = new Bundle();
                                         qrAdatok.putString("QrMeresszama", meresSzama);
                                         NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_DocMakeFragment2, qrAdatok);
+                                        /*QrNavigateAsyncTask as=new QrNavigateAsyncTask();
+                                        as.execute();*/
 
-                                        String vaneIlyenQrUrl="https://www.weblapp.hu/Proba.php?method=checkValidQR&QrErteke="+meresSzama;
+
+                                        String vaneIlyenQrUrl="http://www.weblapp.hu/Proba.php?method=checkValidQR&QrErteke="+meresSzama;
                                         RequestQueue vaneIlyenQrQueue= Volley.newRequestQueue(getContext());
                                         StringRequest vaneIlyenQrRequest=new StringRequest(Request.Method.GET, vaneIlyenQrUrl, new Response.Listener<String>() {
                                             @Override
                                             public void onResponse(String response) {
-                                                Log.d("vaneIlyenQrQueue", String.valueOf(response.contains(meresSzama)));
                                                 Log.d("vaneIlyenQrResponse", response);
+
                                             }
-                                        }, new Response.ErrorListener() {
+                                        },   new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
                                                 Log.d("vaneIlyenQrQueue", error.getMessage());
@@ -276,4 +294,30 @@ public class QRReadFragment extends Fragment {
             Log.d("CamMex", camEx.getMessage());
         }
     }
+
+    class QrNavigateAsyncTask extends AsyncTask<Void, Void, Boolean>{
+
+        @SuppressLint("WrongThread")
+        protected Boolean doInBackground(Void... voids) {
+
+            try {
+                URL urls = new URL("http://www.weblapp.hu/Proba.php?method=checkValidQR&QrErteke="+meresSzama);
+                HttpURLConnection conn = (HttpURLConnection) urls.openConnection();
+                conn.setReadTimeout(150000); //milliseconds
+                conn.setConnectTimeout(15000); // milliseconds
+                conn.setRequestMethod("GET");
+                conn.connect();
+                Log.d("HttpQRReqOk", conn.getResponseMessage());
+
+            }catch (Exception f){
+
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            qrAdatok = new Bundle();
+            qrAdatok.putString("QrMeresszama", meresSzama);
+            NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_DocMakeFragment2, qrAdatok);
+        }}
 }

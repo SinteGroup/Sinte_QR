@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Environment;
 import android.util.Log;
@@ -128,10 +129,9 @@ public class ftp_upload_popup_fragment extends Fragment {
             if(statusParameter[0]){
                 try {
                     SinteQrFTPClient.sendCommand("OPTS UTF8 ON");
-                    String InputfilenameAndPath="\\Belső tárhely\\Documents\\QRCode_printing.pdf";
-                    String OutputFilenameAndPath="\\QRCode_printing.pdf";
-                    FileInputStream fis=new FileInputStream(new File(InputfilenameAndPath));
-                    SinteQrFTPClient.storeFile(OutputFilenameAndPath, fis);
+                    File QRAppDataDirectory=new File(Environment.getDataDirectory()+"/sajatQRProbaDir/");
+                    QRAppDataDirectory.createNewFile();
+
 
                 } catch (IOException e) {
                     Log.e("FTPFileUploadErr", e.getMessage());

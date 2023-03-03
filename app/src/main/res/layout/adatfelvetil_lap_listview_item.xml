@@ -18,12 +18,15 @@
             android:minWidth="370dp"
             android:minHeight="80dp"
             android:id="@+id/adatfelveti_item_text_view"/>
+
         <EditText
+            android:id="@+id/adatfelveteli_item_editText_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="80dp"
+            android:bufferType="normal"
             android:minWidth="370dp"
-            android:id="@+id/adatfelvetili_item_editText_view"/>
+            android:minHeight="80dp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
