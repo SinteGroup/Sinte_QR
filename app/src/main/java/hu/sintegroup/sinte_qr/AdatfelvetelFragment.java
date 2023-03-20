@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,7 +85,8 @@ public class AdatfelvetelFragment extends Fragment {
 
         ListView adatfelveteli_listView=(ListView) view.findViewById(R.id.adatfelvetelilap_Listview);
         ArrayList<String> adatfelveteli_mezok=new ArrayList<>();
-        adatfelveteli_lap_listview_adapter adatfelveteliAdapter=new adatfelveteli_lap_listview_adapter(getContext(), adatfelveteli_mezok);
+        Hashtable<String, String> edittextItems=new Hashtable<>();
+        adatfelveteli_lap_listview_adapter adatfelveteliAdapter=new adatfelveteli_lap_listview_adapter(getContext(), adatfelveteli_mezok, edittextItems);
 
         RequestQueue adatfelveteli_listazo_queqe= Volley.newRequestQueue(getContext());
         String adatfelveteli_lap_URL="http://www.weblapp.hu/Proba.php?method=adatfelveteli_lap";

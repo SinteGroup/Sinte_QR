@@ -11,22 +11,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.gson.internal.bind.JsonTreeReader;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class adatfelveteli_lap_listview_adapter extends ArrayAdapter<String> {
 
     ArrayList<String> adatfelveteli_Items;
     ArrayList<String> adatFelvetliEdittextContent=new ArrayList<>();
-
-    public adatfelveteli_lap_listview_adapter(@NonNull Context context, @NonNull ArrayList<String> objects) {
+    Hashtable<String, String> editTextItems=new Hashtable<>();
+    public adatfelveteli_lap_listview_adapter(@NonNull Context context, @NonNull ArrayList<String> objects, Hashtable<String, String> editTextItems) {
         super(context, R.layout.adatfelvetil_lap_listview_item, objects);
         this.adatfelveteli_Items=objects;
+        this.editTextItems=editTextItems;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -38,6 +42,20 @@ public class adatfelveteli_lap_listview_adapter extends ArrayAdapter<String> {
         adatfelveteli_mezo.setText(adatfelveteli_Items.get(position));
 
         EditText adatFelveteliItem = (EditText) convertView.findViewById(R.id.adatfelveteli_item_editText_view);
+        adatFelveteliItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(!hasFocus) {
+                    Log.d("LostFocus", "Locus is lost: "+adatFelveteliItem.getText()+" Elemszám: "+editTextItems.size());
+                    if(!String.valueOf(adatFelveteliItem.getText()).isEmpty()){
+                        editTextItems.put(String.valueOf(adatfelveteli_mezo.getText()), String.valueOf(adatFelveteliItem.getText()));
+                        for (String temp:editTextItems.keySet()) {
+                            Log.d("ArrayEdittextItems", " TextView: "+temp+" "+editTextItems.get(temp));
+                        }
+                    }
+                }
+            }
+        });
 
         if(!adatFelvetliEdittextContent.isEmpty()) {
             adatFelveteliItem.setText(adatFelvetliEdittextContent.get(position));
