@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.ArraySet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,14 +36,12 @@ import java.util.Hashtable;
  */
 public class AdatfelvetelFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    ArrayList<String> adatfelveteli_mezok=new ArrayList<>();
+    Hashtable<String, String> edittextItems=new Hashtable<>();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ListView adatfelveteli_listView=null;
+    adatfelveteli_lap_listview_adapter adatfelveteliAdapter=null;
+
 
     public AdatfelvetelFragment() {
         // Required empty public constructor
@@ -59,8 +59,6 @@ public class AdatfelvetelFragment extends Fragment {
     public static AdatfelvetelFragment newInstance(String param1, String param2) {
         AdatfelvetelFragment fragment = new AdatfelvetelFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,10 +66,6 @@ public class AdatfelvetelFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -83,10 +77,23 @@ public class AdatfelvetelFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
-        ListView adatfelveteli_listView=(ListView) view.findViewById(R.id.adatfelvetelilap_Listview);
-        ArrayList<String> adatfelveteli_mezok=new ArrayList<>();
-        Hashtable<String, String> edittextItems=new Hashtable<>();
-        adatfelveteli_lap_listview_adapter adatfelveteliAdapter=new adatfelveteli_lap_listview_adapter(getContext(), adatfelveteli_mezok, edittextItems);
+        adatfelveteli_listView = (ListView) view.findViewById(R.id.adatfelvetelilap_Listview);
+        adatfelveteliAdapter = new adatfelveteli_lap_listview_adapter(getContext(), adatfelveteli_mezok, edittextItems);
+
+        Button SqlBeButton=(Button) view.findViewById(R.id.AdatbázisbaMentesButton);
+        SqlBeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Set<String> keys=edittextItems.keySet();
+                    for (String temp:keys) {
+                        Log.d("AdatokLekérdezése", "Felvett adatok: "+temp+": "+edittextItems.get(temp));
+                    }
+                }catch (Exception f){
+                    Log.e("AdatokfelvételiHiba", f.getMessage());
+                }
+            }
+        });
 
         RequestQueue adatfelveteli_listazo_queqe= Volley.newRequestQueue(getContext());
         String adatfelveteli_lap_URL="http://www.weblapp.hu/Proba.php?method=adatfelveteli_lap";

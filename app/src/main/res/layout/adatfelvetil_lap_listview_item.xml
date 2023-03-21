@@ -23,9 +23,16 @@
             android:id="@+id/adatfelveteli_item_editText_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoText="true"
             android:bufferType="normal"
+            android:enabled="true"
+            android:focusable="auto"
+            android:focusableInTouchMode="true"
+            android:freezesText="true"
             android:minWidth="370dp"
-            android:minHeight="80dp" />
+            android:minHeight="80dp"
+            android:selectAllOnFocus="true"
+            android:singleLine="true" />
 
     </LinearLayout>
 

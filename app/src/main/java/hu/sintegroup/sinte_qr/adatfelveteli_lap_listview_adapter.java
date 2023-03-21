@@ -26,7 +26,7 @@ public class adatfelveteli_lap_listview_adapter extends ArrayAdapter<String> {
 
     ArrayList<String> adatfelveteli_Items;
     ArrayList<String> adatFelvetliEdittextContent=new ArrayList<>();
-    Hashtable<String, String> editTextItems=new Hashtable<>();
+    Hashtable<String, String> editTextItems=new Hashtable<>(); //HashTable-ben a key az adatkategória és a value az adat értéke.
     public adatfelveteli_lap_listview_adapter(@NonNull Context context, @NonNull ArrayList<String> objects, Hashtable<String, String> editTextItems) {
         super(context, R.layout.adatfelvetil_lap_listview_item, objects);
         this.adatfelveteli_Items=objects;
@@ -49,6 +49,9 @@ public class adatfelveteli_lap_listview_adapter extends ArrayAdapter<String> {
                     Log.d("LostFocus", "Locus is lost: "+adatFelveteliItem.getText()+" Elemszám: "+editTextItems.size());
                     if(!String.valueOf(adatFelveteliItem.getText()).isEmpty()){
                         editTextItems.put(String.valueOf(adatfelveteli_mezo.getText()), String.valueOf(adatFelveteliItem.getText()));
+
+
+                        //Itt meghívom mindig az SQL Insertet egy valuera. Egyben kiírva nagyon hosszú lenne a link.
                         for (String temp:editTextItems.keySet()) {
                             Log.d("ArrayEdittextItems", " TextView: "+temp+" "+editTextItems.get(temp));
                         }
@@ -57,12 +60,7 @@ public class adatfelveteli_lap_listview_adapter extends ArrayAdapter<String> {
             }
         });
 
-        if(!adatFelvetliEdittextContent.isEmpty()) {
-            adatFelveteliItem.setText(adatFelvetliEdittextContent.get(position));
-        }
-
-
-
+        adatFelveteliItem.setText(editTextItems.get(adatfelveteli_mezo.getText()));
         return convertView;
     }
 }

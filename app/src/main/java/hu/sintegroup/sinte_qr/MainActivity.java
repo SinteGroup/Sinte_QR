@@ -1,5 +1,6 @@
 package hu.sintegroup.sinte_qr;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); //Fixen állóra állítva
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
