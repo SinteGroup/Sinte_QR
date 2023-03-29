@@ -15,6 +15,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.gson.internal.bind.JsonTreeReader;
 
@@ -50,8 +56,6 @@ public class adatfelveteli_lap_listview_adapter extends ArrayAdapter<String> {
                     if(!String.valueOf(adatFelveteliItem.getText()).isEmpty()){
                         editTextItems.put(String.valueOf(adatfelveteli_mezo.getText()), String.valueOf(adatFelveteliItem.getText()));
 
-
-                        //Itt meghívom mindig az SQL Insertet egy valuera. Egyben kiírva nagyon hosszú lenne a link.
                         for (String temp:editTextItems.keySet()) {
                             Log.d("ArrayEdittextItems", " TextView: "+temp+" "+editTextItems.get(temp));
                         }

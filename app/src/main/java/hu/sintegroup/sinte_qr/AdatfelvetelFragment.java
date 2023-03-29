@@ -80,6 +80,9 @@ public class AdatfelvetelFragment extends Fragment {
         adatfelveteli_listView = (ListView) view.findViewById(R.id.adatfelvetelilap_Listview);
         adatfelveteliAdapter = new adatfelveteli_lap_listview_adapter(getContext(), adatfelveteli_mezok, edittextItems);
 
+        final String[] columns = {""};
+        String values="";
+
         Button SqlBeButton=(Button) view.findViewById(R.id.AdatbázisbaMentesButton);
         SqlBeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,11 +90,29 @@ public class AdatfelvetelFragment extends Fragment {
                 try {
                     Set<String> keys=edittextItems.keySet();
                     for (String temp:keys) {
-                        Log.d("AdatokLekérdezése", "Felvett adatok: "+temp+": "+edittextItems.get(temp));
+                        Log.d("AdatokLekérdezése", "Felvett adatok: "+temp+": "+edittextItems.get(temp)); //Felolvasni a halmazt egy stringbe és azt írni a linkbe. Így lesz automatikus.
                     }
                 }catch (Exception f){
                     Log.e("AdatokfelvételiHiba", f.getMessage());
                 }
+
+                String insertDataUrl="";//http://www.weblapp.hu/Proba.php?method=insertData&column="+columns_2[0]+"&values="+values_2[0];
+                Log.d("InsertURL", insertDataUrl);
+
+                RequestQueue insertDataQueqe= Volley.newRequestQueue(getContext());
+                StringRequest insertDataStringRequest=new StringRequest(Request.Method.GET, insertDataUrl, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("insertDataLog", response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("insertDataLogError", error.getMessage());
+                    }
+                });
+                insertDataQueqe.add(insertDataStringRequest);
+
             }
         });
 
