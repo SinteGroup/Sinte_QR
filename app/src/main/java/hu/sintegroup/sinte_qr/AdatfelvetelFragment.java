@@ -80,8 +80,8 @@ public class AdatfelvetelFragment extends Fragment {
         adatfelveteli_listView = (ListView) view.findViewById(R.id.adatfelvetelilap_Listview);
         adatfelveteliAdapter = new adatfelveteli_lap_listview_adapter(getContext(), adatfelveteli_mezok, edittextItems);
 
-        final String[] columns = {""};
-        String values="";
+        String[] columns_2 = {"Gép neve"};
+        String[] values_2={"Ez egy név az appból"};
 
         Button SqlBeButton=(Button) view.findViewById(R.id.AdatbázisbaMentesButton);
         SqlBeButton.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +96,7 @@ public class AdatfelvetelFragment extends Fragment {
                     Log.e("AdatokfelvételiHiba", f.getMessage());
                 }
 
-                String insertDataUrl="";//http://www.weblapp.hu/Proba.php?method=insertData&column="+columns_2[0]+"&values="+values_2[0];
+                String insertDataUrl="http://www.weblapp.hu/Proba.php?method=insertData&column="+columns_2[0]+"&values="+values_2[0];
                 Log.d("InsertURL", insertDataUrl);
 
                 RequestQueue insertDataQueqe= Volley.newRequestQueue(getContext());
