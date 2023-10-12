@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.firebase.database.DataSnapshot;
+/*import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.ValueEventListener;*/
 
 import java.util.Date;
 import java.util.HashMap;
@@ -100,7 +100,7 @@ public class FirstFragment extends Fragment {
 
     public void getData(String child){
 
-        helper.adatbázisReferencia.addValueEventListener(new ValueEventListener() {
+        /*helper.adatbázisReferencia.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
@@ -116,7 +116,7 @@ public class FirstFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 
     @Override

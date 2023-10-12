@@ -6,17 +6,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.database.DataSnapshot;
+/*import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.ValueEventListener;*/
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class sinteQRFirebaseHelper {
-    FirebaseDatabase adatbazis=null;
+    /*FirebaseDatabase adatbazis=null;
     DatabaseReference adatbázisReferencia =null;
     Gepek alapBeallitasGepek;
 
@@ -33,5 +33,5 @@ public class sinteQRFirebaseHelper {
         adatbázisReferencia.child("Alapbeállítások").setValue(alapBeallitasGepek);
         // adatbázisReferencia.child("Alapbeállítások").child("Berendezesek: ").setValue(alapBeallitasokBerendezesek);
 
-    }
+    }*/
 }
