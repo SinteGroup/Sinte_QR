@@ -76,23 +76,26 @@ public class AdatfelvetelFragment extends Fragment {
         adatfelveteli_listView = view.findViewById(R.id.adatfelvetelilap_Listview);
         adatfelveteliAdapter = new adatfelveteli_lap_listview_adapter(getContext(), adatfelveteli_mezok, edittextItems);
 
-        String[] columns_2 = {"Gép neve"};
-        String[] values_2={"Ez egy név az appból"};
+        String columns_2 ="";
+        String values_2="";
 
         Button SqlBeButton= view.findViewById(R.id.AdatbázisbaMentesButton);
         SqlBeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                adatfelveteliAdapter.notifyDataSetChanged();
                 try {
                     Set<String> keys=edittextItems.keySet();
                     for (String temp:keys) {
                         Log.d("AdatokLekérdezése", "Felvett adatok: "+temp+": "+edittextItems.get(temp)); //Felolvasni a halmazt egy stringbe és azt írni a linkbe. Így lesz automatikus.
+                        columns_2.concat("'"+temp+"', ");
+                        values_2.concat("'"+edittextItems.get(temp)+"', "); //Érték
                     }
                 }catch (Exception f){
                     Log.e("AdatokfelvételiHiba", f.getMessage());
                 }
 
-                String insertDataUrl="http://www.weblapp.hu/Proba.php?method=insertData&column="+columns_2[0]+"&values="+values_2[0];
+                String insertDataUrl="http://www.weblapp.hu/Proba.php?method=insertData&column="+columns_2+"&values="+values_2; //SQL insert stringet előállítani
                 Log.d("InsertURL", insertDataUrl);
 
                 RequestQueue insertDataQueqe= Volley.newRequestQueue(getContext());

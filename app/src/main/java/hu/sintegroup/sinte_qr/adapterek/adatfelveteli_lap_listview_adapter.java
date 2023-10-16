@@ -19,8 +19,7 @@ import hu.sintegroup.sinte_qr.R;
 public class adatfelveteli_lap_listview_adapter extends ArrayAdapter<String> {
 
     ArrayList<String> adatfelveteli_Items;
-    ArrayList<String> adatFelvetliEdittextContent=new ArrayList<>();
-    Hashtable<String, String> editTextItems=new Hashtable<>(); //HashTable-ben a key az adatkategória és a value az adat értéke.
+    Hashtable<String, String> editTextItems=null; //HashTable-ben a key az adatkategória és a value az adat értéke.
     public adatfelveteli_lap_listview_adapter(@NonNull Context context, @NonNull ArrayList<String> objects, Hashtable<String, String> editTextItems) {
         super(context, R.layout.adatfelvetil_lap_listview_item, objects);
         this.adatfelveteli_Items=objects;

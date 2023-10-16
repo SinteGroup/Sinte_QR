@@ -58,7 +58,6 @@ public class QRReadFragment extends Fragment {
 
     private Bundle qrAdatok;
     private String meresSzama;
-    private String gyartmany_azonosito;
 
     public static String firebasePath = "";
 
@@ -150,24 +149,19 @@ public class QRReadFragment extends Fragment {
                                             Barcode barcodeTemp = barcodeResult.valueAt(i);
                                             String Value = barcodeTemp.displayValue;
                                             Log.d("BarcodeGet", Value);
-                                            if(!Value.contains("n=")){
-                                                meresSzama=Value;
-                                            }else {
 
-                                                String[] tempValues = Value.split("n=");
-
-                                                if (tempValues[1].contains("&t=")) {
-                                                    String[] tempValues_t = tempValues[1].split("&t="); //Ha van gyártmányazonosító, akkor azt is leválaszja, egyébként csak felmérés számot ad át.
+                                            String[] tempValues = Value.split("n=");
+                                            if (tempValues[1].contains("&t=")) {
+                                               String[] tempValues_t = tempValues[1].split("&t="); //Ha van gyártmányazonosító, akkor azt is leválaszja, egyébként csak felmérés számot ad át.
                                                     meresSzama = tempValues_t[0];
-                                                    gyartmany_azonosito = tempValues_t[1];
-                                                } else {
+                                               } else {
                                                     meresSzama = tempValues[1];
-                                                }
                                             }
                                         }
 
                                         qrAdatok = new Bundle();
                                         qrAdatok.putString("QrMeresszama", meresSzama);
+                                        Log.d("QrMeresszama_log", meresSzama);
                                         NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_DocMakeFragment2, qrAdatok);
                                         /*QrNavigateAsyncTask as=new QrNavigateAsyncTask();
                                         as.execute();*/
@@ -179,7 +173,24 @@ public class QRReadFragment extends Fragment {
                                             @Override
                                             public void onResponse(String response) {
                                                 Log.d("vaneIlyenQrResponse", response);
+                                                //Qr kód aktiválás
+                                                if(response.contains("Not valid")){
+                                                    String QrAktivalasUrl="http://www.weblapp.hu/Proba.php?method=QrKodAktivalas&QrKodErteke="+meresSzama;
+                                                    RequestQueue QrAktivalasQueue= Volley.newRequestQueue(getContext());
+                                                    StringRequest QrAktivalasRequest=new StringRequest(Request.Method.GET, QrAktivalasUrl, new Response.Listener<String>() {
 
+                                                        @Override
+                                                        public void onResponse(String response) {
+                                                            Log.d("QrAktiválásSiker", "Qr kód "+response+": "+meresSzama);
+                                                        }
+                                                    }, new Response.ErrorListener() {
+                                                        @Override
+                                                        public void onErrorResponse(VolleyError error) {
+
+                                                        }
+                                                    });
+                                                    QrAktivalasQueue.add(QrAktivalasRequest);
+                                                }
                                             }
                                         },   new Response.ErrorListener() {
                                             @Override
@@ -268,30 +279,4 @@ public class QRReadFragment extends Fragment {
             Log.d("CamMex", camEx.getMessage());
         }
     }
-
-    class QrNavigateAsyncTask extends AsyncTask<Void, Void, Boolean>{
-
-        @SuppressLint("WrongThread")
-        protected Boolean doInBackground(Void... voids) {
-
-            try {
-                URL urls = new URL("http://www.weblapp.hu/Proba.php?method=checkValidQR&QrErteke="+meresSzama);
-                HttpURLConnection conn = (HttpURLConnection) urls.openConnection();
-                conn.setReadTimeout(150000); //milliseconds
-                conn.setConnectTimeout(15000); // milliseconds
-                conn.setRequestMethod("GET");
-                conn.connect();
-                Log.d("HttpQRReqOk", conn.getResponseMessage());
-
-            }catch (Exception f){
-
-            }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            qrAdatok = new Bundle();
-            qrAdatok.putString("QrMeresszama", meresSzama);
-            NavHostFragment.findNavController(QRReadFragment.this).navigate(R.id.action_QRReadFragment_to_DocMakeFragment2, qrAdatok);
-        }}
 }
