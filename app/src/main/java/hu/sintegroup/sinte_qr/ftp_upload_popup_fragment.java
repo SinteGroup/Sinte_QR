@@ -1,13 +1,11 @@
 package hu.sintegroup.sinte_qr;
 
-import android.content.Context;
-import android.content.ContextWrapper;
+import android.media.session.MediaController;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Environment;
 import android.util.Log;
@@ -16,14 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.*;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import hu.sintegroup.sinte_qr.adapterek.Ftp_file_list_adapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,8 +35,8 @@ public class ftp_upload_popup_fragment extends Fragment {
 
    private Ftp_file_list_adapter adapter;
    private ListView FTPLista;
-   private ArrayList<String> fileList=new ArrayList<>();
-   private FTPClient SinteQrFTPClient;
+   private final ArrayList<String> fileList=new ArrayList<>();
+   //private FTPClient SinteQrFTPClient;
    private Boolean statusConnectOk=false;
 
     public ftp_upload_popup_fragment() {
@@ -67,7 +65,7 @@ public class ftp_upload_popup_fragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
-        FTPLista=(ListView) view.findViewById(R.id.FtpFileList);
+        FTPLista= view.findViewById(R.id.FtpFileList);
 
         SinteFTPFileListAsync as=new SinteFTPFileListAsync();
         Log.d("FTPTaskResult", String.valueOf(as.execute().getStatus()));
@@ -86,7 +84,7 @@ public class ftp_upload_popup_fragment extends Fragment {
 
             Boolean status=false;
 
-            SinteQrFTPClient = new FTPClient();
+            FTPClient SinteQrFTPClient = new FTPClient();
             try {
                 SinteQrFTPClient.connect("ftp.weblapp.hu", 21);
                 status=SinteQrFTPClient.login("qr_ftp@weblapp.hu", "Ez66karakter");
@@ -128,7 +126,7 @@ public class ftp_upload_popup_fragment extends Fragment {
 
             if(statusParameter[0]){
                 try {
-                    SinteQrFTPClient.sendCommand("OPTS UTF8 ON");
+                    //SinteQrFTPClient.sendCommand("OPTS UTF8 ON");
                     File QRAppDataDirectory=new File(Environment.getDataDirectory()+"/sajatQRProbaDir/");
                     QRAppDataDirectory.createNewFile();
 

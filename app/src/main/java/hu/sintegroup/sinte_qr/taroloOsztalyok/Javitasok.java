@@ -1,4 +1,4 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.taroloOsztalyok;
 
 import java.util.Date;
 
@@ -46,7 +46,7 @@ public class Javitasok {
 
     public static class Check{
 
-        protected String checkName;
+        public String checkName;
 
         public Check(String name){
             this.checkName=name;

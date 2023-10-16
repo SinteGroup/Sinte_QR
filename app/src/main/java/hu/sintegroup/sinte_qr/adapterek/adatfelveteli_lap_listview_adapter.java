@@ -1,32 +1,20 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.adapterek;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.internal.TextWatcherAdapter;
-import com.google.gson.internal.bind.JsonTreeReader;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
+
+import hu.sintegroup.sinte_qr.R;
 
 public class adatfelveteli_lap_listview_adapter extends ArrayAdapter<String> {
 
@@ -44,10 +32,10 @@ public class adatfelveteli_lap_listview_adapter extends ArrayAdapter<String> {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         convertView = inflater.inflate(R.layout.adatfelvetil_lap_listview_item, parent, false);
 
-        TextView adatfelveteli_mezo = (TextView) convertView.findViewById(R.id.adatfelveti_item_text_view);
+        TextView adatfelveteli_mezo = convertView.findViewById(R.id.adatfelveti_item_text_view);
         adatfelveteli_mezo.setText(adatfelveteli_Items.get(position));
 
-        EditText adatFelveteliItem = (EditText) convertView.findViewById(R.id.adatfelveteli_item_editText_view);
+        EditText adatFelveteliItem = convertView.findViewById(R.id.adatfelveteli_item_editText_view);
         adatFelveteliItem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {

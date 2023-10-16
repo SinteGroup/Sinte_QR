@@ -9,19 +9,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import hu.sintegroup.sinte_qr.adapterek.sinteQrExpandableListviewAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link JavitasokFragment#newInstance} factory method to
  * create an instance of this fragment.
+ * @noinspection ALL
  */
 public class JavitasokFragment extends Fragment {
 

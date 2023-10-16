@@ -23,15 +23,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-
-import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import org.apache.commons.net.ftp.*;
-
+import hu.sintegroup.sinte_qr.adapterek.docmakeLsitviewAdapter;
 import hu.sintegroup.sinte_qr.databinding.FragmentDocMakeBinding;
 
 /**
@@ -91,10 +85,10 @@ public class DocMakeFragment extends Fragment {
 
         String QrMeresszama=getArguments().getString("QrMeresszama");
         Log.d("QrAdatok", QrMeresszama);
-        TextView meresNeve=(TextView) view.findViewById(R.id.meresNeve);
+        TextView meresNeve= view.findViewById(R.id.meresNeve);
         meresNeve.setText(QrMeresszama);
 
-        ListView QrSqlAdatokListView=(ListView) view.findViewById(R.id.QrSQLadatokListView);
+        ListView QrSqlAdatokListView= view.findViewById(R.id.QrSQLadatokListView);
         ArrayList<String> adatok=new ArrayList<>();
         ArrayAdapter QRListViewAdapter=new docmakeLsitviewAdapter(adatok, getContext(), DocMakeFragment.this);
 
@@ -123,7 +117,7 @@ public class DocMakeFragment extends Fragment {
         });
         listazo_queqe.add(QrReadRequesst);
 
-        Button javitasokraButton=(Button) view.findViewById(R.id.JavításButton);
+        Button javitasokraButton= view.findViewById(R.id.JavításButton);
         javitasokraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,7 +127,7 @@ public class DocMakeFragment extends Fragment {
             }
         });
 
-        Button adatfelvetelButton=(Button) view.findViewById(R.id.AdatfelvetelButton);
+        Button adatfelvetelButton= view.findViewById(R.id.AdatfelvetelButton);
         adatfelvetelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +135,7 @@ public class DocMakeFragment extends Fragment {
             }
         });
 
-        Button ellenorzoListaButton=(Button) view.findViewById(R.id.EllenorzoListaButton);
+        Button ellenorzoListaButton= view.findViewById(R.id.EllenorzoListaButton);
         ellenorzoListaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

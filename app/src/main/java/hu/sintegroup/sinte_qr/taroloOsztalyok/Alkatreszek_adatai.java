@@ -1,4 +1,4 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.taroloOsztalyok;
 
 import java.util.ArrayList;
 

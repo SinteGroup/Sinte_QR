@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Set;
 
+import hu.sintegroup.sinte_qr.adapterek.adatfelveteli_lap_listview_adapter;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AdatfelvetelFragment#newInstance} factory method to
@@ -71,13 +73,13 @@ public class AdatfelvetelFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
-        adatfelveteli_listView = (ListView) view.findViewById(R.id.adatfelvetelilap_Listview);
+        adatfelveteli_listView = view.findViewById(R.id.adatfelvetelilap_Listview);
         adatfelveteliAdapter = new adatfelveteli_lap_listview_adapter(getContext(), adatfelveteli_mezok, edittextItems);
 
         String[] columns_2 = {"Gép neve"};
         String[] values_2={"Ez egy név az appból"};
 
-        Button SqlBeButton=(Button) view.findViewById(R.id.AdatbázisbaMentesButton);
+        Button SqlBeButton= view.findViewById(R.id.AdatbázisbaMentesButton);
         SqlBeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

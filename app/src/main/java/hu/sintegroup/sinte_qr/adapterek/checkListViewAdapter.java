@@ -1,6 +1,5 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.adapterek;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,6 +21,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+
+import hu.sintegroup.sinte_qr.R;
+import hu.sintegroup.sinte_qr.taroloOsztalyok.Javitasok;
 
 public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
 
@@ -39,17 +40,17 @@ public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
             LayoutInflater inflater=LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.checklistitem, parent, false);
 
-            TextView elemCime=(TextView) convertView.findViewById(R.id.checkListItemId);
+            TextView elemCime= convertView.findViewById(R.id.checkListItemId);
             elemCime.setText(tempCheck.checkName);
 
             RequestQueue queue = Volley.newRequestQueue(getContext());
 
-            Button checkItemOkButton=(Button) convertView.findViewById(R.id.checkOkButton);
+            Button checkItemOkButton= convertView.findViewById(R.id.checkOkButton);
             checkItemOkButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d("OkButton", "OK: "+position);
-                    String CheckOkButtonUrl="http://www.weblapp.hu/Proba.php?method=insert&column="+String.valueOf(elemCime.getText())+"&values=Ok";
+                    String CheckOkButtonUrl="http://www.weblapp.hu/Proba.php?method=insert&column="+ elemCime.getText() +"&values=Ok";
                     StringRequest CheckOkButtonRequest=new StringRequest(Request.Method.GET, CheckOkButtonUrl, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -65,7 +66,7 @@ public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
                 }
             });
 
-            Button checkItemRepairButton=(Button) convertView.findViewById(R.id.checkRepairButton);
+            Button checkItemRepairButton= convertView.findViewById(R.id.checkRepairButton);
             checkItemRepairButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -80,10 +81,10 @@ public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
                     PopupWindow repairMessagePopUp=new PopupWindow(popUpViiew, width, height, focusable);
                     repairMessagePopUp.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-                    EditText repairMessage=(EditText)popUpViiew.findViewById(R.id.getRepairMessageEditText);
+                    EditText repairMessage= popUpViiew.findViewById(R.id.getRepairMessageEditText);
                     RequestQueue queueRepair=Volley.newRequestQueue(getContext());
 
-                    Button repairSendMessageButton=(Button)popUpViiew.findViewById(R.id.repairWindowOkButton);
+                    Button repairSendMessageButton= popUpViiew.findViewById(R.id.repairWindowOkButton);
                     repairSendMessageButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -106,7 +107,7 @@ public class checkListViewAdapter extends ArrayAdapter<Javitasok.Check> {
                 }
             });
 
-            Button itemDeleteButton=(Button) convertView.findViewById(R.id.checkitemDelete);
+            Button itemDeleteButton= convertView.findViewById(R.id.checkitemDelete);
             itemDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

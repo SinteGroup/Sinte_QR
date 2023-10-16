@@ -80,7 +80,7 @@ public class QRGenerateFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
-        Button printerBut=(Button) view.findViewById(R.id.print_Button);
+        Button printerBut= view.findViewById(R.id.print_Button);
         printerBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,10 +90,10 @@ public class QRGenerateFragment extends Fragment {
             }
         });
 
-        ImageView img=(ImageView) view.findViewById(R.id.QRImage);
-        EditText qrText=(EditText) view.findViewById(R.id.qrCreateText);
+        ImageView img= view.findViewById(R.id.QRImage);
+        EditText qrText= view.findViewById(R.id.qrCreateText);
 
-        Button qrCreate=(Button)view.findViewById(R.id.QRCreate_Button);
+        Button qrCreate= view.findViewById(R.id.QRCreate_Button);
         qrCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

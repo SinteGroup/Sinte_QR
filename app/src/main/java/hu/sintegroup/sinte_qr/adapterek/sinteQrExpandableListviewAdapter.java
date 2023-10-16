@@ -1,4 +1,4 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.adapterek;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import hu.sintegroup.sinte_qr.R;
+
 public class sinteQrExpandableListviewAdapter extends BaseExpandableListAdapter {
 
     Context context=null;
     HashMap<String, List<String>> items;
 
-    sinteQrExpandableListviewAdapter(Context context, HashMap<String, List<String>> items){
+    public sinteQrExpandableListviewAdapter(Context context, HashMap<String, List<String>> items){
         this.context=context;
         this.items=items;
     }
@@ -63,7 +65,7 @@ public class sinteQrExpandableListviewAdapter extends BaseExpandableListAdapter 
             LayoutInflater inflate=(LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertview=inflate.inflate(R.layout.javitasoklistviewitem, null);
         }
-        TextView itemTextView=(TextView) convertview.findViewById(R.id.itemTitleTextview);
+        TextView itemTextView= convertview.findViewById(R.id.itemTitleTextview);
         itemTextView.setText("Item: "+position+" "+items);
         return convertview;
     }
@@ -74,7 +76,7 @@ public class sinteQrExpandableListviewAdapter extends BaseExpandableListAdapter 
             LayoutInflater inflate=(LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertview=inflate.inflate(R.layout.javitasoklistviewchilditem, null);
         }
-        TextView itemTextView=(TextView) convertview.findViewById(R.id.listviewItemChildTextView);
+        TextView itemTextView= convertview.findViewById(R.id.listviewItemChildTextView);
         itemTextView.setText("Item: "+position+" "+items);
         return convertview;
     }

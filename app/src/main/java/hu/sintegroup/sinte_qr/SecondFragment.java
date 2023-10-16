@@ -1,20 +1,17 @@
 package hu.sintegroup.sinte_qr;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import java.util.ArrayList;
 
 import hu.sintegroup.sinte_qr.databinding.FragmentSecondBinding;
+import hu.sintegroup.sinte_qr.taroloOsztalyok.Gepek;
 
 public class SecondFragment extends Fragment {
 

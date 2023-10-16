@@ -5,8 +5,8 @@ package hu.sintegroup.sinte_qr.data.model;
  */
 public class LoggedInUser {
 
-    private String userId;
-    private String displayName;
+    private final String userId;
+    private final String displayName;
 
     public LoggedInUser(String userId, String displayName) {
         this.userId = userId;

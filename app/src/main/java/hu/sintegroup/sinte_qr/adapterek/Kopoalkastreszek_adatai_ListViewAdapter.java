@@ -1,4 +1,4 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.adapterek;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,12 +13,14 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
+import hu.sintegroup.sinte_qr.R;
+
 public class Kopoalkastreszek_adatai_ListViewAdapter extends ArrayAdapter<String> {
 
-    private ArrayList<String> resource;
+    private final ArrayList<String> resource;
 
     public Kopoalkastreszek_adatai_ListViewAdapter(@NonNull Context context, ArrayList<String> resource) {
-        super(context,R.layout.fragment_kopoalkatreszek_adatai_listview_item ,resource);
+        super(context, R.layout.fragment_kopoalkatreszek_adatai_listview_item ,resource);
         this.resource=resource;
     }
 
@@ -27,10 +29,10 @@ public class Kopoalkastreszek_adatai_ListViewAdapter extends ArrayAdapter<String
         LayoutInflater inflater=LayoutInflater.from(getContext());
         convertView = inflater.inflate(R.layout.fragment_kopoalkatreszek_adatai_listview_item, parent, false);
 
-        TextView itemsText=(TextView) convertView.findViewById(R.id.kopoalkatresz_item_text_view);
+        TextView itemsText= convertView.findViewById(R.id.kopoalkatresz_item_text_view);
         itemsText.setText(resource.get(position));
 
-        EditText itemsEditText=(EditText) convertView.findViewById(R.id.kopoalkatresz_item_editText);
+        EditText itemsEditText= convertView.findViewById(R.id.kopoalkatresz_item_editText);
         itemsEditText.setHint(resource.get(position));
 
         return convertView;

@@ -1,6 +1,5 @@
 package hu.sintegroup.sinte_qr;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,12 +22,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
+
+import hu.sintegroup.sinte_qr.adapterek.checkListViewAdapter;
+import hu.sintegroup.sinte_qr.taroloOsztalyok.Javitasok;
 
 public class CheckListFragment extends Fragment {
 
-    private String filterTag="2022-000-131";
+    private final String filterTag="2022-000-131";
 
     public CheckListFragment() {
         // Required empty public constructor
@@ -50,10 +51,10 @@ public class CheckListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ListView checkListView=(ListView) view.findViewById(R.id.checkLista);
+        ListView checkListView= view.findViewById(R.id.checkLista);
         ArrayList<Javitasok.Check> checkLista=new ArrayList<>();
 
-        EditText tempEditText=(EditText)view.findViewById(R.id.addColumnEditText);
+        EditText tempEditText= view.findViewById(R.id.addColumnEditText);
 
         final String[] responseString = {""};
         RequestQueue queue = Volley.newRequestQueue(getContext());
@@ -76,7 +77,7 @@ public class CheckListFragment extends Fragment {
 
                                 ArrayAdapter<Javitasok.Check> checkListViewAdapter=new checkListViewAdapter(checkLista, getContext());
                                 final Integer[] i = {0};
-                                Button checkAddItemButton=(Button)view.findViewById(R.id.addCheckItemButton);
+                                Button checkAddItemButton= view.findViewById(R.id.addCheckItemButton);
                                 checkAddItemButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -85,7 +86,7 @@ public class CheckListFragment extends Fragment {
                                             Javitasok.Check tempCheck = new Javitasok.Check(String.valueOf(tempEditText.getText()));
                                             checkLista.add(tempCheck);
 
-                                            String customColumnUrl="http://www.weblapp.hu/Proba.php?method=insertcheckcolumn&column_name="+String.valueOf(tempEditText.getText());
+                                            String customColumnUrl="http://www.weblapp.hu/Proba.php?method=insertcheckcolumn&column_name="+ tempEditText.getText();
                                             Log.d("customColumnUrl", customColumnUrl);
                                             StringRequest customColumnStringRequest=new StringRequest(Request.Method.GET, customColumnUrl, new Response.Listener<String>() {
                                                 @Override

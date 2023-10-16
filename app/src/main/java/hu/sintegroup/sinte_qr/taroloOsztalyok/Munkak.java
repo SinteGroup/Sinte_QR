@@ -1,6 +1,5 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.taroloOsztalyok;
 
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 

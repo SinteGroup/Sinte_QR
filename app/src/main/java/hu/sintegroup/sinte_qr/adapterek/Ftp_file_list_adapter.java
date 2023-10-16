@@ -1,4 +1,4 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.adapterek;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
-
 import java.util.ArrayList;
+
+import hu.sintegroup.sinte_qr.R;
 
 public class Ftp_file_list_adapter extends ArrayAdapter<String> {
 
-    private ArrayList<String> datasource;
+    private final ArrayList<String> datasource;
 
 
     public Ftp_file_list_adapter(@NonNull Context context, int resource, ArrayList<String> dataSource) {
@@ -27,7 +27,7 @@ public class Ftp_file_list_adapter extends ArrayAdapter<String> {
         LayoutInflater inflater=LayoutInflater.from(getContext());
         convertView = inflater.inflate(R.layout.ftp_upload_popup_window_listview_item, parent, false);
 
-        TextView fileListTextTemp=(TextView) convertView.findViewById(R.id.fileListNameTextView);
+        TextView fileListTextTemp= convertView.findViewById(R.id.fileListNameTextView);
         fileListTextTemp.setText(datasource.get(position));
 
         return convertView;

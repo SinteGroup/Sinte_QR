@@ -102,7 +102,7 @@
 
     <fragment
         android:id="@+id/KopoalkatreszekFragment"
-        android:name="hu.sintegroup.sinte_qr.Kopoalkatreszek_adatai"
+        android:name="hu.sintegroup.sinte_qr.taroloOsztalyok.Kopoalkatreszek_adatai"
         android:label="@string/kopoalkatreszek_Adatai_name"
         tools:layout="@layout/fragment_kopoalkatreszek_adatai">
     </fragment>

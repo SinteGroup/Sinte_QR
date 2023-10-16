@@ -1,4 +1,4 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.adapterek;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -25,14 +25,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import hu.sintegroup.sinte_qr.R;
+
 public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
 
-    private ArrayList<String> adatok;
-    private Context context;
-    private Fragment fragment;
-    private int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-    private Boolean focusable=true;
+    private final ArrayList<String> adatok;
+    private final Context context;
+    private final Fragment fragment;
+    private final int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private final int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+    private final Boolean focusable=true;
     private View popUpView;
 
     public docmakeLsitviewAdapter(ArrayList<String> adatok, Context context, Fragment fragment) {
@@ -49,9 +51,9 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
 
         String[] itemString=adatok.get(position).split(":");
 
-        LinearLayout slinContainer=(LinearLayout)convertView.findViewById(R.id.listViewContainer);
+        LinearLayout slinContainer= convertView.findViewById(R.id.listViewContainer);
 
-        LinearLayout lin=(LinearLayout) convertView.findViewById(R.id.listviewItemContainer);
+        LinearLayout lin= convertView.findViewById(R.id.listviewItemContainer);
 
         TextView idTextView=new TextView(this.getContext());
         idTextView.setText(itemString[0]);

@@ -18,9 +18,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;*/
 
-import java.util.Date;
 import java.util.HashMap;
 
+import hu.sintegroup.sinte_qr.helpers.sinteQRFirebaseHelper;
 import hu.sintegroup.sinte_qr.databinding.FragmentFirstBinding;
 
 public class FirstFragment extends Fragment {
@@ -44,8 +44,8 @@ public class FirstFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        firstText=(TextView) view.findViewById(R.id.initTextview);
-        kodeSpin=(Spinner) view.findViewById(R.id.codeSpinner);
+        firstText= view.findViewById(R.id.initTextview);
+        kodeSpin= view.findViewById(R.id.codeSpinner);
         kodeSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

@@ -1,4 +1,4 @@
-package hu.sintegroup.sinte_qr;
+package hu.sintegroup.sinte_qr.taroloOsztalyok;
 
 import android.os.Bundle;
 
@@ -21,6 +21,9 @@ import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import hu.sintegroup.sinte_qr.adapterek.Kopoalkastreszek_adatai_ListViewAdapter;
+import hu.sintegroup.sinte_qr.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,10 +81,10 @@ public class Kopoalkatreszek_adatai extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         String kopoalkatreszKategoria=getArguments().getString("alkatreszkategioria");
-        TextView alkatreszNeveTextView=(TextView) view.findViewById(R.id.kopoalkatreszNeveTextView);
+        TextView alkatreszNeveTextView= view.findViewById(R.id.kopoalkatreszNeveTextView);
         alkatreszNeveTextView.setText(kopoalkatreszKategoria);
 
-        ListView kopoalkatreszLista=(ListView) view.findViewById(R.id.kopoalkatreszKategoriaListView);
+        ListView kopoalkatreszLista= view.findViewById(R.id.kopoalkatreszKategoriaListView);
         ArrayList<String> kopoalkatreszItems=new ArrayList<>();
         Kopoalkastreszek_adatai_ListViewAdapter kopoAdapter=new Kopoalkastreszek_adatai_ListViewAdapter(this.getContext(), kopoalkatreszItems);
 
