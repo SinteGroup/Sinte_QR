@@ -96,7 +96,7 @@ public class AdatfelvetelFragment extends Fragment {
                     Log.e("AdatokfelvételiHiba", f.getMessage());
                 }
 
-                String insertDataUrl="http://www.weblapp.hu/Proba.php?method=insertData&column="+columns_2+"&values="+"2023-000-001"; //SQL insert stringet előállítani
+                String insertDataUrl="http://www.weblapp.hu/Proba.php?method=insertData&column="+columns_2+"&values="+values_2; //SQL insert stringet előállítani
                 Log.d("InsertURL", insertDataUrl);
 
                 RequestQueue insertDataQueqe= Volley.newRequestQueue(getContext());

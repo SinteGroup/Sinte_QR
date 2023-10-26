@@ -174,8 +174,9 @@ public class QRReadFragment extends Fragment {
                                             public void onResponse(String response) {
                                                 Log.d("vaneIlyenQrResponse", response);
                                                 //Qr kód aktiválás
-                                                if(response.contains("Not valid")){
+                                                if(!response.contains("OK")){
                                                     String QrAktivalasUrl="http://www.weblapp.hu/Proba.php?method=QrKodAktivalas&QrKodErteke="+meresSzama;
+                                                    Log.d("vaneInsert", response);
                                                     RequestQueue QrAktivalasQueue= Volley.newRequestQueue(getContext());
                                                     StringRequest QrAktivalasRequest=new StringRequest(Request.Method.GET, QrAktivalasUrl, new Response.Listener<String>() {
 
