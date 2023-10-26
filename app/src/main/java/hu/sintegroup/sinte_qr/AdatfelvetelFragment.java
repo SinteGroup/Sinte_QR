@@ -87,15 +87,16 @@ public class AdatfelvetelFragment extends Fragment {
                 try {
                     Set<String> keys=edittextItems.keySet();
                     for (String temp:keys) {
-                        Log.d("AdatokLekérdezése", "Felvett adatok: "+temp+": "+edittextItems.get(temp)); //Felolvasni a halmazt egy stringbe és azt írni a linkbe. Így lesz automatikus.
-                        columns_2.concat("'"+temp+"', ");
+                        //Log.d("AdatokLekérdezése", "Felvett adatok: "+temp+": "+edittextItems.get(temp)); //Felolvasni a halmazt egy stringbe és azt írni a linkbe. Így lesz automatikus.
+                        columns_2.concat("'"+temp+"="+edittextItems.get(temp)+"', ");
                         values_2.concat("'"+edittextItems.get(temp)+"', "); //Érték
+                        Log.d("InsertColumn_2", columns_2);
                     }
                 }catch (Exception f){
                     Log.e("AdatokfelvételiHiba", f.getMessage());
                 }
 
-                String insertDataUrl="http://www.weblapp.hu/Proba.php?method=insertData&column="+columns_2+"&values="+values_2; //SQL insert stringet előállítani
+                String insertDataUrl="http://www.weblapp.hu/Proba.php?method=insertData&column="+columns_2+"&values="+"2023-000-001"; //SQL insert stringet előállítani
                 Log.d("InsertURL", insertDataUrl);
 
                 RequestQueue insertDataQueqe= Volley.newRequestQueue(getContext());
