@@ -3,6 +3,7 @@ package hu.sintegroup.sinte_qr.adapterek;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         String[] itemString=adatok.get(position).split(":");
 
         LinearLayout slinContainer= convertView.findViewById(R.id.listViewContainer);
+        slinContainer.setOrientation(LinearLayout.HORIZONTAL);
 
         LinearLayout lin= convertView.findViewById(R.id.listviewItemContainer);
 
@@ -61,27 +63,30 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         idTextView.setMinWidth(500);
         lin.addView(idTextView);
 
-        if(!(itemString[0].equals("Kopóalkatrész"))) {
+       // if(!(itemString[0].equals("Kopóalkatrész"))) {
 
             EditText itemEditText = new EditText(this.getContext());
             itemEditText.setText(itemString[1]);
             itemEditText.setTextSize(20);
-            itemEditText.setMinWidth(400);
+            itemEditText.setMinWidth(800);
+            itemEditText.setMinHeight(1200);
+            itemEditText.setInputType(InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE);
             lin.addView(itemEditText);
 
-        }else {
+        //}else {
             generalas(slinContainer, adatok, position);
-        }
+        //}
 
-        Button dokFeltöltésButton=new Button(this.getContext());
-        dokFeltöltésButton.setText("Feltöltés");
-        dokFeltöltésButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(fragment).navigate(R.id.action_DocMakeFragment_to_FTP_file_browser);
-            }
-        });
-        lin.addView(dokFeltöltésButton);
+        //Button dokFeltöltésButton=new Button(this.getContext());
+        // dokFeltöltésButton.setText("Feltöltés");
+        // dokFeltöltésButton.setOnClickListener(new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View view) {
+        //         NavHostFragment.findNavController(fragment).navigate(R.id.action_DocMakeFragment_to_FTP_file_browser);
+        //     }
+        // });
+        // lin.addView(dokFeltöltésButton);
+
         return convertView;
     }
 
@@ -92,13 +97,14 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
         LinearLayout linTempLocal=new LinearLayout(getContext());
         linTempLocal.setOrientation(LinearLayout.HORIZONTAL);
 
+
         EditText itemEditText = new EditText(getContext());
         itemEditText.setText(adatok.get(position).split(":")[0]);
         itemEditText.setTextSize(20);
         itemEditText.setMaxWidth(400);
         linTempLocal.addView(itemEditText);
 
-        String[] spinnerItems={"Csapágyak","Csapágyházak","Simmeringek","Meghajtólánc","Szállítólánc","Villanymotor","Hajtómű","Serlegkanál","Heveder","Szenzorok","Egyéb"};
+        /*String[] spinnerItems={"Csapágyak","Csapágyházak","Simmeringek","Meghajtólánc","Szállítólánc","Villanymotor","Hajtómű","Serlegkanál","Heveder","Szenzorok","Egyéb"};
         Spinner itemSpinner=new Spinner(getContext());
         itemSpinner.setMinimumHeight(250);
         ArrayAdapter spinnerItemsArrayadapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerItems);
@@ -123,6 +129,6 @@ public class docmakeLsitviewAdapter extends ArrayAdapter<String> {
             }
         });
         linTempLocal.addView(spinneritemButton);
-        linSuperContainer.addView(linTempLocal);
+        linSuperContainer.addView(linTempLocal);*/
     }
 }
